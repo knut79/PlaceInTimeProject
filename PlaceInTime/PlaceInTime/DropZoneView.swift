@@ -21,8 +21,10 @@ class DropZone: UIView {
     //var focusDisplayView:UIView!
     var key:Int!
     var frontFocus:Bool = false
-    var hookedUpCard:Card?
+    var lastHookedUpCard:Card?
+    private var hookedUpCard:Card?
     var delegate:DropZoneProtocol?
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -46,13 +48,28 @@ class DropZone: UIView {
     }
     
     
+    func setHookedUpCard(card:Card?)
+    {
+        lastHookedUpCard = hookedUpCard
+        hookedUpCard = card
+        if let card = hookedUpCard
+        {
+            card.center = self.center
+        }
+    }
+    
+    func getHookedUpCard() -> Card?
+    {
+        return hookedUpCard
+    }
+    
     
     func giveFocus()
     {
         if focus == false
         {
 
-            delegate?.gettingFocus(self)
+            //delegate?.gettingFocus(self)
 
             
             

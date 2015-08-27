@@ -49,13 +49,8 @@ class Card: UIView
         textTitle.textAlignment = NSTextAlignment.Left
         textTitle.numberOfLines = 6
         textTitle.text = event.title
-        
-
-        
 
         let backImage = UIImage(named: "back.png")
-        
-
         
         back = UIImageView(image: imageResize(backImage!,sizeChange: CGSizeMake(frame.width,frame.height)))
         back.layer.cornerRadius = 5
