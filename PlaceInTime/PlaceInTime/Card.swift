@@ -9,14 +9,9 @@
 import Foundation
 import UIKit
 
-protocol CardProtocol
-{
-    func checkChanged(sender:Card)
-}
 
 class Card: UIView
 {
-    var delegate:CardProtocol!
     var yearTitle: UILabel!
     var textTitle: UILabel!
     var back:UIImageView!
@@ -56,13 +51,16 @@ class Card: UIView
         back.layer.cornerRadius = 5
         back.layer.masksToBounds = true
         back.userInteractionEnabled = true
+        /*
         let tapGesture = UITapGestureRecognizer(target: self, action: "tapCard:")
         tapGesture.numberOfTapsRequired = 1
         back.addGestureRecognizer(tapGesture)
+        */
         self.addSubview(back)
 
     }
     
+    /*
     func tapCard(sender:UIGestureRecognizer)
     {
         UIView.transitionWithView(self, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
@@ -73,22 +71,20 @@ class Card: UIView
             
             }, completion: { (value: Bool) in
                 self.back.removeGestureRecognizer(sender)
-                self.delegate?.checkChanged(self)
-                
-                
+    
         })
     }
+*/
     
     func tap()
     {
-        UIView.transitionWithView(self, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+        UIView.transitionWithView(self, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
             self.back.hidden = true
             
             self.addSubview(self.yearTitle)
             self.addSubview(self.textTitle)
             
             }, completion: { (value: Bool) in
-                self.delegate?.checkChanged(self)
         })
     }
     

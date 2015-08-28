@@ -34,16 +34,11 @@ class DropZone: UIView {
         
         self.key = key
 
-        //not added to this view!!!!
-        /*
-        focusDisplayView = UIView(frame: frame)
-        focusDisplayView.backgroundColor = UIColor.grayColor()
-        focusDisplayView.layer.cornerRadius = 5
-        focusDisplayView.layer.masksToBounds = true
-        
-        focusDisplayView.layer.borderColor = UIColor.blackColor().CGColor
-        focusDisplayView.layer.borderWidth = 1
-        */
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderWidth = 1
+        //self.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.5)
         
     }
     

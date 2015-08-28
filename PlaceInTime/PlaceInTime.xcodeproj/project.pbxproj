@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D192891B8FF9F70035CE11 /* InfoHelperView.swift */; };
 		72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7791B7B70720011FE47 /* AppDelegate.swift */; };
 		72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E77B1B7B70720011FE47 /* PlaceInTime.xcdatamodeld */; };
 		72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E77E1B7B70720011FE47 /* MainMenuController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		72D192891B8FF9F70035CE11 /* InfoHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHelperView.swift; sourceTree = "<group>"; };
 		72E8E7741B7B70720011FE47 /* PlaceInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaceInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72E8E7781B7B70720011FE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72E8E7791B7B70720011FE47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
 				72E8E7AC1B7DFD220011FE47 /* Card.swift */,
 				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
+				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
 			);
 			path = PlaceInTime;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* TagCheckView.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
+				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,
