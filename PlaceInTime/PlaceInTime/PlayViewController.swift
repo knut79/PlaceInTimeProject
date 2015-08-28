@@ -12,17 +12,20 @@ import iAd
 class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
 {
     var gameStats:GameStats!
-    var cards:[Card] = []
+    var cardsStack:[Card] = []
     var backOfCard:UIImageView!
     let datactrl = DataHandler()
     var dropZones:[Int:DropZone] = [:]
-    var directionLabel:UILabel!
+
     var originalDropZoneYCenter:CGFloat!
+    var maxDropZones:Int = 5
+    var rightButton:UIButton!
     
     var tags:[String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let marginFromGamestats:CGFloat = 10
         datactrl.fetchData(fromLevel: 1, toLevel: 3)
         datactrl.shuffleEvents()
         gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
@@ -37,55 +40,98 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
             let cardWidth:CGFloat = orgCardWidth / 2.5
             let cardHeight:CGFloat = orgCardHeight / 2.5
             
-            let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2),gameStats.frame.maxY, cardWidth, cardHeight)
+            let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2),gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight)
             let card = Card(frame:frame,event:item)
             card.delegate = self
             
-            cards.append(card)
+            cardsStack.append(card)
             i++
-            if i > 4
+            if i >= maxDropZones
             {
                 break
             }
-            else
-            {
-                //card.transform = CGAffineTransformScale(card.transform, 0.7, 0.7)
-            }
+
         }
         
-        let margin:CGFloat = 2
-        let dropZoneWidth = (UIScreen.mainScreen().bounds.size.width - (margin * (CGFloat(cards.count) + 1))) / CGFloat(cards.count)
-        let dropZoneHeight = dropZoneWidth * cardWidthToHeightRatio
-        var xOffset = margin
-        var key = 0
-        originalDropZoneYCenter = UIScreen.mainScreen().bounds.size.height - (dropZoneHeight / 2)
-        for item in cards
+
+        addDropZone()
+        
+        for item in cardsStack
         {
             self.view.addSubview(item)
-            
-            let dropZone = DropZone(frame: CGRectMake(xOffset,UIScreen.mainScreen().bounds.size.height - dropZoneHeight , dropZoneWidth, dropZoneHeight),key:key)
-            dropZone.layer.cornerRadius = 5
-            dropZone.layer.masksToBounds = true
-            
-            dropZone.layer.borderColor = UIColor.blackColor().CGColor
-            dropZone.layer.borderWidth = 1
-            dropZone.delegate = self
-            
-            view.addSubview(dropZone)
-            //view.addSubview(dropZone.focusDisplayView)
-            
-            dropZones.updateValue(dropZone, forKey: key)
-            xOffset += (margin + dropZoneWidth)
-            key++
         }
         self.view.addSubview(gameStats)
         
-        directionLabel = UILabel(frame: CGRectMake(0, 0, 40, 40))
-        directionLabel.text = "👇"
-        directionLabel.textAlignment = NSTextAlignment.Center
-        directionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
-        directionLabel.alpha = 0
-        self.view.addSubview(directionLabel)
+        
+        let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.7
+        rightButton = UIButton(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width - rightButtonWidth) / 2, gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, UIScreen.mainScreen().bounds.size.height * 0.4))
+        rightButton.setTitle("OK (this is the right sequence)", forState: UIControlState.Normal)
+        rightButton.backgroundColor = UIColor.blueColor()
+        rightButton.addTarget(self, action: "okAction", forControlEvents: UIControlEvents.TouchUpInside)
+        rightButton.alpha = 0
+        view.addSubview(rightButton)
+    }
+    
+    
+    func okAction()
+    {
+        
+    }
+    
+    func revealNextCard()
+    {
+        cardsStack.last?.tap()
+        cardsStack.removeLast()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        revealNextCard()
+    }
+    
+    func addDropZone()
+    {
+        
+        //_?
+        let orgCardWidth:CGFloat = 314
+        let orgCardHeight:CGFloat = 226
+        let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
+        
+        let margin:CGFloat = 2
+        let dropZoneWidth = (UIScreen.mainScreen().bounds.size.width - (margin * (CGFloat(maxDropZones) + 1))) / CGFloat(maxDropZones)
+        let dropZoneHeight = dropZoneWidth * cardWidthToHeightRatio
+        var xOffset = margin
+        var key = dropZones.count
+        originalDropZoneYCenter = UIScreen.mainScreen().bounds.size.height - (dropZoneHeight / 2)
+        
+        let dropZone = DropZone(frame: CGRectMake(xOffset,UIScreen.mainScreen().bounds.size.height - dropZoneHeight , dropZoneWidth, dropZoneHeight),key:key)
+        dropZone.layer.cornerRadius = 5
+        dropZone.layer.masksToBounds = true
+        
+        dropZone.layer.borderColor = UIColor.blackColor().CGColor
+        dropZone.layer.borderWidth = 1
+        dropZone.delegate = self
+        
+        view.addSubview(dropZone)
+        //view.addSubview(dropZone.focusDisplayView)
+        
+        dropZones.updateValue(dropZone, forKey: key)
+        //xOffset += (margin + dropZoneWidth)
+        
+        
+        //adjust placement of dropzones
+        var xCenter = (UIScreen.mainScreen().bounds.size.width / 2) - ((CGFloat(dropZones.count - 1) * (dropZone.frame.width + margin)) / 2)
+        
+        
+        for var i = 0 ;  i < dropZones.count ; i++
+        {
+            //println(" KEY \(dropZones[i]!.key)")
+            dropZones[i]!.center = CGPointMake(xCenter, UIScreen.mainScreen().bounds.size.height - dropZones[i]!.frame.height)
+            if let card = dropZones[i]!.getHookedUpCard()
+            {
+                card.center = dropZones[i]!.center
+            }
+            xCenter += (margin + dropZoneWidth)
+        }
 
     }
     
@@ -190,7 +236,7 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
             }
         }
     }
-    
+    var cardsReArranged = false
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let card = cardToDrag
         {
@@ -207,86 +253,20 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
                 if dropZone?.getHookedUpCard() != nil
                 {
 
+                    cardsReArranged = true
                     var isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
                     if(isInnView)
                     {
-                        self.makeRoomForCard( dropZone!, touchLocation: touchLocation)
-                    }
-                    
-                    /*
-                    
-                        if let dropzone = self.getFocusDropZone()
-                        {
-                            var isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
-                            if(isInnView)
-                            {
-                                self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
-                            }
-                        }
-
-                    */
-                    
-                    /*
-                    UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    
-                        for item in self.dropZones
-                        {
-                            if let card = item.1.hookedUpCard
-                            {
-                                card.center = CGPointMake(card.center.x, self.originalDropZoneYCenter)
-                                card.transform = CGAffineTransformIdentity
-                                //card.transform = CGAffineTransformScale(card.transform, 0.7, 0.7)
+                        self.cardsReArranged = true
+                        UIView.animateWithDuration(0.15, animations: { () -> Void in
+                                self.makeRoomForCard( dropZone!, touchLocation: touchLocation)
+                            
+                            }, completion: { (value: Bool) in
+                                //self.makeRoomForCard( dropZone!, touchLocation: touchLocation)
                                 
-                                let dropzoneWidth:CGFloat = item.1.frame.width
-                                let draggingCardWidth:CGFloat = card.frame.width
-                                let scale = dropzoneWidth / draggingCardWidth
-                                card.transform = CGAffineTransformScale(card.transform, scale, scale)
-                            }
-                        }
+                        })
                         
-                        if let card = self.cardToDrag
-                        {
-                            
-                            var touch = touches.first as? UITouch //touches.anyObject()
-                            var touchLocation = touch!.locationInView(self.view)
-                            
-                            self.directionLabel.alpha = 0
-                            
-                            if let dropzone = self.getFocusDropZone()
-                            {
-                                var isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
-                                if(isInnView)
-                                {
-                                    self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
-                                }
-                            }
-                        }
-                        
-                        }, completion: { (value: Bool) in
-                            
-                            
-                    })
-
-                    */
-                    
-                    
-                    
-                    /*
-                    self.directionLabel.alpha = 1
-                    self.directionLabel.transform = CGAffineTransformIdentity
-                    if CGRectContainsPoint(CGRectMake(dropZone!.frame.origin.x, dropZone!.frame.origin.y, dropZone!.frame.width / 2, dropZone!.frame.height), touchLocation)
-                    {
-                        //front
-                        self.directionLabel.transform = CGAffineTransformRotate(self.directionLabel.transform, -0.4)
-                        self.directionLabel.center = CGPointMake(dropZone!.frame.minX - 10, dropZone!.frame.minY - 50)
                     }
-                    else
-                    {
-                        //back
-                        self.directionLabel.transform = CGAffineTransformRotate(self.directionLabel.transform, 0.4)
-                        self.directionLabel.center = CGPointMake(dropZone!.frame.maxX + 10, dropZone!.frame.minY - 50)
-                    }
-                    */
                     
                 }
                 
@@ -321,23 +301,7 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
 
-            /*
-            for item in self.dropZones
-            {
-                if let card = item.1.hookedUpCard
-                {
-                    card.center = CGPointMake(card.center.x, self.originalDropZoneYCenter)
-                    card.transform = CGAffineTransformIdentity
-                    //card.transform = CGAffineTransformScale(card.transform, 0.7, 0.7)
-                    
-                    let dropzoneWidth:CGFloat = item.1.frame.width
-                    let draggingCardWidth:CGFloat = card.frame.width
-                    let scale = dropzoneWidth / draggingCardWidth
-                    card.transform = CGAffineTransformScale(card.transform, scale, scale)
-                }
-            }
-*/
-            
+           
             if let card = self.cardToDrag
             {
                 
@@ -352,13 +316,25 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
                     if(isInnView)
                     {
                         self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
+                        if self.dropZones.count < self.maxDropZones
+                        {
+                            self.addDropZone()
+                            self.revealNextCard()
+                        }
+                        else
+                        {
+                            self.rightButton.alpha = 1
+                        }
                     }
+                    
+                    
                 }
+
+                
             }
             
             }, completion: { (value: Bool) in
 
-                
         })
 
     }
@@ -373,69 +349,25 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
 
         if dropzone.getHookedUpCard() == nil
         {
-            //_? card.center = dropzone.center
             self.cardToDrag = nil
             dropzone.setHookedUpCard(card)
         }
-        else
-        {
 
-            
-            if CGRectContainsPoint(CGRectMake(dropzone.frame.origin.x, dropzone.frame.origin.y, dropzone.frame.width / 2, dropzone.frame.height), touchLocation)
-            {
-                //front
-                println("--card should be put at back")
-                if self.freeSlotAtBack(dropzone)
-                {
-                    self.pushBackwardAndPlaceNewCard(self.dropZones[dropzone.key - 1]!,card: card)
-                    
-                }
-                else
-                {
-                    self.pushForwardAndPlaceNewCard(self.dropZones[dropzone.key - 1]!,card: card)
-                }
-            }
-            else
-            {
-                //back
-                println("--card should be put at front")
-                if self.freeSlotAtFront(dropzone)
-                {
-                    self.pushForwardAndPlaceNewCard(self.dropZones[dropzone.key + 1]!,card: card)
-                }
-                else
-                {
-                    self.pushBackwardAndPlaceNewCard(self.dropZones[dropzone.key + 1]!,card: card)
-                }
-            }
-            
-
-        }
-        
          self.cardToDrag = nil
     }
     
     func makeRoomForCard(dropzone:DropZone,touchLocation:CGPoint)
     {
-        /*
-        let dropzoneWidth:CGFloat = dropzone.frame.width
-        let draggingCardWidth:CGFloat = cardToDrag!.frame.width
-        let scale = dropzoneWidth / draggingCardWidth
-        card.transform = CGAffineTransformScale(card.transform, scale, scale)
-        */
-        
-            if self.mostFreeSlotAtBack(dropzone)
-            {
-                self.pushBackwardAndMakeSpace(self.dropZones[dropzone.key]!)
-                
-            }
-            else
-            {
-                self.pushForwardAndMakeSpace(self.dropZones[dropzone.key]!)
-            }
 
+        if self.mostFreeSlotAtBack(dropzone)
+        {
+            self.pushBackwardAndMakeSpace(self.dropZones[dropzone.key]!)
             
-            
+        }
+        else
+        {
+            self.pushForwardAndMakeSpace(self.dropZones[dropzone.key]!)
+        }
     }
     
     func pushForwardAndMakeSpace(dropzone:DropZone)
@@ -483,66 +415,9 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
             }
         }
     }
-    
-    func pushForwardAndPlaceNewCard(dropzone:DropZone, card:Card)
-    {
-        if dropzone.getHookedUpCard() != nil
-        {
-            for var indexKey = dropzone.key! ; indexKey < dropZones.count  ; indexKey++
-            {
-                println("-key is \(indexKey)")
-                
-                let jumpOf = dropZones[indexKey + 1]?.getHookedUpCard() == nil
-                let cardToPass = dropZones[indexKey]?.getHookedUpCard()
-                dropZones[indexKey + 1]?.setHookedUpCard(cardToPass)
-                //_?dropZones[indexKey + 1]?.hookedUpCard!.center = dropZones[indexKey + 1]!.center
-                if jumpOf
-                {
-                    break
-                }
-                
-            }
-        }
 
-        dropzone.setHookedUpCard(card)
-        card.center = dropzone.center
-    }
-    
-    func pushBackwardAndPlaceNewCard(dropzone:DropZone, card:Card)
-    {
-        if dropzone.getHookedUpCard() != nil
-        {
-            for var indexKey = dropzone.key! ; indexKey > 0  ; indexKey--
-            {
-                println("-key is \(indexKey)")
 
-                let jumpOf = dropZones[indexKey - 1]?.getHookedUpCard() == nil
-                let cardToPass = dropZones[indexKey]?.getHookedUpCard()
-                dropZones[indexKey - 1]?.setHookedUpCard(cardToPass)
-                //dropZones[indexKey - 1]?.hookedUpCard!.center = dropZones[indexKey - 1]!.center
-                if jumpOf
-                {
-                    break
-                }
-
-            }
-        }
-        dropzone.setHookedUpCard(card)
-        card.center = dropzone.center
-        
-    }
     
-    func freeSlotAtFront(dropzone:DropZone) -> Bool
-    {
-        for var indexKey = dropzone.key! ; indexKey < dropZones.count ; indexKey++
-        {
-            if dropZones[indexKey]?.getHookedUpCard() == nil
-            {
-                return true
-            }
-        }
-        return false
-    }
     
     func mostFreeSlotAtBack(dropzone:DropZone) -> Bool
     {
@@ -564,19 +439,7 @@ class PlayViewController:UIViewController, CardProtocol, DropZoneProtocol
         }
         return countBack > countFront
     }
-    
-    //obsoleete
-    func freeSlotAtBack(dropzone:DropZone) -> Bool
-    {
-        for var indexKey = dropzone.key! ; indexKey >= 0 ; indexKey--
-        {
-            if dropZones[indexKey]?.getHookedUpCard() == nil
-            {
-                return true
-            }
-        }
-        return false
-    }
+
     
     func getFocusDropZone() -> DropZone?
     {

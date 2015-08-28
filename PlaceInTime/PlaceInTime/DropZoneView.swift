@@ -58,6 +58,17 @@ class DropZone: UIView {
         }
     }
     
+    func resetHookedUpCard()
+    {
+        let tempCard = hookedUpCard
+        hookedUpCard = lastHookedUpCard
+        lastHookedUpCard = nil
+        if let card = hookedUpCard
+        {
+            card.center = self.center
+        }
+    }
+    
     func getHookedUpCard() -> Card?
     {
         return hookedUpCard

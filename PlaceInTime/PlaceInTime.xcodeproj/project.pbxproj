@@ -477,6 +477,7 @@
 				72E8E7981B7B70720011FE47 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		72E8E7991B7B70720011FE47 /* Build configuration list for PBXNativeTarget "PlaceInTimeTests" */ = {
 			isa = XCConfigurationList;
@@ -485,6 +486,7 @@
 				72E8E79B1B7B70720011FE47 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -18,7 +18,6 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     var playButton:UIButton!
     var playButtonExstraLabel:UILabel!
     var playButtonExstraLabel2:UILabel!
-    var timelineButton:UIButton!
     var selectFilterTypeButton:UIButton!
     var loadingDataView:UIView!
     var loadingDataLabel:UILabel!
@@ -67,12 +66,6 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         playButtonExstraLabel2.font = UIFont.systemFontOfSize(12)
         playButtonExstraLabel2.textAlignment = NSTextAlignment.Center
         playButton.addSubview(playButtonExstraLabel2)
-        
-        timelineButton = UIButton(frame:CGRectZero)
-        timelineButton.setTitle("Timeline", forState: UIControlState.Normal)
-        timelineButton.addTarget(self, action: "timelineAction", forControlEvents: UIControlEvents.TouchUpInside)
-        timelineButton.backgroundColor = UIColor.blueColor()
-        view.addSubview(timelineButton)
 
         
         selectFilterTypeButton = UIButton(frame: CGRectZero)
@@ -159,7 +152,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         
         
         let orientation = UIDevice.currentDevice().orientation
-        var orientationText = orientation.isLandscape ? "landscape" : "portrait"
+        //var orientationText = orientation.isLandscape ? "landscape" : "portrait"
         
         var playbuttonWidth = UIScreen.mainScreen().bounds.size.width / 2
         var playbuttonHeight = UIScreen.mainScreen().bounds.size.height / 2
@@ -171,7 +164,6 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         
         playButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (playbuttonWidth / 2), UIScreen.mainScreen().bounds.size.height * 0.15,playbuttonWidth, playbuttonHeight)
         
-        timelineButton.frame = CGRectMake(playButton.frame.minX, playButton.frame.maxY + (margin / 2), playbuttonWidth, playButton.frame.height * 0.25)
         
         let height:CGFloat = 31.0
         let marginSlider: CGFloat = playButton.frame.minX
@@ -180,7 +172,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         //levelSlider.transform = CGAffineTransformScale(levelSlider.transform, 0.3, 0.3)
         
         playButtonExstraLabel.frame = CGRectMake(0, playButton.frame.height * 0.7   , playButton.frame.width, playButton.frame.height * 0.15)
-        playButtonExstraLabel.text = "in \(orientationText) mode"
+        //playButtonExstraLabel.text = "in \(orientationText) mode"
         playButtonExstraLabel2.frame = CGRectMake(0, playButton.frame.height * 0.85   , playButton.frame.width, playButton.frame.height * 0.15)
 
         
@@ -203,10 +195,6 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
     }
     
-    func timelineAction()
-    {
-        self.performSegueWithIdentifier("segueFromMainMenuToTimeline", sender: nil)
-    }
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {

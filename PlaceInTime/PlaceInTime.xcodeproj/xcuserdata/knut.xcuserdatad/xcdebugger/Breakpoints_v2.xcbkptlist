@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "462192345.812298"
+            timestampString = "462416163.844015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "gettingFocus(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "462385437.021131"
+            timestampString = "462416163.844015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "touchesBegan(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "462385437.021131"
+            timestampString = "462416163.844015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "dropCardInZone(_:dropzone:touchLocation:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "462385437.021131"
+            timestampString = "462416163.844015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "touchesMoved(_:withEvent:)"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "addDropZone()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

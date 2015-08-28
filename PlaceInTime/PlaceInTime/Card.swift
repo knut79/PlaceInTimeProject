@@ -79,6 +79,19 @@ class Card: UIView
         })
     }
     
+    func tap()
+    {
+        UIView.transitionWithView(self, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+            self.back.hidden = true
+            
+            self.addSubview(self.yearTitle)
+            self.addSubview(self.textTitle)
+            
+            }, completion: { (value: Bool) in
+                self.delegate?.checkChanged(self)
+        })
+    }
+    
     func imageResize (imageObj:UIImage, sizeChange:CGSize)-> UIImage{
         
         let hasAlpha = false
