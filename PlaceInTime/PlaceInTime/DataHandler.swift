@@ -387,7 +387,7 @@ class DataHandler
         newEvent(id++,title:"Volkswagen Beetle is launched", year:1936,tags:"#invention")
         newEvent(id++,title:"Heinrich Focke creates the first successful helicopter", year:1936,level:2,tags:"#invention")
         newEvent(id++,title:"Supermarket trolleys introduced in Oklahoma", year:1938,tags:"#invention")
-        newEvent(id++,title:"Maiden flight of pressurized airliner", year:00, text:"Boeing Stratoliner",level:2,tags:"#invention")
+        newEvent(id++,title:"Maiden flight of pressurized airliner", year:1938, text:"Boeing Stratoliner",level:2,tags:"#invention")
         newEvent(id++,title:"Nylon stocking introduced", year:1940,tags:"#invention")
         newEvent(id++,title:"First solid-body electric guitar is built by Les Paul", year:1947,tags:"#invention")
         newEvent(id++,title:"Kalashnikov invents the AK-47", year:1947,tags:"#invention")

@@ -26,48 +26,21 @@ class PlayViewController:UIViewController,  DropZoneProtocol
     
     var cardToDrag:Card? = nil
     var newRevealedCard:Card? = nil
-    
+    let marginFromGamestats:CGFloat = 10
+    var levelHigh:Int = 1
+    var levelLow:Int = 1
     var tags:[String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let marginFromGamestats:CGFloat = 10
-        datactrl.fetchData(fromLevel: 1, toLevel: 3)
-        datactrl.shuffleEvents()
+        
+        datactrl.fetchData(tags: tags,fromLevel:levelLow,toLevel: levelHigh)
+        
         gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
-        
-        
-        var i = 0
-        let orgCardWidth:CGFloat = 314
-        let orgCardHeight:CGFloat = 226
-        let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
-        for item in datactrl.historicEventItems
-        {
-            let cardWidth:CGFloat = orgCardWidth / 2.5
-            let cardHeight:CGFloat = orgCardHeight / 2.5
-            
-            let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2),gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight)
-            let card = Card(frame:frame,event:item)
-            
-            cardsStack.append(card)
-            i++
-            if i >= maxDropZones
-            {
-                break
-            }
-
-        }
-        
+        self.view.addSubview(gameStats)
 
         addDropZone()
-        
-        for item in cardsStack
-        {
-            self.view.addSubview(item)
-        }
-        self.view.addSubview(gameStats)
-        
-        
+
         let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.7
         rightButton = UIButton(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width - rightButtonWidth) / 2, gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, UIScreen.mainScreen().bounds.size.height * 0.4))
         rightButton.setTitle("OK (this is the right sequence)", forState: UIControlState.Normal)
@@ -81,9 +54,331 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         view.addSubview(infoHelperView)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        setCardStack()
+        //revealNextCard()
+    }
+
+    func setCardStack()
+    {
+        for item in cardsStack
+        {
+            item.removeFromSuperview()
+        }
+        datactrl.shuffleEvents()
+        animateNewCardInCardStack(0)
+    }
     
+
+    
+    func animateNewCardInCardStack(var i:Int)
+    {
+        
+        let orgCardWidth:CGFloat = 314
+        let orgCardHeight:CGFloat = 226
+        let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
+
+
+        let cardWidth:CGFloat = orgCardWidth / 2.5
+        let cardHeight:CGFloat = orgCardHeight / 2.5
+        
+        //let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2) + xOffset,gameStats.frame.maxY + marginFromGamestats + yOffset, cardWidth, cardHeight)
+        let card = Card(frame:CGRectMake(-100, gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight),event:datactrl.historicEventItems[i])
+        
+        cardsStack.append(card)
+        self.view.addSubview(card)
+        
+        
+        
+        var yOffset:CGFloat = getRandomOffset()
+            var xOffset:CGFloat = getRandomOffset()
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+
+            card.center = CGPointMake((UIScreen.mainScreen().bounds.size.width / 2) + xOffset, self.gameStats.frame.maxY + self.marginFromGamestats + yOffset + (cardHeight / 2))
+            
+            card.transform = CGAffineTransformRotate(card.transform, self.getRandomRotation())
+            
+            }, completion: { (value: Bool) in
+                i++
+                
+                if i < self.maxDropZones
+                {
+                    self.animateNewCardInCardStack(i)
+                }
+                else
+                {
+                    self.revealNextCard()
+                }
+        })
+    }
+    
+    func getRandomRotation() -> CGFloat
+    {
+        var randomNum = Int(arc4random()) % 3
+        if randomNum == 0
+        {
+            return -0.05
+        }
+        else if randomNum == 1
+        {
+            return 0
+        }
+        else
+        {
+            return 0.05
+        }
+    }
+    
+    func getRandomOffset() -> CGFloat
+    {
+        var randomNum = Int(arc4random()) % 3
+        if randomNum == 0
+        {
+            return 1.5
+        }
+        else if randomNum == 1
+        {
+            return 1.8
+        }
+        else
+        {
+            return 2.1
+        }
+    }
+    
+    var tempLabels:[UILabel] = []
     func okAction()
     {
+        rightButton.userInteractionEnabled = false
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.rightButton.alpha = 0
+            }, completion: { (value: Bool) in
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    
+                    
+                    for var i = 0 ; i <  self.dropZones.count ; i++
+                    {
+                        self.dropZones[i]!.center = CGPointMake(self.dropZones[i]!.center.x, UIScreen.mainScreen().bounds.size.height / 2)
+                        self.dropZones[i]!.getHookedUpCard()!.center = self.dropZones[i]!.center
+                    }
+ 
+                    }, completion: { (value: Bool) in
+                        self.animateResult(0)
+                })
+        })
+    }
+    
+    func animateResult(index:Int, lastYear:Int32? = nil, var dragOverlabel:UILabel? = nil, var fails:Int = 0)
+    {
+        let dropZone = dropZones[index]
+        var label = UILabel(frame: dropZone!.frame)
+        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.boldSystemFontOfSize(20)
+        label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
+        label.text = dropZone?.getHookedUpCard()?.event.formattedTime
+        label.alpha = 0
+        
+        if dragOverlabel == nil
+        {
+            dragOverlabel = UILabel(frame: label.frame)
+            dragOverlabel!.textAlignment = NSTextAlignment.Center
+            dragOverlabel!.font = UIFont.boldSystemFontOfSize(20)
+            dragOverlabel!.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
+            view.addSubview(dragOverlabel!)
+            tempLabels.append(dragOverlabel!)
+        }
+        dragOverlabel!.text = dropZone?.getHookedUpCard()?.event.formattedTime
+        dragOverlabel!.alpha = 0
+        
+        
+        var thisYear = dropZone?.getHookedUpCard()?.event.fromYear
+        var wrongAnswer = false
+        if thisYear != nil && index > 0
+        {
+            if thisYear > lastYear
+            {
+                label.textColor = UIColor.greenColor()
+            }
+            else
+            {
+                fails++
+                wrongAnswer = true
+                thisYear = lastYear
+                label.textColor = UIColor.redColor()
+            }
+        }
+        view.addSubview(label)
+        tempLabels.append(label)
+        
+        //😕😞😦😫😭😲
+        UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            
+                if wrongAnswer
+                {
+                    self.dropZones[index]?.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
+                    //self.dropZones[index]?.getHookedUpCard()!.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
+                    self.dropZones[index]!.getHookedUpCard()!.center = self.dropZones[index]!.center
+                    label.frame.offset(dx: 0, dy: (label.frame.size.height / 2) * -1)
+                    label.transform = CGAffineTransformScale(label.transform, 0.75, 0.75)
+                    label.text = "\(label.text!)😕"
+                }
+                else
+                {
+                    label.frame.offset(dx: 0, dy: label.frame.size.height * -1)
+                    
+                }
+                label.transform = CGAffineTransformScale(label.transform, 1.3, 1.3)
+                label.alpha = 1
+            }, completion: { (value: Bool) in
+                
+                
+                
+                
+                UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    if wrongAnswer == false
+                    {
+                        dragOverlabel!.center = label.center
+                        dragOverlabel!.alpha = 0.4
+                    }
+                }, completion: { (value: Bool) in
+                    dragOverlabel!.alpha = 0
+                    if wrongAnswer == false
+                    {
+                        var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+                        pulseAnimation.duration = 0.3
+                        pulseAnimation.toValue = NSNumber(float: 0.3)
+                        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        pulseAnimation.autoreverses = true
+                        pulseAnimation.repeatCount = 100
+                        pulseAnimation.delegate = self
+                        label.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
+                        
+                        //animate right points
+                        self.animatePoints(label.center)
+                    }
+                    if index < (self.dropZones.count - 1)
+                    {
+                        self.animateResult(index + 1, lastYear: thisYear,dragOverlabel: dragOverlabel)
+                    }
+                    else
+                    {
+                        
+                        UIView.animateWithDuration(0.2, delay: 3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                            
+                             //animate some exstra points
+                            for item in self.tempLabels
+                            {
+                                item.alpha = 0
+                            }
+                            
+                            }, completion: { (value: Bool) in
+                                
+
+                                
+                                for item in self.tempLabels
+                                {
+                                    item.removeFromSuperview()
+                                }
+                                /*
+                                if fails == 0
+                                {
+                                    self.animateCorrectSequence()
+                                }
+                                else
+                                {
+                                    self.nextRound()
+                                }
+                                */
+                                self.nextRound()
+                        })
+                        
+
+                        
+                    }
+                })
+                
+
+        })
+    }
+    
+    func nextRound()
+    {
+        //move stuff away
+        animateRemoveDropzones({() -> Void in
+                for var i = 0 ;  i < self.dropZones.count ; i++
+                {
+                    self.dropZones[i]?.removeFromSuperview()
+                }
+                self.dropZones = [:]
+                self.addDropZone()
+                self.setCardStack()
+                //self.revealNextCard()
+                self.rightButton.userInteractionEnabled = true
+            
+            })
+
+    }
+    
+    func animateRemoveDropzones(completion: (() -> (Void)))
+    {
+        animateRemoveOneDropzone(0,completion: {() -> Void in
+
+            completion()
+        })
+    }
+    
+    func animateRemoveOneDropzone(var i:Int, completion: (() -> (Void))? = nil)
+    {
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                
+                self.dropZones[i]?.center = CGPointMake(-100, self.dropZones[i]!.center.y )
+                self.dropZones[i]?.getHookedUpCard()?.center = CGPointMake(-100, self.dropZones[i]!.getHookedUpCard()!.center.y )
+                
+                
+                }, completion: { (value: Bool) in
+                    if i < self.dropZones.count
+                    {
+                        i++
+                        self.animateRemoveOneDropzone(i,completion: completion)
+                    }
+                    else
+                    {
+                        completion!()
+                    }
+                    
+            })
+    }
+    
+    func animateCorrectSequence()
+    {
+        
+    }
+    
+    func animatePoints(centerPoint:CGPoint)
+    {
+        var points = 10
+        var label = UILabel(frame: dropZones[0]!.frame)
+        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.boldSystemFontOfSize(20)
+        label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
+        label.center = centerPoint
+        label.text = "\(points)😌"
+        label.alpha = 0
+        view.addSubview(label)
+        
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            label.center = self.gameStats.okPointsView.center
+            label.transform = CGAffineTransformScale(label.transform, 1.2, 1.2)
+            label.alpha = 1
+            }, completion: { (value: Bool) in
+
+                label.alpha = 0
+                self.gameStats.addOkPoints(points)
+                //self.datactrl.updateOkScore(self.currentQuestion, deltaScore:points)
+                label.removeFromSuperview()
+        })
         
     }
     
@@ -98,14 +393,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
-        revealNextCard()
-    }
     
     func addDropZone()
     {
-        
-        //_?
         let orgCardWidth:CGFloat = 314
         let orgCardHeight:CGFloat = 226
         let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
@@ -273,8 +563,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol
             
             if(isInnView)
             {
-                
-                
                 let dropZone = focusToDropZone(touchLocation)
 
                 if dropZone?.getHookedUpCard() != nil
@@ -288,11 +576,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol
                             
                             }, completion: { (value: Bool) in
                                 //self.makeRoomForCard( dropZone!, touchLocation: touchLocation)
-                                
                         })
-                        
                     }
-                    
                 }
                 
                 let point = (touches.first as? UITouch)!.locationInView(self.view) //touches.anyObject()!.locationInView(self.view)
@@ -355,11 +640,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
                         }
                         //self.revealedCard = nil
                     }
-                    
-                    
                 }
-
-                
             }
             
             }, completion: { (value: Bool) in
@@ -409,7 +690,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
             infoHelperView.setText(textLeft, main:textMid , right: textRight)
             
         }
-        view.bringSubviewToFront(infoHelperView)
+        //view.bringSubviewToFront(infoHelperView)
         infoHelperView.alpha = 1
     }
     

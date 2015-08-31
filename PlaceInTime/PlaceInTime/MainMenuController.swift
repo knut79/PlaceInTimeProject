@@ -30,6 +30,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     var globalGameStats:GameStats!
     var updateGlobalGameStats:Bool = false
     var newGameStatsValues:(Int,Int,Int)!
+    let levelSlider = RangeSlider(frame: CGRectZero)
     
     var tags:[String] = []
     
@@ -67,6 +68,12 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         playButtonExstraLabel2.textAlignment = NSTextAlignment.Center
         playButton.addSubview(playButtonExstraLabel2)
 
+        levelSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
+        levelSlider.curvaceousness = 0.0
+        levelSlider.maximumValue = Double(maxLevel) + 0.5
+        levelSlider.minimumValue = Double(minLevel)
+        levelSlider.typeValue = sliderType.bothLowerAndUpper
+        view.addSubview(levelSlider)
         
         selectFilterTypeButton = UIButton(frame: CGRectZero)
         selectFilterTypeButton.setTitle("📋", forState: UIControlState.Normal)
@@ -175,6 +182,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         //playButtonExstraLabel.text = "in \(orientationText) mode"
         playButtonExstraLabel2.frame = CGRectMake(0, playButton.frame.height * 0.85   , playButton.frame.width, playButton.frame.height * 0.15)
 
+        levelSlider.frame = CGRect(x:  marginSlider, y: playButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2), height: height)
         
         selectFilterTypeButton.frame = CGRectMake(playButton.frame.maxX, playButton.frame.maxY, UIScreen.mainScreen().bounds.size.width * 0.1, UIScreen.mainScreen().bounds.size.width * 0.1)
         
@@ -182,6 +190,10 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         
     }
     
+    func sliderUpperLevelText() -> String
+    {
+        return Int(levelSlider.upperValue) > 2 ? "ridiculous" : "\(Int(levelSlider.upperValue))"
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -189,6 +201,10 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         // Dispose of any resources that can be recreated.
     }
     
+    func rangeSliderValueChanged(slider: RangeSlider) {
+        //println("Range slider value changed: (\(Int(slider.lowerValue)) \(Int(slider.upperValue)))")
+        playButtonExstraLabel2.text = "level \(Int(slider.lowerValue)) - \(sliderUpperLevelText())"
+    }
     
     func playAction()
     {
@@ -199,6 +215,8 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {
             var svc = segue!.destinationViewController as! PlayViewController
+            svc.levelLow = Int(levelSlider.lowerValue)
+            svc.levelHigh = Int(levelSlider.upperValue)
             svc.tags = self.tags
         }
     }

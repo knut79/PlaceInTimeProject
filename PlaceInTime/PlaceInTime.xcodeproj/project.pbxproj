@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D192891B8FF9F70035CE11 /* InfoHelperView.swift */; };
+		72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928C1B9327BE0035CE11 /* RangeSlider.swift */; };
+		72D192911B9327BE0035CE11 /* RangeWindowsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928D1B9327BE0035CE11 /* RangeWindowsLayer.swift */; };
+		72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928E1B9327BE0035CE11 /* RangeSliderThumbLayer.swift */; };
+		72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928F1B9327BE0035CE11 /* RangeSliderTrackLayer.swift */; };
 		72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7791B7B70720011FE47 /* AppDelegate.swift */; };
 		72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E77B1B7B70720011FE47 /* PlaceInTime.xcdatamodeld */; };
 		72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E77E1B7B70720011FE47 /* MainMenuController.swift */; };
@@ -40,6 +44,10 @@
 
 /* Begin PBXFileReference section */
 		72D192891B8FF9F70035CE11 /* InfoHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHelperView.swift; sourceTree = "<group>"; };
+		72D1928C1B9327BE0035CE11 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		72D1928D1B9327BE0035CE11 /* RangeWindowsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeWindowsLayer.swift; sourceTree = "<group>"; };
+		72D1928E1B9327BE0035CE11 /* RangeSliderThumbLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderThumbLayer.swift; sourceTree = "<group>"; };
+		72D1928F1B9327BE0035CE11 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
 		72E8E7741B7B70720011FE47 /* PlaceInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaceInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72E8E7781B7B70720011FE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72E8E7791B7B70720011FE47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +90,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72D1928B1B93279A0035CE11 /* Slider */ = {
+			isa = PBXGroup;
+			children = (
+				72D1928C1B9327BE0035CE11 /* RangeSlider.swift */,
+				72D1928D1B9327BE0035CE11 /* RangeWindowsLayer.swift */,
+				72D1928E1B9327BE0035CE11 /* RangeSliderThumbLayer.swift */,
+				72D1928F1B9327BE0035CE11 /* RangeSliderTrackLayer.swift */,
+			);
+			name = Slider;
+			sourceTree = "<group>";
+		};
 		72E8E76B1B7B70720011FE47 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +122,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				72D1928B1B93279A0035CE11 /* Slider */,
 				72E8E7A31B7B74210011FE47 /* DataClasses */,
 				72E8E79C1B7B73230011FE47 /* MainMenu */,
 				72E8E7791B7B70720011FE47 /* AppDelegate.swift */,
@@ -272,6 +292,7 @@
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* TagCheckView.swift in Sources */,
+				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */,
@@ -280,7 +301,10 @@
 				72E8E7AB1B7B7AA00011FE47 /* PlayViewController.swift in Sources */,
 				72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */,
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
+				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,
+				72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */,
+				72D192911B9327BE0035CE11 /* RangeWindowsLayer.swift in Sources */,
 				72E8E7AD1B7DFD220011FE47 /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
