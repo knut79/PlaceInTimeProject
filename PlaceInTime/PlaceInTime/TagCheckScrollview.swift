@@ -68,7 +68,7 @@ class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
         
         selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.frame.width - closeButton.frame.width, itemheight))
         selectedInfoLabel.textAlignment = NSTextAlignment.Center
-        selectedInfoLabel.text = ""
+        selectedInfoLabel.text = "\(tags.count) tags selected"
         /*
         let unselectBoxButton = UIButton(frame: CGRectMake(0, 0, itemheight, itemheight))
         unselectBoxButton.setTitle("◽️", forState: UIControlState.Normal)
@@ -145,7 +145,10 @@ class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
     
     func closeAction()
     {
+        let selectedTags = getTagsAsArray()
+        delegate.reloadMarks(selectedTags)
         
+        selectedInfoLabel.text = "\(selectedTags.count) tags selected"
         delegate!.closeTagCheckView()
         
     }

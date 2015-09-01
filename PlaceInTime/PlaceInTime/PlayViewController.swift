@@ -65,6 +65,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         {
             item.removeFromSuperview()
         }
+
         datactrl.shuffleEvents()
         animateNewCardInCardStack(0)
     }
@@ -147,7 +148,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         }
     }
     
-    var tempLabels:[UILabel] = []
+    var tempViews:[UIView] = []
+    var tempYearLabel:[UILabel] = []
+    var fails:Int = 0
     func okAction()
     {
         rightButton.userInteractionEnabled = false
@@ -163,144 +166,265 @@ class PlayViewController:UIViewController,  DropZoneProtocol
                         self.dropZones[i]!.center = CGPointMake(self.dropZones[i]!.center.x, UIScreen.mainScreen().bounds.size.height / 2)
                         self.dropZones[i]!.getHookedUpCard()!.center = self.dropZones[i]!.center
                     }
- 
+                    
+                    
                     }, completion: { (value: Bool) in
-                        self.animateResult(0)
+                        self.animateYears(0, completion: {() -> Void in
+                            self.fails = 0
+                            self.animateResult(0)
+                        })
                 })
         })
     }
     
-    func animateResult(index:Int, lastYear:Int32? = nil, var dragOverlabel:UILabel? = nil, var fails:Int = 0)
+    func animateYears(var i:Int,completion: (() -> (Void)))
     {
-        let dropZone = dropZones[index]
-        var label = UILabel(frame: dropZone!.frame)
+        //animateRemoveOneDropzone(0,completion: {() -> Void in
+        
+
+        var label = UILabel(frame: dropZones[i]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
-        label.text = dropZone?.getHookedUpCard()?.event.formattedTime
+        label.text = dropZones[i]?.getHookedUpCard()?.event.formattedTime
         label.alpha = 0
+        view.addSubview(label)
+        tempYearLabel.append(label)
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            label.frame.offset(dx: 0, dy: label.frame.size.height * -1)
+            label.transform = CGAffineTransformScale(label.transform, 1.3, 1.3)
+            label.alpha = 1
+            }, completion: { (value: Bool) in
+                i++
+                if i < self.dropZones.count
+                {
+                    self.animateYears(i,completion: completion)
+                }
+                else
+                {
+                    completion()
+                }
+        })
         
-        if dragOverlabel == nil
+    }
+    
+    func animateResult(index:Int, lastYear:Int32? = nil, var dragOverlabel:UILabel? = nil)
+    {
+        let dropZone = dropZones[index]
+        var label = tempYearLabel[index]
+        
+        if dragOverlabel == nil && index > 0
         {
-            dragOverlabel = UILabel(frame: label.frame)
+            dragOverlabel = UILabel(frame: tempYearLabel[0].frame)
             dragOverlabel!.textAlignment = NSTextAlignment.Center
             dragOverlabel!.font = UIFont.boldSystemFontOfSize(20)
             dragOverlabel!.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
             view.addSubview(dragOverlabel!)
-            tempLabels.append(dragOverlabel!)
+            tempViews.append(dragOverlabel!)
         }
-        dragOverlabel!.text = dropZone?.getHookedUpCard()?.event.formattedTime
-        dragOverlabel!.alpha = 0
+        dragOverlabel?.text = dropZone?.getHookedUpCard()?.event.formattedTime
+        dragOverlabel?.alpha = 1
         
         
         var thisYear = dropZone?.getHookedUpCard()?.event.fromYear
         var wrongAnswer = false
         if thisYear != nil && index > 0
         {
-            if thisYear > lastYear
-            {
-                label.textColor = UIColor.greenColor()
-            }
-            else
+            if thisYear < lastYear
             {
                 fails++
                 wrongAnswer = true
                 thisYear = lastYear
-                label.textColor = UIColor.redColor()
             }
         }
-        view.addSubview(label)
-        tempLabels.append(label)
-        
-        //😕😞😦😫😭😲
-        UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            
-                if wrongAnswer
-                {
-                    self.dropZones[index]?.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
-                    //self.dropZones[index]?.getHookedUpCard()!.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
-                    self.dropZones[index]!.getHookedUpCard()!.center = self.dropZones[index]!.center
-                    label.frame.offset(dx: 0, dy: (label.frame.size.height / 2) * -1)
-                    label.transform = CGAffineTransformScale(label.transform, 0.75, 0.75)
-                    label.text = "\(label.text!)😕"
-                }
-                else
-                {
-                    label.frame.offset(dx: 0, dy: label.frame.size.height * -1)
-                    
-                }
-                label.transform = CGAffineTransformScale(label.transform, 1.3, 1.3)
-                label.alpha = 1
-            }, completion: { (value: Bool) in
+
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
                 
+                    dragOverlabel?.center = label.center
+                    dragOverlabel?.alpha = 0.5
                 
-                
-                
-                UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                    if wrongAnswer == false
-                    {
-                        dragOverlabel!.center = label.center
-                        dragOverlabel!.alpha = 0.4
-                    }
                 }, completion: { (value: Bool) in
-                    dragOverlabel!.alpha = 0
-                    if wrongAnswer == false
+                    dragOverlabel?.alpha = 0
+                    if index > 0
                     {
-                        var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
-                        pulseAnimation.duration = 0.3
-                        pulseAnimation.toValue = NSNumber(float: 0.3)
-                        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                        pulseAnimation.autoreverses = true
-                        pulseAnimation.repeatCount = 100
-                        pulseAnimation.delegate = self
-                        label.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
-                        
-                        //animate right points
-                        self.animatePoints(label.center)
+                        if wrongAnswer == false
+                        {
+                            label.textColor = UIColor.greenColor()
+                            /*
+                            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+                            pulseAnimation.duration = 0.3
+                            pulseAnimation.toValue = NSNumber(float: 0.3)
+                            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                            pulseAnimation.autoreverses = true
+                            pulseAnimation.repeatCount = 100
+                            pulseAnimation.delegate = self
+                            label.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
+                            */
+                            //animate right points
+                            self.animatePoints(label.center)
+                        }
+                        else
+                        {
+                            UIView.animateWithDuration(0.25, animations: { () -> Void in
+
+                                    self.dropZones[index]?.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
+                                    //self.dropZones[index]?.getHookedUpCard()!.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
+                                    self.dropZones[index]!.getHookedUpCard()!.center = self.dropZones[index]!.center
+                                
+                                    label.textColor = UIColor.redColor()
+                                    label.frame.offset(dx: 0, dy: (label.frame.size.height / 2) )
+                                    label.transform = CGAffineTransformScale(label.transform, 0.75, 0.75)
+                                    label.text = "\(label.text!)\(self.getFailsEmoji(self.fails))"
+
+                                }, completion: { (value: Bool) in
+                            })
+                            
+                        }
                     }
+                    
+                    
                     if index < (self.dropZones.count - 1)
                     {
                         self.animateResult(index + 1, lastYear: thisYear,dragOverlabel: dragOverlabel)
                     }
                     else
                     {
-                        
-                        UIView.animateWithDuration(0.2, delay: 3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                            
-                             //animate some exstra points
-                            for item in self.tempLabels
-                            {
-                                item.alpha = 0
-                            }
-                            
-                            }, completion: { (value: Bool) in
-                                
-
-                                
-                                for item in self.tempLabels
-                                {
-                                    item.removeFromSuperview()
-                                }
-                                /*
-                                if fails == 0
-                                {
-                                    self.animateCorrectSequence()
-                                }
-                                else
-                                {
-                                    self.nextRound()
-                                }
-                                */
-                                self.nextRound()
-                        })
-                        
-
-                        
+                        self.animateCleanupAndStartNewRound()
                     }
                 })
+
+    }
+    
+    func getFailsEmoji(fails:Int) -> String
+    {
+        //😕😞😦😫😭😲
+        if fails < 2
+        {
+            return "😕"
+        }
+        else if fails < 3
+        {
+            return "😞"
+        }
+        else if fails < 4
+        {
+            return "😦"
+        }
+        else if fails < 5
+        {
+            return "😫"
+        }
+        else if fails < 6
+        {
+            return "😭"
+        }
+        else
+        {
+            return "😲"
+        }
+    }
+    
+    func animateCleanupAndStartNewRound()
+    {
+        var tapViewForNextRound = UIView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
+        tapViewForNextRound.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.01)
+        tapViewForNextRound.alpha = 0
+        tempViews.append(tapViewForNextRound)
+        view.addSubview(tapViewForNextRound)
+        
+        
+        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            
+             //animate some exstra points
+            /*
+            for item in self.tempViews
+            {
+                item.alpha = 0
+            }
+            for item in self.tempYearLabel
+            {
+                item.alpha = 0
+            }
+            */
+            tapViewForNextRound.alpha = 1
+            
+            }, completion: { (value: Bool) in
                 
+                let tapGesture = UITapGestureRecognizer(target: self, action: "tapForNextRound")
+                tapGesture.numberOfTapsRequired = 1
+                
+                tapViewForNextRound.addGestureRecognizer(tapGesture)
+                self.tapOverride = true
 
         })
+    }
+    
+    var tapOverride = false
+    func tapForNextRound()
+    {
+
+        self.cleanUpTempLabelsForAnimation()
+
+
+        if fails == 0
+        {
+            self.animateCorrectSequence()
+        }
+        else
+        {
+            self.nextRound()
+        }
+        
+    }
+    
+    func animateCorrectSequence()
+    {
+        var points = 1
+        var label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
+        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.boldSystemFontOfSize(24)
+        label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
+        label.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        label.text = "Totally correct \(points)😍"
+        label.alpha = 0
+        view.addSubview(label)
+        
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            //label.center = self.gameStats.lovePoints.center
+            label.transform = CGAffineTransformScale(label.transform, 2, 2)
+            label.alpha = 1
+            }, completion: { (value: Bool) in
+                
+                UIView.animateWithDuration(1, animations: { () -> Void in
+                    label.center = self.gameStats.lovePointsView.center
+                    label.transform = CGAffineTransformIdentity
+                    label.alpha = 0
+                    }, completion: { (value: Bool) in
+                        
+                        
+                        self.gameStats.addLovePoints(points)
+                        //self.datactrl.updateLoveScore(self.currentQuestion, deltaScore:points)
+                        label.removeFromSuperview()
+                        self.nextRound()
+                })
+        })
+        
+
+    }
+    
+    func cleanUpTempLabelsForAnimation()
+    {
+        for item in self.tempViews
+        {
+            item.removeFromSuperview()
+        }
+        self.tempViews = []
+        for item in self.tempYearLabel
+        {
+            item.removeFromSuperview()
+        }
+        self.tempYearLabel = []
     }
     
     func nextRound()
@@ -316,6 +440,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
                 self.setCardStack()
                 //self.revealNextCard()
                 self.rightButton.userInteractionEnabled = true
+                self.tapOverride = false
             
             })
 
@@ -351,10 +476,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
             })
     }
     
-    func animateCorrectSequence()
-    {
-        
-    }
+
     
     func animatePoints(centerPoint:CGPoint)
     {
@@ -488,6 +610,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol
     private var yOffset: CGFloat = 0.0
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+        if tapOverride
+        {
+            return
+        }
+        
         var touch = touches.first as? UITouch
         var touchLocation = touch!.locationInView(self.view)
         
