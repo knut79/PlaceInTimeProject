@@ -46,14 +46,14 @@ class DataHandler
         newEvent(id++,title:"Confucius born in China", year:-551,tags:"#miscellaneous")
         newEvent(id++,title:"Rome as a Republic founded", year:-500, text:"End of monarchy in Rome", level:1, tags:"#miscellaneous")
         newEvent(id++,title:"Socrates drink hemlock", year:-399, text:"Socrates is required to drink hemlock to end his life after being found guilty of corrupting the youth of Athens",level:2,tags:"#miscellaneous")
-        newEvent(id++,title:"Persian empire", from:-550 , to:-330,level:1,tags:"#miscellaneous")
+        //_?newEvent(id++,title:"Persian empire", from:-550 , to:-330,level:1,tags:"#miscellaneous")
         newEvent(id++,title:"Livius Andronicus is the first Roman poet", year:-240,tags:"#miscellaneous")
         newEvent(id++,title:"Solomon builds the Temple in Jerusalem", year:-950,tags:"#miscellaneous")
         newEvent(id++,title:"Founding of Constantinople", year:330,tags:"#miscellaneous")
         newEvent(id++,title:"Library of Alexandria is destroyed by fire", year:391,tags:"#miscellaneous")
         newEvent(id++,title:"Muhammad the Prophet dies", year:632,level:1,tags:"#miscellaneous")
         newEvent(id++,title:"Vikings settle in Iceland", year:874,tags:"#miscellaneous")
-        newEvent(id++,title:"The Capetian dynasty", from:987 , to:1328,tags:"#miscellaneous")
+        //_?newEvent(id++,title:"The Capetian dynasty", from:987 , to:1328,tags:"#miscellaneous")
         newEvent(id++,title:"Knights Templar Order established in Jerusalem", year:1119,level:1,tags:"#miscellaneous")
         newEvent(id++,title:"Moscow built by Prince Yuri Dolgoruky", year:1147)
         newEvent(id++,title:"The temple complex of Angkor Wat built", year:1150,level:2, text:"Built by King Suryavarman II in Kampuchea (formerly Cambodia).",tags:"#miscellaneous")
@@ -109,7 +109,9 @@ class DataHandler
         newEvent(id++,title:"Charles Lindbergh flies non-stop from New York to Paris", year:1927,level:1,tags:"#miscellaneous")
         newEvent(id++,title:"New York Stock Exchange crash (not blackmonday)", year:1929,level:1,tags:"#miscellaneous")
         newEvent(id++,title:"First football World Cup", year:1930,level:1,tags:"#miscellaneous#sport")
-        newEvent(id++,title:"Prohibition in the United States", from:1920, to:1933,level:1,tags:"#miscellaneous")
+        //_?newEvent(id++,title:"Prohibition in the United States", from:1920, to:1933,level:1,tags:"#miscellaneous")
+        newEvent(id++,title:"Start of Prohibition in the United States", year:1920,level:2,tags:"#miscellaneous")
+        
         newEvent(id++,title:"Golden Gate Bridge opens", year:1937,level:2,tags:"#miscellaneous")
         newEvent(id++,title:"Israel established", year:1948,level:2,tags:"#miscellaneous")
         newEvent(id++,title:"NATO founded", year:1949,level:1,tags:"#miscellaneous")
@@ -139,7 +141,7 @@ class DataHandler
         newEvent(id++,title:"Euro banknotes and coins released", year:2002,level:2,tags:"#miscellaneous")
         newEvent(id++,title:"Arnold Schwarzenegger voted Governor of California", year:2003,level:2,tags:"#miscellaneous")
         newEvent(id++,title:"Concorde makes its last commercial flight", year:2003,level:2,tags:"#miscellaneous")
-        newEvent(id++,title:"The plague of Europe", from:542, to:593,tags:"#miscellaneous")
+        //_?newEvent(id++,title:"The plague of Europe", from:542, to:593,tags:"#miscellaneous")
         
         //SPORT
         newEvent(id++,title:"Chariot racing becomes an event of the Olympic games", year:-680,tags:"#sport")
@@ -202,6 +204,7 @@ class DataHandler
         
         
         //PERIODS,tags:"#period"
+        /*
         newEvent(id++,title:"The Black Death plague ", from:1346, to:1353,text:"Killing 25 million people, one third of the European population. The plague is a highly contagious fever caused by the bacillus Yersinia pestis, which is carried by fleas that infest rats.",level:1,tags:"#period#miscellaneous")
         newEvent(id++,title:"Great Depression ", from:1929 , to:1939,level:1,tags:"#period#miscellaneous")
         newEvent(id++,title:"The Romanesque period", from:1000 , to:1199,tags:"#period#miscellaneous")
@@ -214,11 +217,16 @@ class DataHandler
         newEvent(id++,title:"Art Nouveau ", from:1880, to:1905,tags:"#period#miscellaneous")
         newEvent(id++,title:"Period of Modernism", from:1880, to:1965,tags:"#period#miscellaneous")
         newEvent(id++,title:"Start of the Baroque", year:1500,level:1,tags:"#period#miscellaneous")
+        */
         
         
         //SCIENCE ,tags:"#science"
         
-        
+        newEvent(id++,title:"Isaac Newtown is born", year:1642, text: "",level:2,tags:"#science")
+        newEvent(id++,title:"Galileo Galilei is born in Piza", year:1564, text: "",level:2,tags:"#science")
+        newEvent(id++,title:"Nicolaus Copernicus is born in Polen", year:1473,text: "",tags:"#science")
+        newEvent(id++,title:"René Descartes is born in France", year:1596, text: "",tags:"#science")
+        newEvent(id++,title:"James Maxwell, electromagnetisms father is born", year:1831, text: "",tags:"#science")
         
         newEvent(id++,title:"Aristotle writes Meteorologica", year:-990,text: "The first book on weather.",tags:"#science")
         newEvent(id++,title:"Musa al-Kwarizmi born in Baghdad", year:780, text:"He introduced Hindu-Arabic numerals in his book Kitab al-jabr wa al-mugabalah.",tags:"#science")
@@ -419,10 +427,12 @@ class DataHandler
         newEvent(id++,title:"Apple launches the iPad", year:2010,tags:"#invention")
         
         //HEAD OF STATE
-        newEvent(id++,title:"Babylon ruled by Nebuchadnezzar", from: -605, to: -562,level:2,tags:"#headOfState")
+        
+        newEvent(id++,title:"Abraham Lincolns Gettysburg Address (Speech)", year:1865,level:2,tags:"#headOfState")
+        //_?newEvent(id++,title:"Babylon ruled by Nebuchadnezzar", from: -605, to: -562,level:2,tags:"#headOfState")
         newEvent(id++,title:"Rome founded by Romulus", year:-753,tags:"#headOfState")
-        newEvent(id++,title:"Alexander the Great rule Macedonia", from:-336 , to:-323,level:1,tags:"#headOfState")
-        newEvent(id++,title:"Rule of Cleopatra in Egypt", from:-51, to: -30,level:2,tags:"#headOfState")
+        //_?newEvent(id++,title:"Alexander the Great rule Macedonia", from:-336 , to:-323,level:1,tags:"#headOfState")
+        //_?newEvent(id++,title:"Rule of Cleopatra in Egypt", from:-51, to: -30,level:2,tags:"#headOfState")
         newEvent(id++,title:"Julius Caesar assassinated", year:-44,level:1,tags:"#headOfState")
         newEvent(id++,title:"Nero becomes last Caesar", year:54,level:2,tags:"#headOfState")
         newEvent(id++,title:"Tiberius becomes roman Emperor", year:14,tags:"#headOfState")
@@ -481,7 +491,9 @@ class DataHandler
         newEvent(id++,title:"Gladstone elected British Prime Minister", year:1892,tags:"#headOfState")
         newEvent(id++,title:"Nicholas II becomes Tsar of Russia", year:1894,tags:"#headOfState")
         newEvent(id++,title:"William McKinley elected US President", year:1896,tags:"#headOfState")
-        newEvent(id++,title:"Woodrow Wilson is US president", from:1913, to:1921,level:2,tags:"#headOfState")
+        //_?newEvent(id++,title:"Woodrow Wilson is US president", from:1913, to:1921,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Woodrow Wilson is elected US president", year:1933,level:1,tags:"#headOfState")
+        
         newEvent(id++,title:"Adolf Hitler becomes leader of Germany", year:1933,level:1,tags:"#headOfState")
         newEvent(id++,title:"Queen Elizabeth II crowned", year:1953,level:1,tags:"#headOfState")
         newEvent(id++,title:"Fidel Castro takes power in Cuba", year:1959,level:2,tags:"#headOfState")
@@ -493,6 +505,29 @@ class DataHandler
         newEvent(id++,title:"Obama becomes first black US President", year:2009,level:1,tags:"#headOfState")
         newEvent(id++,title:"Pope John Paul II dies", year:2005,level:2,tags:"#headOfState")
         
+        
+        newEvent(id++,title:"Abraham Lincoln is elected US president", year:1861,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Richard Nixon is elected US president", year:1969,level:2,tags:"#headOfState")
+
+        
+        newEvent(id++,title:"Thomas Jefferson is elected US president", year:1801,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Herbert Hoover is elected US president", year:1929,level:3,tags:"#headOfState")
+        newEvent(id++,title:"Franklin D. Roosevelt is elected US president", year:1933,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Harry Truman is elected US president", year:1945,level:3,tags:"#headOfState")
+        newEvent(id++,title:"Dwight Eisenhower is elected US president", year:1953,level:3,tags:"#headOfState")
+        newEvent(id++,title:"John F. Kennedy is elected US president", year:1961,level:1,tags:"#headOfState")
+        newEvent(id++,title:"Jimmy Carter is elected US president", year:1977,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Ronald Reagan is elected US president", year:1981,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Bill Clinton is elected US president", year:1993,level:2,tags:"#headOfState")
+        
+        newEvent(id++,title:"Vladimir Lenin is elected leader of USSR", year:1922,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Joseph Stalinis elected leader of USSR", year:1924,level:2,tags:"#headOfState")
+        newEvent(id++,title:"Nikita Khrushchev is elected leader of USSR", year:1955,level:3,tags:"#headOfState")
+        newEvent(id++,title:"Leonid Brezhnev is elected leader of USSR", year:1964,level:3,tags:"#headOfState")
+        newEvent(id++,title:"Boris Yeltsin is elected 1st President of Russia", year:1991,level:2,tags:"#headOfState")
+        /*
+        
+        
         newEvent(id++,title:"Thomas Jefferson is US president", from:1801, to:1809,level:2,tags:"#headOfState")
         newEvent(id++,title:"Herbert Hoover is US president", from:1929, to:1933,tags:"#headOfState")
         
@@ -503,14 +538,14 @@ class DataHandler
         newEvent(id++,title:"Jimmy Carter is US president", from:1977, to:1981,tags:"#headOfState")
         newEvent(id++,title:"Ronald Reagan is US president", from:1981, to:1989,tags:"#headOfState")
         newEvent(id++,title:"Bill Clinton is US president", from:1993, to:2001,level:1,tags:"#headOfState")
-        
-        
+        */
+        /*
         newEvent(id++,title:"Vladimir Lenin is leader of USSR", from:1922, to:1924,level:1,tags:"#headOfState")
         newEvent(id++,title:"Joseph Stalin is leader of USSR", from:1924, to:1953,level:1,tags:"#headOfState")
         newEvent(id++,title:"Nikita Khrushchev is leader of USSR", from:1955, to:1964,level:2,tags:"#headOfState")
         newEvent(id++,title:"Leonid Brezhnev is leader of USSR", from:1964, to:1982,level:2,tags:"#headOfState")
         newEvent(id++,title:"Boris Yeltsin is 1st President of Russia", from:1991, to:1999,tags:"#headOfState")
-        
+        */
         newEvent(id++,title:"Nicolae Ceaușescu shot by a firing squad", year:1989,tags:"#headOfState")
         
         //WARS
@@ -535,39 +570,61 @@ class DataHandler
         newEvent(id++,title:"Second Crusade led by King Louis VIII", year:1145,tags:"#war")
         newEvent(id++,title:"Genghis Khan captures Peking", year:1241,tags:"#war")
         newEvent(id++,title:"Robert the Bruce´s victory over the English", year:1314, text:"Robert the Bruce leads the Scots to victory over the English at the Battle of Bannockburn",tags:"#war")
-        newEvent(id++,title:"The Hundred Years War", from:1337, to:1453,text:"The Hundred Years War begins between kings of England and France for control of France.",level:1,tags:"#war")
+        //_?newEvent(id++,title:"The Hundred Years War", from:1337, to:1453,text:"The Hundred Years War begins between kings of England and France for control of France.",level:1,tags:"#war")
+        newEvent(id++,title:"Start of The Hundred Years War", year:1337,level:2,tags:"#war")
+        newEvent(id++,title:"End of The Hundred Years War", year:1453,level:2,tags:"#war")
+        
         newEvent(id++,title:"Joan of Arc leads French against English", year:1428,level:2,tags:"#war")
-        newEvent(id++,title:"Wars of the Roses", from:1455, to:1487,level:1,tags:"#war")
-        newEvent(id++,title:"The Thirty Years’ War", from:1618, to:1648, text:"War between Protestants and Catholics begins.",level:1,tags:"#war")
+        //_?newEvent(id++,title:"Wars of the Roses", from:1455, to:1487,level:1,tags:"#war")
+        newEvent(id++,title:"Start of Wars of the Roses", year:1455,level:2,tags:"#war")
+        //_?newEvent(id++,title:"The Thirty Years’ War", from:1618, to:1648, text:"War between Protestants and Catholics begins.",level:1,tags:"#war")
+        newEvent(id++,title:"Start of The Thirty Years’ War", year:1618,level:2,tags:"#war")
+        newEvent(id++,title:"End of The Thirty Years’ War", year:1648,level:2,tags:"#war")
+        
         newEvent(id++,title:"Cromwell invades Ireland", year:1649,tags:"#war")
         newEvent(id++,title:"Cromwell becomes ruler of England, Scotland and Ireland", year:1653,tags:"#war")
         newEvent(id++,title:"Battle of Trafalga", year:1805,level:1,tags:"#war")
         newEvent(id++,title:"Wellington invades France", year:1813,tags:"#war")
         newEvent(id++,title:"Battle of Waterloo", year:1815,level:2,tags:"#war")
-        newEvent(id++,title:"The American Civil War", from:1861, to:1865,level:1,tags:"#war")
-        newEvent(id++,title:"Franco-Prussian war", from:1870, to:1871,level:2,tags:"#war")
+        //_?newEvent(id++,title:"The American Civil War", from:1861, to:1865,level:1,tags:"#war")
+        newEvent(id++,title:"Start of The American Civil War", year:1861,level:1,tags:"#war")
+        newEvent(id++,title:"End of The American Civil War", year:1865,level:2,tags:"#war")
+        //_?newEvent(id++,title:"Franco-Prussian war", from:1870, to:1871,level:2,tags:"#war")
+        newEvent(id++,title:"Start of Franco-Prussian war", year:1870,level:1,tags:"#war")
         newEvent(id++,title:"Battle of Little Big Horn", year:1876,tags:"#war")
-        newEvent(id++,title:"Second Boer War", from:1899, to:1902,tags:"#war")
-        newEvent(id++,title:"World War I", from:1914, to:1918,level:1,tags:"#war")
-        newEvent(id++,title:"World War II", from:1939, to:1945,level:1,tags:"#war")
+        //_?newEvent(id++,title:"Second Boer War", from:1899, to:1902,tags:"#war")
+        //_?newEvent(id++,title:"World War I", from:1914, to:1918,level:1,tags:"#war")
+        newEvent(id++,title:"Start of World War I", year:1914,level:1,tags:"#war")
+        newEvent(id++,title:"End of World War I", year:1918,level:1,tags:"#war")
+        //_?newEvent(id++,title:"World War II", from:1939, to:1945,level:1,tags:"#war")
+        newEvent(id++,title:"Start of World War II", year:1939,level:1,tags:"#war")
+        newEvent(id++,title:"End of World War II", year:1945,level:1,tags:"#war")
+        
         newEvent(id++,title:"Japan’s attack on Pearl Harbor", year:1941,level:1,tags:"#war")
         newEvent(id++,title:"Allied D-Day landings at Normandy", year:1944,level:1,tags:"#war")
         newEvent(id++,title:"Gulf War erupts as NATO defends Kuwait", year:1990,level:1,tags:"#war")
-        newEvent(id++,title:"The Bosnian War", from:1992, to:1995,tags:"#war")
-        newEvent(id++,title:"Soviet–Afghan War", from:1979, to:1989,tags:"#war")
-        newEvent(id++,title:"The Korean War", from:1950, to:1953,level:2,tags:"#war")
-        newEvent(id++,title:"Vietnam War", from:1954,to:1975,level:1,tags:"#war")
+        //_?newEvent(id++,title:"The Bosnian War", from:1992, to:1995,tags:"#war")
+        newEvent(id++,title:"Start of The Bosnian War", year:1992,tags:"#war")
+        //_?newEvent(id++,title:"Soviet–Afghan War", from:1979, to:1989,tags:"#war")
+        newEvent(id++,title:"End of the Soviet–Afghan War", year:1989,tags:"#war")
+        //_?newEvent(id++,title:"The Korean War", from:1950, to:1953,level:2,tags:"#war")
+        newEvent(id++,title:"Start of The Korean War", year:1950,level:2,tags:"#war")
+        newEvent(id++,title:"End of The Korean War", year:1953,tags:"#war")
+        //_?newEvent(id++,title:"Vietnam War", from:1954,to:1975,level:1,tags:"#war")
+        newEvent(id++,title:"Start of The Vietnam War", year:1954,level:1,tags:"#war")
+        newEvent(id++,title:"End of The Vietnam War", year:1975,level:1,tags:"#war")
         newEvent(id++,title:"Russia invades Afghanistan", year:1979,level:2,tags:"#war")
         
         newEvent(id++,title:"Bay of Pigs Invasion", year:1961,level:1,tags:"#war")
-        newEvent(id++,title:"Iran Iraq War",from:1980 , to:1988 ,tags:"#war")
+        //_?newEvent(id++,title:"Iran Iraq War",from:1980 , to:1988 ,tags:"#war")
         newEvent(id++,title:"Falklands War", year:1982,level:2,tags:"#war")
-        newEvent(id++,title:"Gulf War", from:1990 , to:1991,tags:"#war")
-        newEvent(id++,title:"Croatian War of Independence", from:1991, to: 1995,tags:"#war")
-        newEvent(id++,title:"Bosnian War", from:1992 , to:1995,level:2,tags:"#war")
-        newEvent(id++,title:"Kosovo War", from:1998 , to:1999,level:2,tags:"#war")
+        //_?newEvent(id++,title:"Gulf War", from:1990 , to:1991,tags:"#war")
+        newEvent(id++,title:"Start of The first Gulf War", year:1990,level:2,tags:"#war")
+        //_?newEvent(id++,title:"Croatian War of Independence", from:1991, to: 1995,tags:"#war")
+        //_?newEvent(id++,title:"Bosnian War", from:1992 , to:1995,level:2,tags:"#war")
+        //_?newEvent(id++,title:"Kosovo War", from:1998 , to:1999,level:2,tags:"#war")
         
-        
+        /*
         newEvent(id++,title:"Crimean War", from:1853 , to:1856,level:2,tags:"#war")
         newEvent(id++,title:"Chinese Civil War", from:1927 , to:1949,tags:"#war")
         newEvent(id++,title:"Spanish Civil War", from:1936 , to:1939,tags:"#war")
@@ -577,10 +634,20 @@ class DataHandler
         newEvent(id++,title:"Russian Civil War",from:1917 , to:1923 ,level:2,tags:"#war")
         newEvent(id++,title:"Mexican Revolution", from:1910 , to:1921,tags:"#war")
         newEvent(id++,title:"French Revolution", from:1789, to:1799,level:1,tags:"#war")
+        */
+        
+        newEvent(id++,title:"Start of The Crimean War", year:1853,tags:"#war")
+        newEvent(id++,title:"Start of The Chinese Civil War", year:1927,tags:"#war")
+        newEvent(id++,title:"Start of The Russian Revolution", year:1905,tags:"#war")
+        newEvent(id++,title:"Start of The French Revolution", year:1789,tags:"#war")
+        newEvent(id++,title:"Start of The Napoleonic Wars", year:1803,tags:"#war")
+        newEvent(id++,title:"End of The Napoleonic Wars", year:1815,tags:"#war")
+        //_?newEvent(id++,title:"Napoleonic Wars", from:1803, to: 1815)
+        newEvent(id++,title:"Year of the Soccer War or 100 Hour War", year:1969, level:2,tags:"#war")
         
         //NOT USED
         /*
-        newEvent(id++,title:"Napoleonic Wars", from:1803, to: 1815)
+        
         newEvent(id++,title:"Russo-Persian War", from:1804 , to:1813)
         newEvent(id++,title:"Rum Rebellion", from:1808 , to:1810)
         newEvent(id++,title:"Spanish American wars of independence", from:1808, to: 1833)
@@ -648,10 +715,10 @@ class DataHandler
         //newEvent(id++,title: "Triassic period", from:Int32(-248 * aMillion), to: Int32(-205 * aMillion),level:2)
         
         //newEvent(id++,title: "In the old days", from:-990, to: -800,level:2)
-        newEvent(id++,title: "In the old days SPLIT", from:-990, to: 500,level:2)
+        //newEvent(id++,title: "In the old days SPLIT", from:-990, to: 500,level:2)
         
         //pass newEvent(id++,title: "old days -700 -300", from:-700, to: -300,level:2)
-        newEvent(id++,title: "old days -600 -540", from:-950, to: -540,level:2)
+        //newEvent(id++,title: "old days -600 -540", from:-950, to: -540,level:2)
         //newEvent(id++,title: "old days 900 1000", from:900, to: 1000,level:2)
         //newEvent(id++,title: "new days 900 997", from:900, to: 997,level:2)
         //newEvent(id++,title: "new days 1523 1540", from:1513, to: 1540,level:2)

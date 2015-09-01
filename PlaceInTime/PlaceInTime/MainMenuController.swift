@@ -17,7 +17,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     var backgroundView:UIView!
     var playButton:UIButton!
     var playButtonExstraLabel:UILabel!
-    var playButtonExstraLabel2:UILabel!
+    //var playButtonExstraLabel2:UILabel!
     var selectFilterTypeButton:UIButton!
     var loadingDataView:UIView!
     var loadingDataLabel:UILabel!
@@ -52,6 +52,10 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         playButton = UIButton(frame:CGRectZero)
         playButton.addTarget(self, action: "playAction", forControlEvents: UIControlEvents.TouchUpInside)
         playButton.backgroundColor = UIColor.blueColor()
+        /*playButton.layer.borderColor = UIColor.grayColor().CGColor
+        playButton.layer.borderWidth = 1*/
+        playButton.layer.cornerRadius = 5
+        playButton.layer.masksToBounds = true
         playButton.setTitle("Play", forState: UIControlState.Normal)
         
         playButtonExstraLabel = UILabel(frame:CGRectZero)
@@ -61,12 +65,14 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         playButtonExstraLabel.textAlignment = NSTextAlignment.Center
         playButton.addSubview(playButtonExstraLabel)
         
+        /*
         playButtonExstraLabel2 = UILabel(frame:CGRectZero)
         playButtonExstraLabel2.backgroundColor = playButton.backgroundColor?.colorWithAlphaComponent(0)
         playButtonExstraLabel2.textColor = UIColor.whiteColor()
         playButtonExstraLabel2.font = UIFont.systemFontOfSize(12)
         playButtonExstraLabel2.textAlignment = NSTextAlignment.Center
         playButton.addSubview(playButtonExstraLabel2)
+        */
 
         levelSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
         levelSlider.curvaceousness = 0.0
@@ -169,7 +175,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         if orientation == UIDeviceOrientation.LandscapeLeft || orientation == UIDeviceOrientation.LandscapeRight
         {
             playbuttonWidth = UIScreen.mainScreen().bounds.size.width * 0.7
-            playbuttonHeight = UIScreen.mainScreen().bounds.size.height * 0.33
+            playbuttonHeight = UIScreen.mainScreen().bounds.size.height * 0.45
         }
         
         playButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (playbuttonWidth / 2), UIScreen.mainScreen().bounds.size.height * 0.15,playbuttonWidth, playbuttonHeight)
@@ -182,12 +188,12 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         //levelSlider.transform = CGAffineTransformScale(levelSlider.transform, 0.3, 0.3)
         
         playButtonExstraLabel.frame = CGRectMake(0, playButton.frame.height * 0.7   , playButton.frame.width, playButton.frame.height * 0.15)
-        //playButtonExstraLabel.text = "in \(orientationText) mode"
-        playButtonExstraLabel2.frame = CGRectMake(0, playButton.frame.height * 0.85   , playButton.frame.width, playButton.frame.height * 0.15)
+        playButtonExstraLabel.text = "level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
+        //playButtonExstraLabel2.frame = CGRectMake(0, playButton.frame.height * 0.85   , playButton.frame.width, playButton.frame.height * 0.15)
 
-        levelSlider.frame = CGRect(x:  marginSlider, y: playButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2) - (playButton.frame.width * 0.1), height: height)
+        levelSlider.frame = CGRect(x:  marginSlider, y: playButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2) - (playButton.frame.width * 0.2), height: height)
         
-        selectFilterTypeButton.frame = CGRectMake(levelSlider.frame.maxX, playButton.frame.maxY, UIScreen.mainScreen().bounds.size.width * 0.1, UIScreen.mainScreen().bounds.size.width * 0.1)
+        selectFilterTypeButton.frame = CGRectMake(levelSlider.frame.maxX, playButton.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width * 0.2, levelSlider.frame.height)
         
         closeTagCheckView()
         
@@ -206,7 +212,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     
     func rangeSliderValueChanged(slider: RangeSlider) {
         //println("Range slider value changed: (\(Int(slider.lowerValue)) \(Int(slider.upperValue)))")
-        playButtonExstraLabel2.text = "level \(Int(slider.lowerValue)) - \(sliderUpperLevelText())"
+        playButtonExstraLabel.text = "level \(Int(slider.lowerValue)) - \(sliderUpperLevelText())"
     }
     
     func playAction()

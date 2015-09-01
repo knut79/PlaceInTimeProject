@@ -46,6 +46,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         rightButton.setTitle("OK (this is the right sequence)", forState: UIControlState.Normal)
         rightButton.backgroundColor = UIColor.blueColor()
         rightButton.addTarget(self, action: "okAction", forControlEvents: UIControlEvents.TouchUpInside)
+        rightButton.layer.cornerRadius = 5
+        rightButton.layer.masksToBounds = true
         rightButton.alpha = 0
         view.addSubview(rightButton)
         
