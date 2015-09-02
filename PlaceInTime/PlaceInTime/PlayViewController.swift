@@ -21,7 +21,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol
 
 
     var originalDropZoneYCenter:CGFloat!
-    var maxDropZones:Int = 5
+    var numberOfDropZones:Int = 3
+    var maxNumDropZones:Int = 6
+    var minNumDropZones:Int = 3
+    
     var rightButton:UIButton!
     
     var cardToDrag:Card? = nil
@@ -69,9 +72,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         }
 
         datactrl.shuffleEvents()
+        randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
         animateNewCardInCardStack(0)
     }
     
+    var randomHistoricEvents:[HistoricEvent] = []
 
     
     func animateNewCardInCardStack(var i:Int)
@@ -86,7 +91,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         let cardHeight:CGFloat = orgCardHeight / 2.5
         
         //let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2) + xOffset,gameStats.frame.maxY + marginFromGamestats + yOffset, cardWidth, cardHeight)
-        let card = Card(frame:CGRectMake(-100, gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight),event:datactrl.historicEventItems[i])
+        let card = Card(frame:CGRectMake(-100, gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight),event:randomHistoricEvents[i])
         
         cardsStack.append(card)
         self.view.addSubview(card)
@@ -94,7 +99,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         
         
         var yOffset:CGFloat = getRandomOffset()
-            var xOffset:CGFloat = getRandomOffset()
+        var xOffset:CGFloat = getRandomOffset()
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
 
@@ -105,13 +110,14 @@ class PlayViewController:UIViewController,  DropZoneProtocol
             }, completion: { (value: Bool) in
                 i++
                 
-                if i < self.maxDropZones
+                if i < self.numberOfDropZones
                 {
                     self.animateNewCardInCardStack(i)
                 }
                 else
                 {
                     self.revealNextCard()
+                    self.view.bringSubviewToFront(self.infoHelperView)
                 }
         })
     }
@@ -371,10 +377,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol
 
         if fails == 0
         {
+            numberOfDropZones = numberOfDropZones >= maxNumDropZones ? numberOfDropZones : numberOfDropZones + 1
             self.animateCorrectSequence()
         }
         else
         {
+            numberOfDropZones = numberOfDropZones >= minNumDropZones ? numberOfDropZones : numberOfDropZones - 1
             self.nextRound()
         }
         
@@ -382,7 +390,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
     
     func animateCorrectSequence()
     {
-        var points = 1
+        var points = 1 * (numberOfDropZones - (minNumDropZones - 1))
         var label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(24)
@@ -482,7 +490,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
     
     func animatePoints(centerPoint:CGPoint)
     {
-        var points = 10
+        var points = 10 * (numberOfDropZones - (minNumDropZones - 1))
         var label = UILabel(frame: dropZones[0]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
@@ -523,9 +531,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol
         let orgCardWidth:CGFloat = 314
         let orgCardHeight:CGFloat = 226
         let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
-        
         let margin:CGFloat = 2
-        let dropZoneWidth = (UIScreen.mainScreen().bounds.size.width - (margin * (CGFloat(maxDropZones) + 1))) / CGFloat(maxDropZones)
+        
+        let devidingFactor:CGFloat = numberOfDropZones < 4 ? 4 : CGFloat(numberOfDropZones)
+        
+        let dropZoneWidth = (UIScreen.mainScreen().bounds.size.width - (margin * (devidingFactor + 1))) / devidingFactor
         let dropZoneHeight = dropZoneWidth * cardWidthToHeightRatio
         var xOffset = margin
         var key = dropZones.count
@@ -756,7 +766,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol
                     if(isInnView)
                     {
                         self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
-                        if self.dropZones.count < self.maxDropZones
+                        if self.dropZones.count < self.numberOfDropZones
                         {
                             if self.newRevealedCard == nil
                             {

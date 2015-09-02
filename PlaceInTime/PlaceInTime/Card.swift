@@ -12,7 +12,7 @@ import UIKit
 
 class Card: UIView
 {
-    var yearTitle: UILabel!
+    //var yearTitle: UILabel!
     var textTitle: UILabel!
     var back:UIImageView!
     var dragging:Bool = false
@@ -34,15 +34,18 @@ class Card: UIView
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1
         
+        /*
         yearTitle = UILabel(frame: CGRectMake(0, 0, frame.width, frame.height * 0.2))
         yearTitle.textAlignment = NSTextAlignment.Center
         yearTitle.text = "\(event.fromYear)"
+        */
         
         //let textTitleMargin:CGFloat = 3
         
-        textTitle = UILabel(frame: CGRectMake(frame.width * 0.1, frame.height * 0.2, frame.width * 0.8, frame.height * 0.8))
+        textTitle = UILabel(frame: CGRectMake(frame.width * 0.1, frame.height * 0.1, frame.width * 0.8, frame.height * 0.8))
         textTitle.textAlignment = NSTextAlignment.Left
         textTitle.numberOfLines = 6
+        textTitle.adjustsFontSizeToFitWidth = true
         textTitle.text = event.title
 
         let backImage = UIImage(named: "back.png")
@@ -81,7 +84,7 @@ class Card: UIView
         UIView.transitionWithView(self, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
             self.back.hidden = true
             
-            self.addSubview(self.yearTitle)
+            //self.addSubview(self.yearTitle)
             self.addSubview(self.textTitle)
             
             }, completion: { (value: Bool) in

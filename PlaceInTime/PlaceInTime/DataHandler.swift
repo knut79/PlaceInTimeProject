@@ -787,6 +787,51 @@ class DataHandler
         loveScoreID = Int(loveScoreID as! NSNumber) + deltaLovePoints
     }
     
+    func getRandomHistoricEventsWithPrecision(precisionYears:Int, numEvents:Int) -> [HistoricEvent]
+    {
+        var historicEventsWithPrecision:[HistoricEvent] = []
+        var randomNum = Int(arc4random()) % historicEventItems.count
+        var event = historicEventItems![randomNum] as HistoricEvent
+        historicEventsWithPrecision.append(event)
+
+        var notAcceptableValues = false
+        do{
+            historicEventsWithPrecision = []
+            for var i = 0 ; i < numEvents ; i++
+            {
+                randomNum = Int(arc4random()) % historicEventItems.count
+                var event = historicEventItems![randomNum] as HistoricEvent
+                historicEventsWithPrecision.append(event)
+                
+            }
+            notAcceptableValues = false
+            for var i = 0 ; i < numEvents ; i++
+            {
+                var value = historicEventsWithPrecision[i].fromYear
+                for item in historicEventsWithPrecision
+                {
+                    if item == historicEventsWithPrecision[i]
+                    {
+                        continue
+                    }
+                    if (item.fromYear - precisionYears) > value || item.fromYear + precisionYears < value
+                    {
+                        //println("test : value \(item.fromYear)")
+                        continue
+
+                    }
+                    else
+                    {
+                        notAcceptableValues = true
+                        break
+                    }
+        
+                }
+            }
+        }while(notAcceptableValues)
+        return historicEventsWithPrecision
+    }
+    
     func shuffleEvents()
     {
         historicEventItems = shuffle(historicEventItems)
@@ -800,14 +845,7 @@ class DataHandler
         }
         return list
     }
-    
 
-    
-    
-    
-    
-    
-    
     
     func save() {
         var error : NSError?
