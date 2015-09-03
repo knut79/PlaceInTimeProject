@@ -805,14 +805,25 @@ class DataHandler
                 
             }
             notAcceptableValues = false
+            
             for var i = 0 ; i < numEvents ; i++
             {
+                var foundMySelfOnce = false
                 var value = historicEventsWithPrecision[i].fromYear
                 for item in historicEventsWithPrecision
                 {
                     if item == historicEventsWithPrecision[i]
                     {
-                        continue
+                        if foundMySelfOnce
+                        {
+                            notAcceptableValues = true
+                            break
+                        }
+                        else
+                        {
+                            foundMySelfOnce = true
+                            continue
+                        }
                     }
                     if (item.fromYear - precisionYears) > value || item.fromYear + precisionYears < value
                     {

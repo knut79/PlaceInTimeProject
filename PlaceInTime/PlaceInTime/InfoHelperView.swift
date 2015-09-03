@@ -25,18 +25,20 @@ class InfoHelperView: UIView {
     override init(frame:CGRect){
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(1)
+        self.backgroundColor = UIColor.whiteColor()
 
         infoLabelLeft = UILabel(frame: CGRectMake(0, 0, self.bounds.width * 0.45, self.bounds.height / 2 ))
         infoLabelLeft.textAlignment = NSTextAlignment.Center
         infoLabelLeft.adjustsFontSizeToFitWidth = true
         infoLabelLeft.transform = CGAffineTransformScale(infoLabelLeft.transform, 0.7, 0.7)
         infoLabelLeft.center = CGPointMake(self.bounds.width * 0.25, self.bounds.height * 0.75)
+        infoLabelLeft.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         infoLabelLeft.alpha = 0.75
         
         infoLabelMain = UILabel(frame: CGRectMake(0, 0, self.bounds.width * 0.80, self.bounds.height / 2))
         infoLabelMain.textAlignment = NSTextAlignment.Center
         infoLabelMain.adjustsFontSizeToFitWidth = true
+        infoLabelMain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         infoLabelMain.center = CGPointMake(self.bounds.width / 2, self.bounds.height * 0.25)
         
         infoLabelRight = UILabel(frame: CGRectMake(0, 0, self.bounds.width * 0.45, self.bounds.height / 2))
@@ -44,6 +46,7 @@ class InfoHelperView: UIView {
         infoLabelRight.adjustsFontSizeToFitWidth = true
         infoLabelRight.transform = CGAffineTransformScale(infoLabelRight.transform, 0.7, 0.7)
         infoLabelRight.center = CGPointMake(self.bounds.width * 0.75, self.bounds.height * 0.75)
+        infoLabelRight.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         infoLabelRight.alpha = 0.75
         
         arrowUp = UILabel(frame: CGRectMake(0, 0, self.bounds.width * 0.1, self.bounds.width * 0.1))
@@ -51,6 +54,7 @@ class InfoHelperView: UIView {
         arrowUp.text = "⇨"
         arrowUp.transform = CGAffineTransformScale(arrowUp.transform, 1.5, 1)
         arrowUp.transform = CGAffineTransformRotate(arrowUp.transform, -0.75)
+        arrowUp.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         arrowUp.center = CGPointMake(infoLabelLeft.frame.maxX, infoLabelLeft.center.y - (arrowUp.frame.height / 3))
         
         
@@ -59,6 +63,7 @@ class InfoHelperView: UIView {
         arrowDown.text = "⇨"
         arrowDown.transform = CGAffineTransformScale(arrowDown.transform, 1.5, 1)
         arrowDown.transform = CGAffineTransformRotate(arrowDown.transform, 0.75)
+        arrowDown.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         arrowDown.center = CGPointMake(infoLabelRight.frame.minX, infoLabelRight.center.y - (arrowDown.frame.height / 3))
         
         self.addSubview(arrowUp)

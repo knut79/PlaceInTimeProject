@@ -34,6 +34,7 @@ class Card: UIView
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1
         
+        
         /*
         yearTitle = UILabel(frame: CGRectMake(0, 0, frame.width, frame.height * 0.2))
         yearTitle.textAlignment = NSTextAlignment.Center
