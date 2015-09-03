@@ -72,8 +72,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
         //revealNextCard()
     }
     
+    var touchOverride:Bool = false
     func timeup()
     {
+        //ensure touch is enabled
+        touchOverride = true
+        
         var allCardsPlaced = true
         for item in dropZones
         {
@@ -89,6 +93,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
         }
         else
         {
+            
             animateTimeout()
         }
     }
@@ -100,9 +105,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
             
             self.clock.center = CGPointMake(UIScreen.mainScreen().bounds.width / 2, UIScreen.mainScreen().bounds.height / 2)
             
-            
             }, completion: { (value: Bool) in
                 
+                self.rightButton.userInteractionEnabled = false
                 
                 var label = UILabel(frame: CGRectMake(0, 0, 100, 40))
                 label.textAlignment = NSTextAlignment.Center
@@ -340,16 +345,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
                         if wrongAnswer == false
                         {
                             label.textColor = UIColor.greenColor()
-                            /*
+                            
                             var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
                             pulseAnimation.duration = 0.3
                             pulseAnimation.toValue = NSNumber(float: 0.3)
                             pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                             pulseAnimation.autoreverses = true
-                            pulseAnimation.repeatCount = 100
+                            pulseAnimation.repeatCount = 5
                             pulseAnimation.delegate = self
                             label.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
-                            */
+
                             //animate right points
                             self.animatePoints(label.center)
                         }
@@ -439,7 +444,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     var tapOverride = false
     func tapForNextRound()
     {
-
+        touchOverride = false
         self.cleanUpTempLabelsForAnimation()
 
 
@@ -459,13 +464,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     func animateCorrectSequence()
     {
         var points = 1 * (numberOfDropZones - (minNumDropZones - 1))
+        
+
+        
         var label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(24)
-        //label.layer.shadowOffset = CGSize(width: 10, height: 20)
-        label.layer.shadowOpacity = 0.3
-        label.layer.shadowRadius = 6
-        label.layer.shadowColor = UIColor.greenColor().CGColor
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         label.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         label.text = "Totally correct \(points)😍"
@@ -476,6 +480,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
             //label.center = self.gameStats.lovePoints.center
             label.transform = CGAffineTransformScale(label.transform, 2, 2)
             label.alpha = 1
+
             }, completion: { (value: Bool) in
                 
                 UIView.animateWithDuration(1, animations: { () -> Void in
@@ -483,8 +488,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
                     label.transform = CGAffineTransformIdentity
                     label.alpha = 0
                     }, completion: { (value: Bool) in
-                        
-                        
+
                         self.gameStats.addLovePoints(points)
                         //self.datactrl.updateLoveScore(self.currentQuestion, deltaScore:points)
                         label.removeFromSuperview()
@@ -512,7 +516,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     func nextRound()
     {
         //move stuff away
-        animateRemoveDropzonesAndCards({() -> Void in
+        animateRemoveElementsAtRoundEnd({() -> Void in
                 for var i = 0 ;  i < self.dropZones.count ; i++
                 {
                     self.dropZones[i]?.removeFromSuperview()
@@ -528,16 +532,21 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
 
     }
     
-    func animateRemoveDropzonesAndCards(completion: (() -> (Void)))
+    func animateRemoveElementsAtRoundEnd(completion: (() -> (Void)))
     {
-        animateRemoveOneDropzoneWithCard(0,completion: {() -> Void in
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.infoHelperView.alpha = 0
+            self.rightButton.alpha = 0
+            }, completion: { (value: Bool) in
+                self.animateRemoveOneDropzoneWithCard(0,completion: {() -> Void in
 
-            
-            self.animateRemoveOneCardFromCardStack(comp: {() -> Void in
-                completion()
-            })
+                    self.animateRemoveOneCardFromCardStack(comp: {() -> Void in
+                        completion()
+                    })
 
+                })
         })
+
     }
     
     func animateRemoveOneCardFromCardStack(comp: (() -> (Void))? = nil)
@@ -750,7 +759,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
-        if tapOverride
+        if tapOverride || touchOverride
         {
             return
         }
@@ -822,6 +831,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     }
 
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if touchOverride
+        {
+            return
+        }
+        
         if let card = cardToDrag
         {
             var touch = touches.first as? UITouch //touches.anyObject()
@@ -875,6 +889,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+      
+        if touchOverride
+        {
+            return
+        }
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
 
@@ -900,7 +919,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
                             if self.cardsStack.count  == (self.numberOfDropZones - 1)
                             {
                                 self.clock.start()
-                                //self.clock.center = self.orgClockCenter
+                                self.clock.center = self.orgClockCenter
                                 self.clock.transform = CGAffineTransformIdentity
                                 self.clock.alpha = 1
                             }
