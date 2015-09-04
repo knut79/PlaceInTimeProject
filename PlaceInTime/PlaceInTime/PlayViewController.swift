@@ -9,7 +9,7 @@
 import UIKit
 import iAd
 
-class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
+class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADBannerViewDelegate
 {
     var gameStats:GameStats!
     var cardsStack:[Card] = []
@@ -35,11 +35,18 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     var levelHigh:Int = 1
     var levelLow:Int = 1
     var tags:[String] = []
+    var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
         datactrl.fetchData(tags: tags,fromLevel:levelLow,toLevel: levelHigh)
+        
+        self.canDisplayBannerAds = true
+        bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
+        self.view.addSubview(bannerView!)
+        self.bannerView?.delegate = self
+        self.bannerView?.hidden = false
         
         gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
         self.view.addSubview(gameStats)
@@ -67,7 +74,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
     }
     
     override func viewDidAppear(animated: Bool) {
-        
+        bannerView?.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44)
         setCardStack()
         //revealNextCard()
     }
@@ -1088,6 +1095,18 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         return scaledImage
+    }
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        self.bannerView?.hidden = false
+    }
+    
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+        return willLeave
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        self.bannerView?.hidden = true
     }
     
 }

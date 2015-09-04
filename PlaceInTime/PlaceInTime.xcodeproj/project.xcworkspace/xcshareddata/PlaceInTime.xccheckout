@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>0F17E35C-EF44-4A20-93AD-138C3586E164</string>
 	<key>IDESourceControlProjectName</key>
-	<string>PlaceInTime</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>7E5AEC68B7BB3CD66135A2DD2937F277FC8E656F</key>
 		<string>https://github.com/knut79/PlaceInTimeProject.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>PlaceInTime/PlaceInTime.xcodeproj</string>
+	<string>PlaceInTime/PlaceInTime.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>7E5AEC68B7BB3CD66135A2DD2937F277FC8E656F</key>

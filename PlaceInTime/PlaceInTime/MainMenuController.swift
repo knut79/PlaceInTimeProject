@@ -45,7 +45,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
         //bannerView = ADBannerView(frame: CGRectZero)
         self.view.addSubview(bannerView!)
-        //self.bannerView?.delegate = self
+        self.bannerView?.delegate = self
         self.bannerView?.hidden = false
         
         // Do any additional setup after loading the view, typically from a nib.
