@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
+		72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* LoginViewController.swift */; };
+		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
 		72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D192891B8FF9F70035CE11 /* InfoHelperView.swift */; };
 		72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928C1B9327BE0035CE11 /* RangeSlider.swift */; };
 		72D192911B9327BE0035CE11 /* RangeWindowsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928D1B9327BE0035CE11 /* RangeWindowsLayer.swift */; };
@@ -20,7 +23,7 @@
 		72E8E7841B7B70720011FE47 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72E8E7831B7B70720011FE47 /* Images.xcassets */; };
 		72E8E7871B7B70720011FE47 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72E8E7851B7B70720011FE47 /* LaunchScreen.xib */; };
 		72E8E7931B7B70720011FE47 /* PlaceInTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7921B7B70720011FE47 /* PlaceInTimeTests.swift */; };
-		72E8E79E1B7B73470011FE47 /* TagCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79D1B7B73470011FE47 /* TagCheckView.swift */; };
+		72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79D1B7B73470011FE47 /* CheckItemView.swift */; };
 		72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */; };
 		72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7A11B7B73D90011FE47 /* DataHandler.swift */; };
 		72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7A41B7B75FF0011FE47 /* HistoricEvent.swift */; };
@@ -44,6 +47,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		72C789871B9CA76D002A2BBA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
+		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		72D192891B8FF9F70035CE11 /* InfoHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHelperView.swift; sourceTree = "<group>"; };
 		72D1928C1B9327BE0035CE11 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		72D1928D1B9327BE0035CE11 /* RangeWindowsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeWindowsLayer.swift; sourceTree = "<group>"; };
@@ -61,7 +67,7 @@
 		72E8E78C1B7B70720011FE47 /* PlaceInTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaceInTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72E8E7911B7B70720011FE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72E8E7921B7B70720011FE47 /* PlaceInTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInTimeTests.swift; sourceTree = "<group>"; };
-		72E8E79D1B7B73470011FE47 /* TagCheckView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCheckView.swift; sourceTree = "<group>"; };
+		72E8E79D1B7B73470011FE47 /* CheckItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckItemView.swift; sourceTree = "<group>"; };
 		72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCheckScrollview.swift; sourceTree = "<group>"; };
 		72E8E7A11B7B73D90011FE47 /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		72E8E7A41B7B75FF0011FE47 /* HistoricEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricEvent.swift; sourceTree = "<group>"; };
@@ -79,6 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */,
+				72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +100,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */,
+				72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		72D1928B1B93279A0035CE11 /* Slider */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +141,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				72C789841B9A6AD2002A2BBA /* Frameworks */,
 				72D1928B1B93279A0035CE11 /* Slider */,
 				72E8E7A31B7B74210011FE47 /* DataClasses */,
 				72E8E79C1B7B73230011FE47 /* MainMenu */,
@@ -134,6 +152,7 @@
 				72E8E77B1B7B70720011FE47 /* PlaceInTime.xcdatamodeld */,
 				72E8E7771B7B70720011FE47 /* Supporting Files */,
 				72E8E7A11B7B73D90011FE47 /* DataHandler.swift */,
+				72C789871B9CA76D002A2BBA /* LoginViewController.swift */,
 				72E8E7A61B7B762C0011FE47 /* StaticValues.swift */,
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
 				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
@@ -176,7 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
-				72E8E79D1B7B73470011FE47 /* TagCheckView.swift */,
+				72E8E79D1B7B73470011FE47 /* CheckItemView.swift */,
 				72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */,
 			);
 			name = MainMenu;
@@ -294,8 +313,9 @@
 			files = (
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
-				72E8E79E1B7B73470011FE47 /* TagCheckView.swift in Sources */,
+				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
+				72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */,
@@ -438,6 +458,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PlaceInTime",
+				);
 				INFOPLIST_FILE = PlaceInTime/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -449,6 +473,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PlaceInTime",
+				);
 				INFOPLIST_FILE = PlaceInTime/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

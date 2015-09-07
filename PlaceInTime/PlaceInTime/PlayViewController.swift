@@ -35,6 +35,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var levelHigh:Int = 1
     var levelLow:Int = 1
     var tags:[String] = []
+    var gametype:gameType!
+    let backButton = UIButton()
+    
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +58,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         orgClockCenter = CGPointMake(marginFromGamestats + gameStats.frame.maxX + (self.clock.frame.width / 2),self.marginFromGamestats + (self.clock.frame.height / 2))
         clock.delegate = self
         
+
+        
         addDropZone()
 
         let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.7
@@ -70,6 +75,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         infoHelperView = InfoHelperView(frame: CGRectMake(10, gameStats.frame.maxY + marginFromGamestats, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height * 0.4))
         infoHelperView.alpha = 0
         view.addSubview(infoHelperView)
+        if self.gametype == gameType.training
+        {
+            backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide, 0, smallButtonSide, smallButtonSide)
+            backButton.backgroundColor = UIColor.whiteColor()
+            backButton.layer.borderColor = UIColor.grayColor().CGColor
+            backButton.layer.borderWidth = 1
+            backButton.setTitle("🔚", forState: UIControlState.Normal)
+            backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+            view.addSubview(backButton)
+        }
         self.view.addSubview(clock)
     }
     
@@ -1079,6 +1094,25 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
         }
         return nil
+    }
+    
+    func backAction()
+    {
+        //datactrl.saveGameData()
+        self.performSegueWithIdentifier("segueFromPlayToMainMenu", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
+        if (segue.identifier == "segueFromPlayToMainMenu") {
+            var svc = segue!.destinationViewController as! MainMenuViewController
+            if gameStats.newValues()
+            {
+                svc.updateGlobalGameStats = true
+                svc.newGameStatsValues = (gameStats.okPoints!,gameStats.goodPoints!,gameStats.lovePoints)
+                //svc.imagefile = currentImagefile
+            }
+        }
+        
     }
     
     override func prefersStatusBarHidden() -> Bool {

@@ -11,10 +11,14 @@ import CoreGraphics
 import QuartzCore
 import iAd
 
-class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerViewDelegate {
+class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate {
     
     
     var backgroundView:UIView!
+    
+    var challengeUsersButton:UIButton!
+    var trainingButton:UIButton!
+    
     var playButton:UIButton!
     var playButtonExstraLabel:UILabel!
     //var playButtonExstraLabel2:UILabel!
@@ -23,7 +27,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     var loadingDataLabel:UILabel!
     var datactrl:DataHandler!
     var tagsScrollViewEnableBackground:UIView!
-    var tagsScrollView:TagCheckScrollView!
+    var tagsScrollView:CheckScrollView!
     
     let queue = NSOperationQueue()
     
@@ -48,12 +52,24 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         self.bannerView?.delegate = self
         self.bannerView?.hidden = false
         
+        challengeUsersButton = UIButton(frame:CGRectZero)
+        challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        challengeUsersButton.backgroundColor = UIColor.blueColor()
+        challengeUsersButton.layer.cornerRadius = 5
+        challengeUsersButton.layer.masksToBounds = true
+        challengeUsersButton.setTitle("Challenge", forState: UIControlState.Normal)
+        
+        trainingButton = UIButton(frame:CGRectZero)
+        trainingButton.addTarget(self, action: "trainingAction", forControlEvents: UIControlEvents.TouchUpInside)
+        trainingButton.backgroundColor = UIColor.blueColor()
+        trainingButton.layer.cornerRadius = 5
+        trainingButton.layer.masksToBounds = true
+        trainingButton.setTitle("Training", forState: UIControlState.Normal)
+        
         // Do any additional setup after loading the view, typically from a nib.
         playButton = UIButton(frame:CGRectZero)
         playButton.addTarget(self, action: "playAction", forControlEvents: UIControlEvents.TouchUpInside)
         playButton.backgroundColor = UIColor.blueColor()
-        /*playButton.layer.borderColor = UIColor.grayColor().CGColor
-        playButton.layer.borderWidth = 1*/
         playButton.layer.cornerRadius = 5
         playButton.layer.masksToBounds = true
         playButton.setTitle("Play", forState: UIControlState.Normal)
@@ -64,15 +80,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         playButtonExstraLabel.font = UIFont.systemFontOfSize(12)
         playButtonExstraLabel.textAlignment = NSTextAlignment.Center
         playButton.addSubview(playButtonExstraLabel)
-        
-        /*
-        playButtonExstraLabel2 = UILabel(frame:CGRectZero)
-        playButtonExstraLabel2.backgroundColor = playButton.backgroundColor?.colorWithAlphaComponent(0)
-        playButtonExstraLabel2.textColor = UIColor.whiteColor()
-        playButtonExstraLabel2.font = UIFont.systemFontOfSize(12)
-        playButtonExstraLabel2.textAlignment = NSTextAlignment.Center
-        playButton.addSubview(playButtonExstraLabel2)
-        */
+
 
         levelSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
         levelSlider.curvaceousness = 0.0
@@ -149,6 +157,12 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     func setupAfterPopulateData()
     {
         self.view.addSubview(self.playButton)
+
+        challengeUsersButton.alpha = 0
+        trainingButton.alpha = 0
+        self.view.addSubview(challengeUsersButton)
+        self.view.addSubview(trainingButton)
+        
         globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreID as! NSNumber),goodScore: Int(datactrl.goodScoreID as! NSNumber),loveScore: Int(datactrl.loveScoreID as! NSNumber))
         self.view.addSubview(globalGameStats)
         setupCheckboxView()
@@ -180,22 +194,21 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         
         playButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (playbuttonWidth / 2), UIScreen.mainScreen().bounds.size.height * 0.15,playbuttonWidth, playbuttonHeight)
         
+        let marginButtons:CGFloat = 10
+        challengeUsersButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (playbuttonWidth / 2), UIScreen.mainScreen().bounds.size.height * 0.15, (playbuttonWidth + marginButtons) / 2, playbuttonHeight)
+        trainingButton.frame = CGRectMake(challengeUsersButton.frame.maxX + (marginButtons / 2), UIScreen.mainScreen().bounds.size.height * 0.15, (playbuttonWidth + marginButtons) / 2, playbuttonHeight)
         
         let height:CGFloat = 31.0
         let marginSlider: CGFloat = playButton.frame.minX
-
-        
-        //levelSlider.transform = CGAffineTransformScale(levelSlider.transform, 0.3, 0.3)
-        
         playButtonExstraLabel.frame = CGRectMake(0, playButton.frame.height * 0.7   , playButton.frame.width, playButton.frame.height * 0.15)
         playButtonExstraLabel.text = "level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
-        //playButtonExstraLabel2.frame = CGRectMake(0, playButton.frame.height * 0.85   , playButton.frame.width, playButton.frame.height * 0.15)
 
         levelSlider.frame = CGRect(x:  marginSlider, y: playButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2) - (playButton.frame.width * 0.2), height: height)
         
         selectFilterTypeButton.frame = CGRectMake(levelSlider.frame.maxX, playButton.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width * 0.2, levelSlider.frame.height)
         
-        closeTagCheckView()
+        
+        closeCheckView()
         
     }
     
@@ -217,9 +230,38 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     
     func playAction()
     {
+        //self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
+        
+        //split button
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            self.playButton.transform = CGAffineTransformScale(self.playButton.transform, 0.1, 0.1)
+            
+            self.challengeUsersButton.alpha = 1
+            self.trainingButton.alpha = 1
+                                self.levelSlider.transform = CGAffineTransformScale(self.levelSlider.transform, 0.1, 0.1)
+                    self.selectFilterTypeButton.transform = CGAffineTransformScale(self.selectFilterTypeButton.transform, 0.1, 0.1)
+            }, completion: { (value: Bool) in
+                
+                self.playButton.alpha = 0
+                        self.levelSlider.alpha = 0
+                        self.selectFilterTypeButton.alpha = 0
+                
+
+        })
+        
+    }
+    var gametype:gameType = gameType.training
+    func trainingAction()
+    {
+        gametype = gameType.training
         self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
     }
     
+    func challengeAction()
+    {
+        gametype = gameType.challenge
+        self.performSegueWithIdentifier("segueFromMainMenuToLogin", sender: nil)
+    }
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {
@@ -227,6 +269,14 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
             svc.levelLow = Int(levelSlider.lowerValue)
             svc.levelHigh = Int(levelSlider.upperValue)
             svc.tags = self.tags
+            svc.gametype = gametype
+        }
+        
+        if (segue.identifier == "segueFromMainMenuToLogin") {
+            var svc = segue!.destinationViewController as! LoginViewController
+            svc.passingLevelLow = Int(levelSlider.lowerValue)
+            svc.passingLevelHigh = Int(levelSlider.upperValue)
+            svc.passingTags = self.tags
         }
     }
     
@@ -245,7 +295,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
     
     //MARK: TagCheckViewProtocol
     var listClosed = true
-    func closeTagCheckView()
+    func closeCheckView()
     {
         if listClosed
         {
@@ -285,7 +335,7 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
                     self.tagsScrollView.alpha = 0
                     self.tagsScrollView.center = rightLocation
                     self.listClosed = true
-                    self.tagsScrollViewEnableBackground.removeFromSuperview()
+                    self.tagsScrollViewEnableBackground.alpha = 0
             })
         }
     }
@@ -307,8 +357,8 @@ class MainMenuViewController: UIViewController, TagCheckViewProtocol , ADBannerV
         {
             scrollViewWidth = UIScreen.mainScreen().bounds.size.width / 2
         }
-        tagsScrollView = TagCheckScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , UIScreen.mainScreen().bounds.size.height / 4, scrollViewWidth, UIScreen.mainScreen().bounds.size.height / 2))
-        
+        tagsScrollView = CheckScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , UIScreen.mainScreen().bounds.size.height / 4, scrollViewWidth, UIScreen.mainScreen().bounds.size.height / 2), initialValues: ["#war","#headOfState","#science","#discovery","#invention","#sport","#miscellaneous"])
+
         tagsScrollView.delegate = self
         tagsScrollView.alpha = 0
         tagsScrollViewEnableBackground.addSubview(tagsScrollView!)

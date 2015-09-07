@@ -12,33 +12,34 @@ import UIKit
 //⚪️🔘
 //◽️🔳
 
-protocol TagCheckViewProtocol
+protocol CheckViewProtocol
 {
-    func closeTagCheckView()
+    func closeCheckView()
     func reloadMarks(tags:[String])
     
 }
 
-class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
+class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     
-    var tagCheckItems:[TagCheckView]!
+    var checkItems:[CheckItemView]!
     var tags:[String]!
     var scrollView:UIScrollView!
     var closeButton:UIButton!
-    var delegate:TagCheckViewProtocol!
+    var delegate:CheckViewProtocol!
     var selectedInfoLabel:UILabel!
+    var itemName:String!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, initialValues:[String] = [], itemsName:String = "item") {
         super.init(frame: frame)
         tags = []
-        tagCheckItems = []
+        checkItems = []
         
-        
+        self.itemName = itemsName
         
         closeButton = UIButton(frame: CGRectMake(frame.width - 40, 0, 40, 40))
         closeButton.setTitle("❌", forState: UIControlState.Normal)
@@ -56,6 +57,12 @@ class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 2.0
         
+        for item in initialValues
+        {
+            tags.append(item)
+        }
+        
+        /*
         tags.append("#war")
         tags.append("#headOfState")
         tags.append("#science")
@@ -63,31 +70,22 @@ class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
         tags.append("#invention")
         tags.append("#sport")
         tags.append("#miscellaneous")
+        */
         
         let itemheight:CGFloat = 40
         
         selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.frame.width - closeButton.frame.width, itemheight))
         selectedInfoLabel.textAlignment = NSTextAlignment.Center
-        selectedInfoLabel.text = "\(tags.count) tags selected"
-        /*
-        let unselectBoxButton = UIButton(frame: CGRectMake(0, 0, itemheight, itemheight))
-        unselectBoxButton.setTitle("◽️", forState: UIControlState.Normal)
-        unselectBoxButton.addTarget(self, action: "unselectAllTags", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        let unselectTitleLabel = UILabel(frame: CGRectMake(unselectBoxButton.frame.maxX, 0, frame.width * 0.66, itemheight))
-        unselectTitleLabel.text = "Unselect all"
-        
-        scrollView.addSubview(unselectBoxButton)
-        scrollView.addSubview(unselectTitleLabel)
-        */
+        selectedInfoLabel.text = "\(tags.count) \(itemName)s selected"
+
         
         var contentHeight:CGFloat = 0
         var i:CGFloat = 0
         for tagItem in tags
         {
-            let newTagCheckItem = TagCheckView(frame: CGRectMake(0, itemheight * i, self.frame.width, itemheight), tagTitle: tagItem)
+            let newTagCheckItem = CheckItemView(frame: CGRectMake(0, itemheight * i, self.frame.width, itemheight), tagTitle: tagItem)
             newTagCheckItem.delegate = self
-            tagCheckItems.append(newTagCheckItem)
+            checkItems.append(newTagCheckItem)
             scrollView.addSubview(newTagCheckItem)
             contentHeight = newTagCheckItem.frame.maxY
             i++
@@ -99,57 +97,45 @@ class TagCheckScrollView: UIView , UIScrollViewDelegate, TagCheckItemProtocol{
         
     }
     
-    func unselectAllTags()
+    func unselectAllItem()
     {
-        for item in tagCheckItems
+        for item in checkItems
         {
             item.checked = false
             item.checkBoxView.setTitle("◽️", forState: UIControlState.Normal)
         }
-        delegate.reloadMarks(getTagsAsArray())
+        delegate.reloadMarks(getItemsAsArray())
     }
     
     func checkChanged()
     {
-        let selectedTags = getTagsAsArray()
+        let selectedTags = getItemsAsArray()
         delegate.reloadMarks(selectedTags)
         
-        selectedInfoLabel.text = "\(selectedTags.count) tags selected"
+        selectedInfoLabel.text = "\(selectedTags.count) \(itemName)s selected"
     }
     
-    func getTagsAsArray() -> [String]
+    func getItemsAsArray() -> [String]
     {
         var returnValue:[String] = []
-        for item in tagCheckItems
+        for item in checkItems
         {
             if item.checked
             {
-                returnValue.append(item.tagTitle)
+                returnValue.append(item.title)
             }
         }
         return returnValue
     }
     
-    func getTagsAsString() -> String
-    {
-        var returnValue = ""
-        for item in tagCheckItems
-        {
-            if item.checked
-            {
-                returnValue += "#\(item.tagTitle)"
-            }
-        }
-        return returnValue
-    }
     
     func closeAction()
     {
-        let selectedTags = getTagsAsArray()
+        let selectedTags = getItemsAsArray()
         delegate.reloadMarks(selectedTags)
         
-        selectedInfoLabel.text = "\(selectedTags.count) tags selected"
-        delegate!.closeTagCheckView()
+        selectedInfoLabel.text = "\(selectedTags.count) \(itemName)s selected"
+        delegate!.closeCheckView()
         
     }
 }

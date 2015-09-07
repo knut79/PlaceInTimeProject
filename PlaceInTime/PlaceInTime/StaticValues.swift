@@ -28,3 +28,8 @@ enum eventType: Int
 {
     case singleYear = 0,periode
 }
+
+enum gameType: Int
+{
+    case training = 0, challenge
+}

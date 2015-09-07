@@ -9,18 +9,18 @@
 import Foundation
 import UIKit
 
-protocol TagCheckItemProtocol
+protocol CheckItemProtocol
 {
     func checkChanged()
 }
 
-class TagCheckView: UIView
+class CheckItemView: UIView
 {
     var checkBoxView:UIButton!
     var titleLabel:UILabel!
     var checked = true
-    var tagTitle:String!
-    var delegate:TagCheckItemProtocol!
+    var title:String!
+    var delegate:CheckItemProtocol!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,7 +43,7 @@ class TagCheckView: UIView
         
         self.addSubview(checkBoxView)
         
-        self.tagTitle = tagTitle
+        self.title = tagTitle
         titleLabel = UILabel(frame: CGRectMake(checkBoxView.frame.maxX, 0, frame.width * 0.66, frame.height))
         titleLabel.text = tagTitle
         self.addSubview(titleLabel)
