@@ -20,13 +20,14 @@ class CheckItemView: UIView
     var titleLabel:UILabel!
     var checked = true
     var title:String!
+    var value:String!
     var delegate:CheckItemProtocol!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    init(frame: CGRect, tagTitle:String, checked:Bool = true) {
+    init(frame: CGRect, title:String,value:String, checked:Bool = true) {
         super.init(frame: frame)
         
         self.checked = checked
@@ -43,9 +44,10 @@ class CheckItemView: UIView
         
         self.addSubview(checkBoxView)
         
-        self.title = tagTitle
+        self.title = title
+        self.value = value
         titleLabel = UILabel(frame: CGRectMake(checkBoxView.frame.maxX, 0, frame.width * 0.66, frame.height))
-        titleLabel.text = tagTitle
+        titleLabel.text = title
         self.addSubview(titleLabel)
         
     }

@@ -37,6 +37,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var tags:[String] = []
     var gametype:gameType!
     let backButton = UIButton()
+    var usersIdsToChallenge:[String] = []
+    var completedQuestionsIds:[[String]] = []
+    var numOfQuestionsForRound:Int = 3
+    var myIdAndName:(String,String)!
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
@@ -175,6 +179,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
         datactrl.shuffleEvents()
         randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
+        
+
+        
         animateNewCardInCardStack(0)
     }
     
@@ -539,18 +546,33 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     {
         //move stuff away
         animateRemoveElementsAtRoundEnd({() -> Void in
-                for var i = 0 ;  i < self.dropZones.count ; i++
-                {
-                    self.dropZones[i]?.removeFromSuperview()
-                }
+            for var i = 0 ;  i < self.dropZones.count ; i++
+            {
+                self.dropZones[i]?.removeFromSuperview()
+            }
+        
+            var roundQuestionIds:[String] = []
+            for item in self.randomHistoricEvents
+            {
+                roundQuestionIds.append("\(item.idForUpdate)")
+            }
+            self.completedQuestionsIds.append(roundQuestionIds)
+            
+            if (self.gametype == gameType.challenge) && (self.completedQuestionsIds.count >= self.numOfQuestionsForRound)
+            {
+                self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
+            }
+            else
+            {
                 self.dropZones = [:]
                 self.addDropZone()
                 self.setCardStack()
                 //self.revealNextCard()
                 self.rightButton.userInteractionEnabled = true
                 self.tapOverride = false
-            
-            })
+            }
+        
+        })
 
     }
     
@@ -1112,7 +1134,23 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 //svc.imagefile = currentImagefile
             }
         }
-        
+        if (segue.identifier == "segueFromPlayToFinished") {
+            var svc = segue!.destinationViewController as! FinishedViewController
+            svc.completedQuestionsIds = completedQuestionsIds
+            svc.usersIdsToChallenge = usersIdsToChallenge
+            svc.challengeName = "\(self.myIdAndName) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString()))"
+            //svc.imagefile = currentImagefile
+        }
+    }
+    
+    func tagsAsString() -> String
+    {
+        var result = ""
+        for item in tags
+        {
+            result += item
+        }
+        return result
     }
     
     override func prefersStatusBarHidden() -> Bool {

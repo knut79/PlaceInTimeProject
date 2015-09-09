@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
+		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* LoginViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -24,7 +26,7 @@
 		72E8E7871B7B70720011FE47 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72E8E7851B7B70720011FE47 /* LaunchScreen.xib */; };
 		72E8E7931B7B70720011FE47 /* PlaceInTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7921B7B70720011FE47 /* PlaceInTimeTests.swift */; };
 		72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79D1B7B73470011FE47 /* CheckItemView.swift */; };
-		72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */; };
+		72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E79F1B7B73520011FE47 /* CheckScrollview.swift */; };
 		72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7A11B7B73D90011FE47 /* DataHandler.swift */; };
 		72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7A41B7B75FF0011FE47 /* HistoricEvent.swift */; };
 		72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7A61B7B762C0011FE47 /* StaticValues.swift */; };
@@ -47,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
+		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
+		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -68,7 +73,7 @@
 		72E8E7911B7B70720011FE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72E8E7921B7B70720011FE47 /* PlaceInTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInTimeTests.swift; sourceTree = "<group>"; };
 		72E8E79D1B7B73470011FE47 /* CheckItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckItemView.swift; sourceTree = "<group>"; };
-		72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCheckScrollview.swift; sourceTree = "<group>"; };
+		72E8E79F1B7B73520011FE47 /* CheckScrollview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckScrollview.swift; sourceTree = "<group>"; };
 		72E8E7A11B7B73D90011FE47 /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		72E8E7A41B7B75FF0011FE47 /* HistoricEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricEvent.swift; sourceTree = "<group>"; };
 		72E8E7A61B7B762C0011FE47 /* StaticValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
@@ -85,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */,
 				72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */,
 				72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */,
 			);
@@ -103,6 +109,7 @@
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */,
 				72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */,
 				72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */,
 			);
@@ -160,6 +167,8 @@
 				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
 				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
 				72D192941B9728980035CE11 /* ClockView.swift */,
+				725249CF1B9F0D53002FE589 /* FinishedViewController.swift */,
+				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
 			);
 			path = PlaceInTime;
 			sourceTree = "<group>";
@@ -196,7 +205,7 @@
 			children = (
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
 				72E8E79D1B7B73470011FE47 /* CheckItemView.swift */,
-				72E8E79F1B7B73520011FE47 /* TagCheckScrollview.swift */,
+				72E8E79F1B7B73520011FE47 /* CheckScrollview.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -315,10 +324,11 @@
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
+				725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */,
 				72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
-				72E8E7A01B7B73520011FE47 /* TagCheckScrollview.swift in Sources */,
+				72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */,
 				72D192951B9728980035CE11 /* ClockView.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,

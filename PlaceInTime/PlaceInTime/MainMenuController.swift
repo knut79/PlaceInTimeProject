@@ -357,7 +357,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
             scrollViewWidth = UIScreen.mainScreen().bounds.size.width / 2
         }
-        tagsScrollView = CheckScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , UIScreen.mainScreen().bounds.size.height / 4, scrollViewWidth, UIScreen.mainScreen().bounds.size.height / 2), initialValues: ["#war","#headOfState","#science","#discovery","#invention","#sport","#miscellaneous"])
+        let values:[String:String] = ["#war":"#war","#headOfState":"#headOfState","#science":"#science","#discovery":"#discovery","#invention":"#invention","#sport":"#sport","#miscellaneous":"#miscellaneous"]
+        tagsScrollView = CheckScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , UIScreen.mainScreen().bounds.size.height / 4, scrollViewWidth, UIScreen.mainScreen().bounds.size.height / 2), initialValues: values,itemsName: "tag",itemsChecked:true)
 
         tagsScrollView.delegate = self
         tagsScrollView.alpha = 0

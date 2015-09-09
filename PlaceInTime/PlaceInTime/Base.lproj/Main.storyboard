@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="238" y="1091"/>
+            <point key="canvasLocation" x="36" y="1109"/>
         </scene>
         <!--Play View Controller-->
         <scene sceneID="Kim-Ue-D5T">
@@ -62,14 +62,37 @@
                     </view>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromPlayToMainMenu" id="Tp5-as-Bfd"/>
+                        <segue destination="spP-qP-hta" kind="presentation" identifier="segueFromPlayToFinished" id="NGz-KM-lzT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L2b-oe-T6a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="856" y="297"/>
         </scene>
+        <!--Finished View Controller-->
+        <scene sceneID="Nxe-ls-der">
+            <objects>
+                <viewController id="spP-qP-hta" customClass="FinishedViewController" customModule="PlaceInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BKc-vg-jee"/>
+                        <viewControllerLayoutGuide type="bottom" id="rOv-mh-ys7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Lpk-zH-v7j">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromFinishedToMainMenu" id="QVb-hx-74A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="azn-xE-XNa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1548" y="704"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="XHW-7Q-S9W"/>
+        <segue reference="63O-fR-NDE"/>
+        <segue reference="QVb-hx-74A"/>
     </inferredMetricsTieBreakers>
 </document>

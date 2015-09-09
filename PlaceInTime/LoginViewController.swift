@@ -10,11 +10,19 @@ import Foundation
 import UIKit
 import FBSDKLoginKit
 
-class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
+class LoginViewController:UIViewController,FBSDKLoginButtonDelegate, CheckViewProtocol {
     
     var passingLevelLow:Int!
     var passingLevelHigh:Int!
     var passingTags:[String] = []
+    
+    var usersToChallenge:[String] = []
+    var userId:String!
+    var userName:String!
+    
+    var checkitemScrollView:CheckScrollView!
+    
+    var tempToPlayButton:UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +32,12 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
             // User is already logged in, do work such as go to next view controller.
             //self.performSegueWithIdentifier("segueFromLoginToPlay", sender: nil)
             
-            returnUserData()
-            returnUserFriends()
+            initUserData()
+            initUserFriends()
+            
+
+            
+
             /*
             var fbRequestFriends: FBRequest = FBRequest.requestForMyFriends()
             
@@ -51,6 +63,55 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
         }
     }
     
+    var listClosed = true
+    func closeCheckView()
+    {
+        if listClosed
+        {
+            return
+        }
+        
+        if self.usersToChallenge.count < 3
+        {
+            var numberPrompt = UIAlertController(title: "Pick 3",
+                message: "Select at least 3 tags",
+                preferredStyle: .Alert)
+            
+            var numberTextField: UITextField?
+            
+            numberPrompt.addAction(UIAlertAction(title: "Ok",
+                style: .Default,
+                handler: { (action) -> Void in
+                    
+            }))
+            
+            
+            self.presentViewController(numberPrompt,
+                animated: true,
+                completion: nil)
+        }
+        else
+        {
+            
+            let rightLocation = checkitemScrollView.center
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                
+                self.checkitemScrollView.transform = CGAffineTransformScale(self.checkitemScrollView.transform, 0.1, 0.1)
+                
+                }, completion: { (value: Bool) in
+                    self.checkitemScrollView.transform = CGAffineTransformScale(self.checkitemScrollView.transform, 0.1, 0.1)
+                    self.checkitemScrollView.alpha = 0
+                    self.checkitemScrollView.center = rightLocation
+                    self.listClosed = true
+
+            })
+        }
+    }
+    
+    func reloadMarks(tags:[String])
+    {
+       self.usersToChallenge = tags
+    }
     
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
@@ -67,7 +128,7 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
             if result.grantedPermissions.contains("user_friends")
             {
                 // Do work
-                self.performSegueWithIdentifier("segueFromLoginToPlay", sender: nil)
+                //self.performSegueWithIdentifier("segueFromLoginToPlay", sender: nil)
             }
         }
     }
@@ -79,7 +140,7 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
         
     }
     
-    func returnUserData()
+    func initUserData()
     {
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -92,24 +153,19 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
             else
             {
                 println("fetched user: \(result)")
-                let userName : NSString = result.valueForKey("name") as! NSString
+                let userName : String = result.valueForKey("name") as! String
                 println("User Name is: \(userName)")
-                
-                let userId = result.objectID
-                println("UserId is: \(userId)")
-                
-                
-                
-                let userId2 = result.valueForKey("id")
+                self.userName = userName
+                let userId2 = result.valueForKey("id") as! String
                 println("UserId2 is: \(userId2)")
-                
-                
+                self.userId = userId2
+                 
                 result
             }
         })
     }
     
-    func returnUserFriends()
+    func initUserFriends()
     {
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me/friends", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -118,35 +174,54 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
             {
                 // Process error
                 println("Error: \(error)")
+                
             }
             else
             {
                 println("fetched friends result: \(result)")
 
                 var friendObjects = result.valueForKey("data") as! [NSDictionary]
+                /*
                 for friendObject in friendObjects {
                     let name = friendObject.valueForKey("name") as! String
                     let id = friendObject.valueForKey("id")
                     println("\(name)")
                     println("\(id!)")
                 }
+                */
+                
+                var initialValues:[String:String] = [:]
+                for friendObject in friendObjects {
+                    initialValues.updateValue(friendObject.valueForKey("id") as! String, forKey: friendObject.valueForKey("name") as! String )
+                }
+                
+                var scrollViewWidth = UIScreen.mainScreen().bounds.size.width * 0.6
+                self.checkitemScrollView = CheckScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , UIScreen.mainScreen().bounds.size.height / 4, scrollViewWidth, UIScreen.mainScreen().bounds.size.height / 2), initialValues: initialValues,itemsChecked:false)
+                
+                self.checkitemScrollView.delegate = self
+                self.checkitemScrollView.alpha = 1
+                self.view.addSubview(self.checkitemScrollView)
+                
+                
+                self.tempToPlayButton = UIButton(frame:CGRectMake(0, 0, 200, 40))
+                self.tempToPlayButton.addTarget(self, action: "playAction", forControlEvents: UIControlEvents.TouchUpInside)
+                self.tempToPlayButton.backgroundColor = UIColor.blueColor()
+                self.tempToPlayButton.layer.cornerRadius = 5
+                self.tempToPlayButton.layer.masksToBounds = true
+                self.tempToPlayButton.setTitle("Play", forState: UIControlState.Normal)
+                
+                self.view.addSubview(self.tempToPlayButton)
                 
                 result
             }
         })
     }
     
-    /*
-    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-    initWithGraphPath:@"/me/friends"
-    parameters:params
-    HTTPMethod:@"GET"];
-    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
-    id result,
-    NSError *error) {
-    // Handle the result
-    }];
-*/
+    
+    func playAction()
+    {
+        self.performSegueWithIdentifier("segueFromLoginToPlay", sender: nil)
+    }
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromLoginToPlay") {
@@ -155,6 +230,8 @@ class LoginViewController:UIViewController,FBSDKLoginButtonDelegate {
             svc.levelHigh = passingLevelHigh
             svc.tags = passingTags
             svc.gametype = gameType.challenge
+            svc.usersIdsToChallenge = self.usersToChallenge
+            svc.myIdAndName = (self.userId,self.userName)
         }
     }
 }
