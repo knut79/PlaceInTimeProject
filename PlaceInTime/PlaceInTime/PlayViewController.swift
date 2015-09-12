@@ -505,6 +505,27 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         label.alpha = 0
         view.addSubview(label)
         
+        for dropzone in self.dropZones
+        {
+            dropzone.1.getHookedUpCard()?.layer.borderColor = UIColor.greenColor().CGColor
+            if let card = dropzone.1.getHookedUpCard()
+            {
+                card.layer.borderWidth = 2
+                card.layer.borderColor = UIColor.greenColor().CGColor
+                
+                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+                pulseAnimation.duration = 0.3
+                pulseAnimation.toValue = NSNumber(float: 0.3)
+                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                pulseAnimation.autoreverses = true
+                pulseAnimation.repeatCount = 5
+                pulseAnimation.delegate = self
+                card.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
+            }
+            
+            
+        }
+        
         UIView.animateWithDuration(1, animations: { () -> Void in
             //label.center = self.gameStats.lovePoints.center
             label.transform = CGAffineTransformScale(label.transform, 2, 2)
@@ -515,6 +536,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 UIView.animateWithDuration(1, animations: { () -> Void in
                     label.center = self.gameStats.lovePointsView.center
                     label.transform = CGAffineTransformIdentity
+                    label.transform = CGAffineTransformScale(label.transform, 0.1, 0.1)
                     label.alpha = 0
                     }, completion: { (value: Bool) in
 
