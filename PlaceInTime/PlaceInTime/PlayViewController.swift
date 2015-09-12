@@ -601,7 +601,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
-                card.frame.offset(dx: -500, dy: 0)
+                //card.frame.offset(dx: -500, dy: 0)
+                card.center = CGPointMake(0 - card.frame.width, card.center.y)
                 
                 }, completion: { (value: Bool) in
                     self.cardToDrag = nil
@@ -649,11 +650,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     {
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
-                self.dropZones[i]?.center = CGPointMake(-100, self.dropZones[i]!.center.y )
-                self.dropZones[i]?.getHookedUpCard()?.center = CGPointMake(-100, self.dropZones[i]!.getHookedUpCard()!.center.y )
+                self.dropZones[i]?.center = CGPointMake(0 - self.dropZones[i]!.frame.width, self.dropZones[i]!.center.y )
+                self.dropZones[i]?.getHookedUpCard()?.center = CGPointMake(0 - self.dropZones[i]!.frame.width, self.dropZones[i]!.getHookedUpCard()!.center.y )
                 
                 
                 }, completion: { (value: Bool) in
+                    self.dropZones[i]?.getHookedUpCard()?.removeFromSuperview()
                     if i < self.dropZones.count
                     {
                         i++

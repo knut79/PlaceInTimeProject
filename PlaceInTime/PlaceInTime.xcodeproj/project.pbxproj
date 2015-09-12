@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
+		725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249D41BA46FDE002FE589 /* SwiftyJSON.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* LoginViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -52,6 +53,7 @@
 		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
+		725249D41BA46FDE002FE589 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				72D192941B9728980035CE11 /* ClockView.swift */,
 				725249CF1B9F0D53002FE589 /* FinishedViewController.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
+				725249D41BA46FDE002FE589 /* SwiftyJSON.swift */,
 			);
 			path = PlaceInTime;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				72D192951B9728980035CE11 /* ClockView.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,
+				725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */,
 				72E8E7AB1B7B7AA00011FE47 /* PlayViewController.swift in Sources */,
 				72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */,
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
@@ -476,6 +480,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -491,6 +497,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 			};
 			name = Release;
 		};
