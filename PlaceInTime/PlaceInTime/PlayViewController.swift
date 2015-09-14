@@ -580,7 +580,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
             self.completedQuestionsIds.append(roundQuestionIds)
             
-            if (self.gametype == gameType.challenge) && (self.completedQuestionsIds.count >= self.numOfQuestionsForRound)
+            if (self.gametype != gameType.training) && (self.completedQuestionsIds.count >= self.numOfQuestionsForRound)
             {
                 self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
             }
@@ -1163,7 +1163,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             svc.completedQuestionsIds = completedQuestionsIds
             svc.usersIdsToChallenge = usersIdsToChallenge
             svc.challengeName = "\(self.myIdAndName) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString()))"
-            //svc.imagefile = currentImagefile
+            svc.userFbId = myIdAndName.0
+            svc.correctAnswers = gameStats.lovePoints
+            svc.points = gameStats.okPoints
+            svc.gametype = gametype
         }
     }
     

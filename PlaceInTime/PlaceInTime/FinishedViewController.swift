@@ -15,6 +15,12 @@ class FinishedViewController:UIViewController {
     var completedQuestionsIds:[[String]] = []
     var challengeName:String!
     
+    var userFbId:String!
+    var correctAnswers:Int!
+    var points:Int!
+    var gametype:gameType!
+    var challengeid:String = ""
+    
     var client: MSClient?
     
     override func viewDidLoad() {
@@ -30,12 +36,26 @@ class FinishedViewController:UIViewController {
         )
         */
         
-        var sendingChallengeLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
-        sendingChallengeLabel.textAlignment = NSTextAlignment.Center
-        sendingChallengeLabel.text = "Sending challenge \(challengeName)"
-        self.view.addSubview(sendingChallengeLabel)
+        if gametype == gameType.makingChallenge
+        {
+            newChallenge()
+            var sendingChallengeLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
+            sendingChallengeLabel.textAlignment = NSTextAlignment.Center
+            sendingChallengeLabel.text = "Sending challenge \(challengeName)"
+            self.view.addSubview(sendingChallengeLabel)
+        }
         
-        testNewChallenge()
+        if gametype == gameType.takingChallenge
+        {
+            respondToChallenge()
+            var resultChallengeLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
+            resultChallengeLabel.textAlignment = NSTextAlignment.Center
+            resultChallengeLabel.text = "Result of challenge \(challengeName)"
+            self.view.addSubview(resultChallengeLabel)
+        }
+        
+        
+        
         
     }
     
@@ -135,16 +155,15 @@ class FinishedViewController:UIViewController {
         })
     }
     
-    func testNewChallenge()
+    func newChallenge()
     {
-
         
-        var questionsArray:[[String]] = [["11","22"],["33","44"]]
+        var questionIds:String = questionsToFormattedString()
         //var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIds":toIdsArray,"questions":questionsArray]
-        var toIdsArray:[String] = ["91","92","93"]
+        var toIds:String = usersToCommaseparatedString()
         //var dataPass = .dataWithJSONObject(toIdsArray, options: NSJSONWritingOptions.allZeros, error: nil)
         //var dataTest = NSJSONSerialization.dataWithJSONObject(
-        var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIdsPar":"23,34,45"]
+        var jsonDictionary = ["title":challengeName,"fromId":userFbId,"fromResultPoints":points,"fromResultCorrect":correctAnswers,"toIdsPar":toIds,"questionsPar":questionIds]
         self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
@@ -160,7 +179,57 @@ class FinishedViewController:UIViewController {
                 println("\(response)")
             }
         })
-        
+    }
+    
+    func respondToChallenge()
+    {
+        var questionIds:String = questionsToFormattedString()
+        //var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIds":toIdsArray,"questions":questionsArray]
+        var toIds:String = usersToCommaseparatedString()
+        //var dataPass = .dataWithJSONObject(toIdsArray, options: NSJSONWritingOptions.allZeros, error: nil)
+        //var dataTest = NSJSONSerialization.dataWithJSONObject(
+        var jsonDictionary = ["userfbid":userFbId,"challengeid":"?????","resultpoints":points,"resultcorrect":correctAnswers]
+        self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+            
+            if error != nil
+            {
+                println("\(error)")
+            }
+            if result != nil
+            {
+                println("\(result)")
+            }
+            if response != nil
+            {
+                println("\(response)")
+            }
+        })
+    }
+    
+    func usersToCommaseparatedString() -> String
+    {
+        var returnString:String = ""
+        for item in usersIdsToChallenge
+        {
+            returnString += item + ","
+            
+        }
+        return dropLast(returnString)
+    }
+    
+    func questionsToFormattedString() -> String
+    {
+        var returnString:String = ""
+        for questionBlock in completedQuestionsIds
+        {
+            for question in questionBlock
+            {
+                returnString += question + ","
+            }
+            returnString = dropLast(returnString)
+            returnString += ";"
+        }
+        return dropLast(returnString)
         
     }
     

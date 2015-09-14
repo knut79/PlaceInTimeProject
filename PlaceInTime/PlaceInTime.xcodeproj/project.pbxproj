@@ -10,8 +10,11 @@
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
 		725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249D41BA46FDE002FE589 /* SwiftyJSON.swift */; };
+		725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DB1BA63315002FE589 /* UserScrollView.swift */; };
+		725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */; };
+		725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
-		72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* LoginViewController.swift */; };
+		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
 		72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D192891B8FF9F70035CE11 /* InfoHelperView.swift */; };
 		72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1928C1B9327BE0035CE11 /* RangeSlider.swift */; };
@@ -54,8 +57,11 @@
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
 		725249D41BA46FDE002FE589 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		725249DB1BA63315002FE589 /* UserScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserScrollView.swift; sourceTree = "<group>"; };
+		725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeScrollView.swift; sourceTree = "<group>"; };
+		725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadiobuttonItemView.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		72C789871B9CA76D002A2BBA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
+		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		72D192891B8FF9F70035CE11 /* InfoHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHelperView.swift; sourceTree = "<group>"; };
 		72D1928C1B9327BE0035CE11 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -108,6 +114,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		725249D61BA50C76002FE589 /* ListViews */ = {
+			isa = PBXGroup;
+			children = (
+				72E8E79D1B7B73470011FE47 /* CheckItemView.swift */,
+				72E8E79F1B7B73520011FE47 /* CheckScrollview.swift */,
+				725249DB1BA63315002FE589 /* UserScrollView.swift */,
+				725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */,
+				725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */,
+			);
+			name = ListViews;
+			sourceTree = "<group>";
+		};
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +168,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				725249D61BA50C76002FE589 /* ListViews */,
 				72C789841B9A6AD2002A2BBA /* Frameworks */,
 				72D1928B1B93279A0035CE11 /* Slider */,
 				72E8E7A31B7B74210011FE47 /* DataClasses */,
@@ -161,7 +180,7 @@
 				72E8E77B1B7B70720011FE47 /* PlaceInTime.xcdatamodeld */,
 				72E8E7771B7B70720011FE47 /* Supporting Files */,
 				72E8E7A11B7B73D90011FE47 /* DataHandler.swift */,
-				72C789871B9CA76D002A2BBA /* LoginViewController.swift */,
+				72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */,
 				72E8E7A61B7B762C0011FE47 /* StaticValues.swift */,
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
 				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
@@ -207,8 +226,6 @@
 			isa = PBXGroup;
 			children = (
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
-				72E8E79D1B7B73470011FE47 /* CheckItemView.swift */,
-				72E8E79F1B7B73520011FE47 /* CheckScrollview.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -323,12 +340,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */,
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
 				725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */,
-				72C789881B9CA76D002A2BBA /* LoginViewController.swift in Sources */,
+				72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */,
@@ -336,8 +354,10 @@
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,
 				725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */,
+				725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */,
 				72E8E7AB1B7B7AA00011FE47 /* PlayViewController.swift in Sources */,
 				72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */,
+				725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */,
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
 				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,

@@ -1,4 +1,20 @@
 //
+//  UserScrollViewBackup.swift
+//  PlaceInTime
+//
+//  Created by knut on 14/09/15.
+//  Copyright (c) 2015 knut. All rights reserved.
+//
+
+//
+//  UsersScrollView.swift
+//  PlaceInTime
+//
+//  Created by knut on 13/09/15.
+//  Copyright (c) 2015 knut. All rights reserved.
+//
+
+//
 //  TagCheckScrollview.swift
 //  TimeIt
 //
@@ -12,20 +28,19 @@ import UIKit
 //⚪️🔘
 //◽️🔳
 
-protocol CheckViewProtocol
+protocol UserViewProtocol
 {
-    func closeCheckView(sender:CheckScrollView)
     func reloadMarks(tags:[String])
     
 }
 
-class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
+class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     
     var checkItems:[CheckItemView]!
     var tags:[String:String]!
     var scrollView:UIScrollView!
-    var closeButton:UIButton!
-    var delegate:CheckViewProtocol!
+    
+    var delegate:UserViewProtocol!
     var selectedInfoLabel:UILabel!
     var itemName:String!
     
@@ -36,47 +51,24 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     
     init(frame: CGRect, initialValues:[String:String] = [:], itemsName:String = "item", itemsChecked:Bool = true) {
         super.init(frame: frame)
-        tags = initialValues
-        checkItems = []
         
-        self.itemName = itemsName
+        let itemheight:CGFloat = 40
+        selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.bounds.width, itemheight))
+        selectedInfoLabel.textAlignment = NSTextAlignment.Center
         
-        closeButton = UIButton(frame: CGRectMake(frame.width - 40, 0, 40, 40))
-        closeButton.setTitle("❌", forState: UIControlState.Normal)
-        closeButton.addTarget(self, action: "closeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        closeButton.layer.borderColor = UIColor.blackColor().CGColor
-        closeButton.layer.borderWidth = 2.0
-        
-        
-        scrollView = UIScrollView(frame: CGRectMake(0, closeButton.frame.height, frame.width, frame.height - closeButton.frame.height))
+        scrollView = UIScrollView(frame: CGRectMake(0, selectedInfoLabel.frame.height, self.bounds.width, self.bounds.height - selectedInfoLabel.frame.height))
         
         scrollView.delegate = self
-        self.addSubview(scrollView)
+        
         
         self.backgroundColor = UIColor.whiteColor()
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 2.0
-        /*
-        for item in initialValues
-        {
-            tags. .append(item)
-        }
-
-        tags.append("#war")
-        tags.append("#headOfState")
-        tags.append("#science")
-        tags.append("#discovery")
-        tags.append("#invention")
-        tags.append("#sport")
-        tags.append("#miscellaneous")
-        */
         
-        let itemheight:CGFloat = 40
+        tags = initialValues
+        checkItems = []
         
-        selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.frame.width - closeButton.frame.width, itemheight))
-        selectedInfoLabel.textAlignment = NSTextAlignment.Center
-        
-
+        self.itemName = itemsName
         
         var contentHeight:CGFloat = 0
         var i:CGFloat = 0
@@ -93,30 +85,58 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         selectedInfoLabel.text = "\(numberOfItemSelected) \(itemName)s selected"
         
         scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
+        
         self.addSubview(selectedInfoLabel)
-        self.addSubview(closeButton)
+        
+        self.addSubview(scrollView)
         
     }
     
-    func unselectAllItem()
+    func initValues( )
     {
-        for item in checkItems
-        {
-            item.checked = false
-            item.checkBoxView.setTitle("◽️", forState: UIControlState.Normal)
-        }
-        delegate.reloadMarks(getItemsAsArray())
+        let itemheight:CGFloat = 40
+
     }
+    
+    func addItem(title:String,value:String)
+    {
+        let itemheight:CGFloat = 40
+        var contentHeight:CGFloat = 0
+        
+        let newTagCheckItem = CheckItemView(frame: CGRectMake(0, 0, self.frame.width, itemheight), title: title, value:value ,checked:true)
+        newTagCheckItem.delegate = self
+        //checkItems.append(newTagCheckItem)
+        scrollView.addSubview(newTagCheckItem)
+        
+        contentHeight = newTagCheckItem.frame.maxY
+        var itemsChecked = 1
+        var i:CGFloat = 1
+        for tagItem in checkItems
+        {
+            tagItem.frame = CGRectMake(0, itemheight * i, self.frame.width, itemheight)
+            if tagItem.checked
+            {
+                itemsChecked++
+            }
+            contentHeight = tagItem.frame.maxY
+            i++
+        }
+        
+        selectedInfoLabel.text = "\(itemsChecked) \(itemName)s selected"
+        scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
+        
+    }
+    
     
     func checkChanged()
     {
-        let selectedTags = getItemsAsArray()
+        let selectedTags = getItemsValueAsArray()
         delegate.reloadMarks(selectedTags)
         
         selectedInfoLabel.text = "\(selectedTags.count) \(itemName)s selected"
     }
     
-    func getItemsAsArray() -> [String]
+    func getItemsValueAsArray() -> [String]
     {
         var returnValue:[String] = []
         for item in checkItems
@@ -130,13 +150,4 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     }
     
     
-    func closeAction()
-    {
-        let selectedTags = getItemsAsArray()
-        delegate.reloadMarks(selectedTags)
-        
-        selectedInfoLabel.text = "\(selectedTags.count) \(itemName)s selected"
-        delegate!.closeCheckView(self)
-        
-    }
 }

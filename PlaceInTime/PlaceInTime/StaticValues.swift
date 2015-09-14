@@ -31,5 +31,5 @@ enum eventType: Int
 
 enum gameType: Int
 {
-    case training = 0, challenge
+    case training = 0, makingChallenge = 1, takingChallenge = 2
 }
