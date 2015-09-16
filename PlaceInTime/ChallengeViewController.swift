@@ -89,9 +89,6 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 {
                     self.initUserFriends()
                 }
-
-                
-                
             }
             else
             {
@@ -127,8 +124,9 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 self.userName = userName
                 let userId2 = result.valueForKey("id") as! String
                 println("UserId2 is: \(userId2)")
-                self.userId = userId2
-                
+                //self.userId = userId2
+                //self.userId = "1492605914370841"
+                self.userId = "10155943015600858"
                 if self.gametype == gameType.takingChallenge
                 {
                     self.initChallenges()
@@ -204,13 +202,16 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         let scrollViewHeight =  addRandomUserButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
         var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
 
+        /*
         let values:[String:String] = ["#war":"#war","#headOfState":"#headOfState","#science":"#science","#discovery":"#discovery","#invention":"#invention","#sport":"#sport","#miscellaneous":"#miscellaneous"]
+        */
         
-        self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:values, itemsChecked:false)
+        self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:initialValues, itemsChecked:false)
         self.usersToChallengeScrollView.delegate = self
         self.usersToChallengeScrollView.alpha = 1
         self.view.addSubview(self.usersToChallengeScrollView)
-
+        
+        addRandomUserAction()
 
     }
 
@@ -249,8 +250,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         
         
         
-        //var jsonDictionary = ["fbid":userId,"name":userName]
-        var jsonDictionary = ["fbid":"10155943015600858","name":userName]
+        var jsonDictionary = ["fbid":userId,"name":userName]
+        //var jsonDictionary = ["fbid":"10155943015600858","name":userName]
         
         self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
@@ -269,8 +270,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                     for item in array {
                         println("item : \(item)")
                         if let jsonDictionary = item as? NSDictionary {
-                            let title = jsonDictionary["title"]
-                            self.challengeScrollView.addItem(title as! String,value: jsonDictionary)
+                            let title = jsonDictionary["title"] as! String
+                            self.challengeScrollView.addItem(title,value: jsonDictionary)
                             //println("\(title!)")
                         }
                     }
@@ -339,17 +340,56 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         })
     }
     
+    var randomUsersAdded = 0
     func addRandomUserAction()
     {
-        addRandomUserButton.alpha = 0
-        self.usersToChallengeScrollView.addItem("julia test", value: "123456")
+        randomUsersAdded++
+        if randomUsersAdded > 2
+        {
+            addRandomUserButton.alpha = 0
+        }
+        let userUsed:String = usersToChallengeScrollView.getAllItemsValueAsStringFormat()
+        
+        var jsonDictionary = ["fbid":userId,"name":userName,"usedusers":userUsed]
+        
+        self.client!.invokeAPI("randomuser", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+            
+            if error != nil
+            {
+                println("\(error)")
+            }
+            if result != nil
+            {
+                //Note ! root json object is not a dictionary but an array
+                
+                var e: NSError?
+                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(result, options: nil, error: &e)
+                {
+                    if let jsonDictionary = json as? NSDictionary { // Check 3
+                        println("Dictionary received")
+                        let name = jsonDictionary["name"] as! String
+                        let fbId = jsonDictionary["fbid"] as! String
+                        self.usersToChallengeScrollView.addItem("\(name) (random user)", value: fbId)
+                    }
+                }
+                
+            }
+            if response != nil
+            {
+                println("\(response)")
+            }
+        })
+
+        
+        
+        //self.usersToChallengeScrollView.addItem("julia test", value: "123456")
     }
     
     func playAction()
     {
         if self.gametype == gameType.makingChallenge
         {
-            usersToChallenge = self.usersToChallengeScrollView.getItemsValueAsArray()
+            usersToChallenge = self.usersToChallengeScrollView.getCheckedItemsValueAsArray()
             
             if usersToChallenge.count < 1
             {

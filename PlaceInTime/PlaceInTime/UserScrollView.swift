@@ -105,12 +105,12 @@ class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         
         let newTagCheckItem = CheckItemView(frame: CGRectMake(0, 0, self.frame.width, itemheight), title: title, value:value ,checked:true)
         newTagCheckItem.delegate = self
-        //checkItems.append(newTagCheckItem)
+        checkItems.insert(newTagCheckItem, atIndex: 0)
         scrollView.addSubview(newTagCheckItem)
         
         contentHeight = newTagCheckItem.frame.maxY
-        var itemsChecked = 1
-        var i:CGFloat = 1
+        var itemsChecked = 0
+        var i:CGFloat = 0
         for tagItem in checkItems
         {
             tagItem.frame = CGRectMake(0, itemheight * i, self.frame.width, itemheight)
@@ -130,13 +130,13 @@ class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     
     func checkChanged()
     {
-        let selectedTags = getItemsValueAsArray()
+        let selectedTags = getCheckedItemsValueAsArray()
         delegate.reloadMarks(selectedTags)
         
         selectedInfoLabel.text = "\(selectedTags.count) \(itemName)s selected"
     }
     
-    func getItemsValueAsArray() -> [String]
+    func getCheckedItemsValueAsArray() -> [String]
     {
         var returnValue:[String] = []
         for item in checkItems
@@ -149,5 +149,18 @@ class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         return returnValue
     }
     
+    func getAllItemsValueAsStringFormat() -> String
+    {
+        var returnValue:String = ""
+        if checkItems.count > 0
+        {
+            for item in checkItems
+            {
+                returnValue = "\(returnValue)\(item.value),"
+            }
+        }
+        returnValue = dropLast(returnValue)
+        return returnValue
+    }
     
 }

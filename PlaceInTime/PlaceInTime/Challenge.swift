@@ -10,6 +10,7 @@ import Foundation
 
 class Challenge {
 
+    var id:String!
     var fbIdToBeat:String!
     //var questions:[[HistoricEvent]]!
     var questionBlocks:[[Int]] = []
@@ -19,6 +20,7 @@ class Challenge {
     
     init(values:NSDictionary)
     {
+        id = values["challengeId"] as! String
         fbIdToBeat = values["fbIdToBeat"] as! String
         pointsToBeat = values["pointsToBeat"] as! Int
         correctAnswersToBeat = values["correctAnswersToBeat"] as! Int

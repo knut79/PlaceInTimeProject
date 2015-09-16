@@ -310,9 +310,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateYears(var i:Int,completion: (() -> (Void)))
     {
-        //animateRemoveOneDropzone(0,completion: {() -> Void in
-        
-
         var label = UILabel(frame: dropZones[i]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
@@ -500,7 +497,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateCorrectSequence()
     {
-        var points = 1 * (numberOfDropZones - (minNumDropZones - 1))
+        var points = 1 //1 * (numberOfDropZones - (minNumDropZones - 1))
         
 
         
@@ -1170,7 +1167,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             var svc = segue!.destinationViewController as! FinishedViewController
             svc.completedQuestionsIds = completedQuestionsIds
             svc.usersIdsToChallenge = usersIdsToChallenge
-            svc.challengeName = "\(self.myIdAndName) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString()))"
+            svc.challengeName = "\(self.myIdAndName.1) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString()))"
             svc.userFbId = myIdAndName.0
             svc.correctAnswers = gameStats.lovePoints
             svc.points = gameStats.okPoints

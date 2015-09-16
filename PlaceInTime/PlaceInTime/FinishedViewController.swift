@@ -19,7 +19,6 @@ class FinishedViewController:UIViewController {
     var correctAnswers:Int!
     var points:Int!
     var gametype:gameType!
-    var challengeid:String = ""
     var challengeToBeat:Challenge!
     var client: MSClient?
     
@@ -57,7 +56,7 @@ class FinishedViewController:UIViewController {
         activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         activityLabel.textAlignment = NSTextAlignment.Center
         
-        self.view.addSubview(sendingChallengeLabel)
+        self.view.addSubview(activityLabel)
         
         
         if gametype == gameType.makingChallenge
@@ -77,10 +76,12 @@ class FinishedViewController:UIViewController {
             resultChallengeLabel.text = "Result of challenge \(challengeName)"
             self.view.addSubview(resultChallengeLabel)
             
-            
-            resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
-            resultLabel.numberOfLines = 5
+            let resultLabelHeight = backToMenuButton.frame.minX - resultChallengeLabel.frame.maxX
+            resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
+            resultLabel.numberOfLines = 7
+            resultLabel.backgroundColor = UIColor.grayColor()
             resultLabel.textAlignment = NSTextAlignment.Center
+            resultLabel.sizeToFit()
             self.view.addSubview(resultLabel)
             
             
@@ -103,18 +104,18 @@ class FinishedViewController:UIViewController {
     
     func youLostChallenge()
     {
-        resultLabel.text = "You lost 😖/n" +
-            "\(correctAnswers) correct answers" + "/n\(points) points" +
-            "against" +
-            "\(challengeToBeat.correctAnswersToBeat) correct answers" + "/n\(challengeToBeat.pointsToBeat) points"
+        resultLabel.text = "You lost 😖\n\n" +
+            "\(correctAnswers) correct answers" + "\n\(points) points" +
+            "\nagainst" +
+            "\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
     }
     
     func youWonChallenge()
     {
-        resultLabel.text = "You won 😆/n" +
-        "\(correctAnswers) correct answers" + "/n\(points) points" +
-        "against" +
-        "\(challengeToBeat.correctAnswersToBeat) correct answers" + "/n\(challengeToBeat.pointsToBeat) points"
+        resultLabel.text = "You won 😆\n\n" +
+        "\(correctAnswers) correct answers" + "\n\(points) points" +
+        "\nagainst" +
+        "\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
     }
     
     func test1()
@@ -137,81 +138,7 @@ class FinishedViewController:UIViewController {
             
         })
     }
-    
-    func test2()
-    {
-        var jsonDictionary = ["id":challengeName]
-        //var completion = MSAPIDataBlock
-        
 
-        
-        self.client!.invokeAPI("DynamicChallenge", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
-            
-            if error != nil
-            {
-                println("\(error)")
-            }
-            if result != nil
-            {
-                println("\(result)")
-            }
-            if response != nil
-            {
-                println("\(response)")
-            }
-        })
-    }
-    
-    func test3()
-    {
-        var jsonDictionary = ["level":"1"]
-        self.client!.invokeAPI("test", data: nil, HTTPMethod: "POST", parameters: jsonDictionary, headers: nil, completion: { (data:NSData!, response:NSHTTPURLResponse!, error:NSError?) -> Void in
-            if error != nil
-            {
-                println("Error \(error)")
-            }
-        })
-    }
-    
-    func testRandomUser()
-    {
-        var jsonDictionary = ["id":"6744567","usedusers":"123;345;678"]
-        self.client!.invokeAPI("randomuser", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
-            
-            if error != nil
-            {
-                println("\(error)")
-            }
-            if result != nil
-            {
-                println("\(result)")
-            }
-            if response != nil
-            {
-                println("\(response)")
-            }
-        })
-    }
-    
-    func testNewUser()
-    {
-        var jsonDictionary = ["fbid":"111222333","name":"knut dullumsen"]
-        self.client!.invokeAPI("adduser", data: nil, HTTPMethod: "POST", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
-            
-            if error != nil
-            {
-                println("\(error)")
-            }
-            if result != nil
-            {
-                println("\(result)")
-            }
-            if response != nil
-            {
-                println("\(response)")
-            }
-        })
-    }
     
     func newChallenge()
     {
@@ -226,15 +153,17 @@ class FinishedViewController:UIViewController {
             
             if error != nil
             {
-                backToMenuButton.alpha = 1
-                activityLabel.text = "\(error)"
+                self.backToMenuButton.alpha = 1
+                self.activityLabel.text = "\(error)"
             }
             if result != nil
             {
                 println("\(result)")
                 
-                backToMenuButton.alpha = 1
-                activityLabel.alpha = 0
+                self.backToMenuButton.alpha = 1
+                //self.activityLabel.alpha = 0
+                
+                self.activityLabel.text = self.usersIdsToChallenge.count > 1 ? "Challenge sendt to \(self.usersIdsToChallenge.count) users" : "Challenge sendt to \(self.usersIdsToChallenge.count) user"
             }
             if response != nil
             {
@@ -245,20 +174,20 @@ class FinishedViewController:UIViewController {
     
     func respondToChallenge()
     {
-        var jsonDictionary = ["userfbid":userFbId,"challengeid":challengeid,"resultpoints":points,"resultcorrect":correctAnswers]
+        var jsonDictionary = ["userfbid":userFbId,"challengeid":challengeToBeat.id,"resultpoints":points,"resultcorrect":correctAnswers]
         self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
-                backToMenuButton.alpha = 1
-                activityLabel.text = "\(error)"
+                self.backToMenuButton.alpha = 1
+                self.activityLabel.text = "\(error)"
             }
             if result != nil
             {
                 println("\(result)")
                 
-                backToMenuButton.alpha = 1
-                activityLabel.alpha = 0
+                self.backToMenuButton.alpha = 1
+                self.activityLabel.alpha = 0
             }
             if response != nil
             {
@@ -304,12 +233,9 @@ class FinishedViewController:UIViewController {
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromFinishedToMainMenu") {
             var svc = segue!.destinationViewController as! MainMenuViewController
-            if gameStats.newValues()
-            {
-                svc.updateGlobalGameStats = true
-                svc.newGameStatsValues = (points,0,correctAnswers)
-                //svc.imagefile = currentImagefile
-            }
+
+            svc.updateGlobalGameStats = true
+            svc.newGameStatsValues = (points,0,correctAnswers)
         }
 
     }
