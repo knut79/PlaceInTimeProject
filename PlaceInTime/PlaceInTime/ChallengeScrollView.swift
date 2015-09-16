@@ -47,7 +47,6 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
     var scrollView:UIScrollView!
     
     var delegate:UserViewProtocol!
-    var selectedInfoLabel:UILabel!
     var itemName:String!
     
     required init(coder aDecoder: NSCoder) {
@@ -59,10 +58,9 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
         super.init(frame: frame)
         
         let itemheight:CGFloat = 40
-        selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.bounds.width, itemheight))
-        selectedInfoLabel.textAlignment = NSTextAlignment.Center
+
         
-        scrollView = UIScrollView(frame: CGRectMake(0, selectedInfoLabel.frame.height, self.bounds.width, self.bounds.height - selectedInfoLabel.frame.height))
+        scrollView = UIScrollView(frame: CGRectMake(0, 0, self.bounds.width, self.bounds.height ))
         
         scrollView.delegate = self
         
@@ -87,20 +85,35 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
             contentHeight = newTagCheckItem.frame.maxY
             i++
         }
-        let numberOfItemSelected = itemsChecked ? items.count : 0
-        selectedInfoLabel.text = "\(numberOfItemSelected) \(itemName)s selected"
+
         
         scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
-        
-        self.addSubview(selectedInfoLabel)
-        
+      
         self.addSubview(scrollView)
         
     }
     
-    func initValues( )
+    func addItem(title:String,value:NSDictionary)
     {
         let itemheight:CGFloat = 40
+        var contentHeight:CGFloat = 0
+        
+        let newTagCheckItem = RadiobuttonItemView(frame: CGRectMake(0, 0, self.frame.width, itemheight), title: title, value:value ,checked:true)
+        newTagCheckItem.delegate = self
+        radiobuttonItems.append(newTagCheckItem)
+        scrollView.addSubview(newTagCheckItem)
+        
+        contentHeight = newTagCheckItem.frame.maxY
+
+        var i:CGFloat = 0
+        for tagItem in radiobuttonItems
+        {
+            tagItem.frame = CGRectMake(0, itemheight * i, self.frame.width, itemheight)
+            contentHeight = tagItem.frame.maxY
+            i++
+        }
+        
+        scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
         
     }
     
@@ -115,14 +128,14 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
 
     }
     
-    func getItemsValueAsArray() -> [NSDictionary]
+    func getSelectedValue() -> NSDictionary?
     {
-        var returnValue:[NSDictionary] = []
+        var returnValue:NSDictionary?
         for item in radiobuttonItems
         {
             if item.checked
             {
-                returnValue.append(item.value)
+                returnValue = item.value
             }
         }
         return returnValue

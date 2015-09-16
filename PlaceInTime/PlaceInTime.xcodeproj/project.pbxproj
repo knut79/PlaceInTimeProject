@@ -13,6 +13,7 @@
 		725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DB1BA63315002FE589 /* UserScrollView.swift */; };
 		725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */; };
 		725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */; };
+		725249E21BA747DF002FE589 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249E11BA747DF002FE589 /* Challenge.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -60,6 +61,7 @@
 		725249DB1BA63315002FE589 /* UserScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserScrollView.swift; sourceTree = "<group>"; };
 		725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeScrollView.swift; sourceTree = "<group>"; };
 		725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadiobuttonItemView.swift; sourceTree = "<group>"; };
+		725249E11BA747DF002FE589 /* Challenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				725249CF1B9F0D53002FE589 /* FinishedViewController.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
 				725249D41BA46FDE002FE589 /* SwiftyJSON.swift */,
+				725249E11BA747DF002FE589 /* Challenge.swift */,
 			);
 			path = PlaceInTime;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				725249E21BA747DF002FE589 /* Challenge.swift in Sources */,
 				725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */,
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,

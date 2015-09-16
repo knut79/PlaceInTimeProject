@@ -21,6 +21,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     var userName:String!
     
     var usersToChallengeScrollView:UserScrollView!
+    var challengeScrollView:ChallengeScrollView!
     var gametype:gameType!
     
     var playButton:UIButton!
@@ -217,7 +218,40 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     
     func initChallenges()
     {
-        var jsonDictionary = ["fbid":userId,"name":userName]
+        
+        let margin:CGFloat = 10
+        let elementWidth:CGFloat = 200
+        let elementHeight:CGFloat = 40
+        titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
+        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.text = "Pick a challenge"
+        view.addSubview(titleLabel)
+
+        
+        self.playButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
+        self.playButton.addTarget(self, action: "playAction", forControlEvents: UIControlEvents.TouchUpInside)
+        self.playButton.backgroundColor = UIColor.blueColor()
+        self.playButton.layer.cornerRadius = 5
+        self.playButton.layer.masksToBounds = true
+        self.playButton.setTitle("Play", forState: UIControlState.Normal)
+        self.view.addSubview(self.playButton)
+        
+        
+        let scrollViewHeight =  playButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
+        var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
+        
+
+        
+        self.challengeScrollView = ChallengeScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight), itemsChecked:false)
+        //self.challengeScrollView.delegate = self
+        self.challengeScrollView.alpha = 1
+        self.view.addSubview(self.challengeScrollView)
+        
+        
+        
+        //var jsonDictionary = ["fbid":userId,"name":userName]
+        var jsonDictionary = ["fbid":"10155943015600858","name":userName]
+        
         self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
@@ -234,6 +268,11 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 if let array = jsonArray {
                     for item in array {
                         println("item : \(item)")
+                        if let jsonDictionary = item as? NSDictionary {
+                            let title = jsonDictionary["title"]
+                            self.challengeScrollView.addItem(title as! String,value: jsonDictionary)
+                            //println("\(title!)")
+                        }
                     }
                     
                 } else {
@@ -242,12 +281,33 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
 
                 
                 /*
+                challengeId = "b1e050dc-e28f-47d9-a7a8-4fb9bbe4a3c0";
+                correctAnswersToBeat = 2;
+                fbIdToBeat = 1492605914370841;
+                pointsToBeat = 40;
+                questionsStringFormat = "187,55,49;240,22,30;136,239,139";
+                title = "(1492605914370841, Temp Tempesen) 1-2 )";
+                */
+                
+                /*
                 var error: NSError?
                 if let JSONData = result { // Check 1
                     if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(JSONData, options: nil, error: &error) { // Check 2
+                        
+                        if let array = json as? NSArray
+                        {
+                                for item in array {
+                                    println("item : \(item)")
+                                    if let jsonDictionary = item as? NSDictionary { // Check 3
+                                        println("\(jsonDictionary[0])")
+                                    }
+                                }
+                        }
+                        
                         if let jsonDictionary = json as? NSDictionary { // Check 3
                             println("Dictionary received")
                         }
+
                         else {
                             if let jsonString = NSString(data: JSONData, encoding: NSUTF8StringEncoding) {
                                 println("JSON String: \n\n \(jsonString)")
@@ -263,26 +323,18 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                     fatalError("JSONData is nil")
                 }
                 */
-                
-                
 
-                let json = JSON(result!)
                 /*
                 if let appName = json["feed"]["entry"][0]["im:name"]["label"].string {
                     println("SwiftyJSON: \(appName)")
                 }
                 */
 
-                
-                let test2 = json[0][0]
-                println("test2 \(test2)")
 
             }
             if response != nil
             {
                 println("\(response)")
-                let json = JSON(result)
-                println("\(json)")
             }
         })
     }
@@ -323,6 +375,10 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 self.performSegueWithIdentifier("segueFromChallengeToPlay", sender: nil)
             }
         }
+        else if self.gametype == gameType.takingChallenge
+        {
+            self.performSegueWithIdentifier("segueFromChallengeToPlay", sender: nil)
+        }
         
     }
     
@@ -336,6 +392,11 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             if self.gametype == gameType.makingChallenge
             {
                 svc.usersIdsToChallenge = self.usersToChallenge
+            }
+            else if self.gametype == gameType.takingChallenge
+            {
+                var values = self.challengeScrollView.getSelectedValue()
+                svc.challenge = Challenge(values: values!)
             }
             
             svc.myIdAndName = (self.userId,self.userName)

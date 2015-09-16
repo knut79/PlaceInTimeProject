@@ -42,6 +42,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var numOfQuestionsForRound:Int = 3
     var myIdAndName:(String,String)!
     
+    var challenge:Challenge!
+    
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -177,11 +179,17 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             item.removeFromSuperview()
         }
 
-        datactrl.shuffleEvents()
-        randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
-        
+        if gametype == gameType.takingChallenge
+        {
+            randomHistoricEvents = datactrl.fetchHistoricEventOnIds(challenge.getNextQuestionBlock())!
 
-        
+        }
+        else
+        {
+            datactrl.shuffleEvents()
+            randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
+        }
+
         animateNewCardInCardStack(0)
     }
     
@@ -1167,6 +1175,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             svc.correctAnswers = gameStats.lovePoints
             svc.points = gameStats.okPoints
             svc.gametype = gametype
+            if gametype == gameType.takingChallenge
+            {
+                svc.challengeToBeat = challenge
+            }
         }
     }
     

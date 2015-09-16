@@ -917,6 +917,40 @@ class DataHandler
         */
     }
     
+    
+    func fetchHistoricEventOnIds(ids:[Int]) -> [HistoricEvent]?
+    {
+        
+        let fetchEvents = NSFetchRequest(entityName: "HistoricEvent")
+
+        //let predicate = NSPredicate(format: "titlenumber contains %@", "Worst")
+        // Set the predicate on the fetch request
+        //let predicate = NSPredicate(format: "periods.@count > 0 AND level >= \(fromLevel) AND level <= \(toLevel)")
+        //let predicate = NSPredicate(format: "tags  MATCHES '.*(#war|#curiosa).*'")
+        var predicateIds:String = "{"
+
+        for item in ids
+        {
+            predicateIds = "\(predicateIds)\(item),"
+        }
+        
+        predicateIds = dropLast(predicateIds)
+        predicateIds = "\(predicateIds)}"
+        //predicateIds.removeAtIndex(predicateIds.startIndex)
+
+        let predicate = NSPredicate(format: "idForUpdate IN \(predicateIds)") //NSPredicate(format: "idForUpdate IN \(predicateIds)")
+        //let predicate = tags == "" ? NSPredicate(format: "periods.@count > 0 AND level >= \(fromLevel) AND level <= \(toLevel)") : NSPredicate(format: "ANY tags == \(tags)")
+        fetchEvents.predicate = predicate
+        
+        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchEvents, error: nil) as? [HistoricEvent] {
+            return fetchResults
+        }
+        else
+        {
+            return nil
+        }
+    }
+    
     let DataPopulatedKey = "DataPopulated"
     let OkScoreKey = "OkScore"
     let GoodScoreKey = "GoodScore"

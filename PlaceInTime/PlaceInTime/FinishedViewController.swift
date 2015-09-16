@@ -20,8 +20,14 @@ class FinishedViewController:UIViewController {
     var points:Int!
     var gametype:gameType!
     var challengeid:String = ""
-    
+    var challengeToBeat:Challenge!
     var client: MSClient?
+    
+    var activityLabel:UILabel!
+    var backToMenuButton:UIButton!
+    
+    
+    var resultLabel:UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,28 +41,80 @@ class FinishedViewController:UIViewController {
             applicationKey:"EPexqUWpxpiDBffWuGuiNUgjgTzeMz22"
         )
         */
+        let margin:CGFloat = 20
+        let elementWidth:CGFloat = 200
+        let elementHeight:CGFloat = 40
+        backToMenuButton = UIButton(frame:CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
+        backToMenuButton.addTarget(self, action: "backToMenuAction", forControlEvents: UIControlEvents.TouchUpInside)
+        backToMenuButton.backgroundColor = UIColor.blueColor()
+        backToMenuButton.layer.cornerRadius = 5
+        backToMenuButton.layer.masksToBounds = true
+        backToMenuButton.setTitle("Back to menu", forState: UIControlState.Normal)
+        backToMenuButton.alpha = 0
+        self.view.addSubview(self.backToMenuButton)
+        
+        activityLabel = UILabel(frame: CGRectMake(0, 0, 400, 50))
+        activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        activityLabel.textAlignment = NSTextAlignment.Center
+        
+        self.view.addSubview(sendingChallengeLabel)
+        
         
         if gametype == gameType.makingChallenge
         {
             newChallenge()
-            var sendingChallengeLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
-            sendingChallengeLabel.textAlignment = NSTextAlignment.Center
-            sendingChallengeLabel.text = "Sending challenge \(challengeName)"
-            self.view.addSubview(sendingChallengeLabel)
+            activityLabel.text = "Sending challenge \(challengeName)"
         }
         
         if gametype == gameType.takingChallenge
         {
+            
+            activityLabel.text = "Sending result of \(challengeName)"
             respondToChallenge()
-            var resultChallengeLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
+            
+            var resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
             resultChallengeLabel.textAlignment = NSTextAlignment.Center
             resultChallengeLabel.text = "Result of challenge \(challengeName)"
             self.view.addSubview(resultChallengeLabel)
+            
+            
+            resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
+            resultLabel.numberOfLines = 5
+            resultLabel.textAlignment = NSTextAlignment.Center
+            self.view.addSubview(resultLabel)
+            
+            
+            //sending result
+            
+            if correctAnswers > challengeToBeat.correctAnswersToBeat
+            {
+                youWonChallenge()
+            }
+            else if correctAnswers == challengeToBeat.correctAnswersToBeat && points > challengeToBeat.pointsToBeat
+            {
+                youWonChallenge()
+            }
+            else
+            {
+                youLostChallenge()
+            }
         }
-        
-        
-        
-        
+    }
+    
+    func youLostChallenge()
+    {
+        resultLabel.text = "You lost 😖/n" +
+            "\(correctAnswers) correct answers" + "/n\(points) points" +
+            "against" +
+            "\(challengeToBeat.correctAnswersToBeat) correct answers" + "/n\(challengeToBeat.pointsToBeat) points"
+    }
+    
+    func youWonChallenge()
+    {
+        resultLabel.text = "You won 😆/n" +
+        "\(correctAnswers) correct answers" + "/n\(points) points" +
+        "against" +
+        "\(challengeToBeat.correctAnswersToBeat) correct answers" + "/n\(challengeToBeat.pointsToBeat) points"
     }
     
     func test1()
@@ -168,11 +226,15 @@ class FinishedViewController:UIViewController {
             
             if error != nil
             {
-                println("\(error)")
+                backToMenuButton.alpha = 1
+                activityLabel.text = "\(error)"
             }
             if result != nil
             {
                 println("\(result)")
+                
+                backToMenuButton.alpha = 1
+                activityLabel.alpha = 0
             }
             if response != nil
             {
@@ -183,26 +245,27 @@ class FinishedViewController:UIViewController {
     
     func respondToChallenge()
     {
-        var questionIds:String = questionsToFormattedString()
-        //var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIds":toIdsArray,"questions":questionsArray]
-        var toIds:String = usersToCommaseparatedString()
-        //var dataPass = .dataWithJSONObject(toIdsArray, options: NSJSONWritingOptions.allZeros, error: nil)
-        //var dataTest = NSJSONSerialization.dataWithJSONObject(
-        var jsonDictionary = ["userfbid":userFbId,"challengeid":"?????","resultpoints":points,"resultcorrect":correctAnswers]
+        var jsonDictionary = ["userfbid":userFbId,"challengeid":challengeid,"resultpoints":points,"resultcorrect":correctAnswers]
         self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
-                println("\(error)")
+                backToMenuButton.alpha = 1
+                activityLabel.text = "\(error)"
             }
             if result != nil
             {
                 println("\(result)")
+                
+                backToMenuButton.alpha = 1
+                activityLabel.alpha = 0
             }
             if response != nil
             {
                 println("\(response)")
             }
+            
+            
         })
     }
     
@@ -231,6 +294,24 @@ class FinishedViewController:UIViewController {
         }
         return dropLast(returnString)
         
+    }
+    
+    func backToMenuAction()
+    {
+        self.performSegueWithIdentifier("segueFromFinishedToMainMenu", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
+        if (segue.identifier == "segueFromFinishedToMainMenu") {
+            var svc = segue!.destinationViewController as! MainMenuViewController
+            if gameStats.newValues()
+            {
+                svc.updateGlobalGameStats = true
+                svc.newGameStatsValues = (points,0,correctAnswers)
+                //svc.imagefile = currentImagefile
+            }
+        }
+
     }
     
     /*
