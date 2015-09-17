@@ -411,6 +411,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
 
     }
     
+    func resultAction()
+    {
+        self.performSegueWithIdentifier("segueFromResultsToMainMenu", sender: nil)
+    }
+    
     func challengeAction()
     {
 
@@ -445,6 +450,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 
         })
     }
+
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {

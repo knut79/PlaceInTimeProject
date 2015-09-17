@@ -41,11 +41,33 @@
                     <connections>
                         <segue destination="dTh-fT-S3s" kind="presentation" identifier="segueFromMainMenuToPlay" id="63O-fR-NDE"/>
                         <segue destination="gzN-MP-Diw" kind="presentation" identifier="segueFromMainMenuToChallenge" id="6xT-Lo-54a"/>
+                        <segue destination="9os-fc-eWF" kind="presentation" identifier="segueFromResultsToMainMenu" id="d6x-Dh-kHk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="36" y="1109"/>
+        </scene>
+        <!--Results View Controller-->
+        <scene sceneID="oYy-H0-DyL">
+            <objects>
+                <viewController id="9os-fc-eWF" customClass="ResultsViewController" customModule="PlaceInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="On9-qr-jxH"/>
+                        <viewControllerLayoutGuide type="bottom" id="DZs-b7-lEi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uVs-Xt-9L4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromMainMenuToResults" id="AFh-lT-X9G"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6EK-ek-kEy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="751" y="1335"/>
         </scene>
         <!--Play View Controller-->
         <scene sceneID="Kim-Ue-D5T">
@@ -92,7 +114,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="AFh-lT-X9G"/>
         <segue reference="63O-fR-NDE"/>
-        <segue reference="QVb-hx-74A"/>
     </inferredMetricsTieBreakers>
 </document>

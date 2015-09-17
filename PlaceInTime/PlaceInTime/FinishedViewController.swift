@@ -24,8 +24,6 @@ class FinishedViewController:UIViewController {
     
     var activityLabel:UILabel!
     var backToMenuButton:UIButton!
-    
-    
     var resultLabel:UILabel!
     
     override func viewDidLoad() {
@@ -81,7 +79,7 @@ class FinishedViewController:UIViewController {
             resultLabel.numberOfLines = 7
             resultLabel.backgroundColor = UIColor.grayColor()
             resultLabel.textAlignment = NSTextAlignment.Center
-            resultLabel.sizeToFit()
+            resultLabel.adjustsFontSizeToFitWidth = true
             self.view.addSubview(resultLabel)
             
             

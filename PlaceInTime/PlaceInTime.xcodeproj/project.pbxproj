@@ -14,6 +14,10 @@
 		725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */; };
 		725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */; };
 		725249E21BA747DF002FE589 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249E11BA747DF002FE589 /* Challenge.swift */; };
+		728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */; };
+		728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */; };
+		728BAE791BAA2D3800BD4DB4 /* ResultItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */; };
+		728BAE7E1BAACEF600BD4DB4 /* ResultTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE7D1BAACEF600BD4DB4 /* ResultTitleLabel.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -62,6 +66,10 @@
 		725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeScrollView.swift; sourceTree = "<group>"; };
 		725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadiobuttonItemView.swift; sourceTree = "<group>"; };
 		725249E11BA747DF002FE589 /* Challenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
+		728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsScrollView.swift; sourceTree = "<group>"; };
+		728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultItemView.swift; sourceTree = "<group>"; };
+		728BAE7D1BAACEF600BD4DB4 /* ResultTitleLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTitleLabel.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -124,8 +132,35 @@
 				725249DB1BA63315002FE589 /* UserScrollView.swift */,
 				725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */,
 				725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */,
+				728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */,
+				728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */,
+				728BAE7D1BAACEF600BD4DB4 /* ResultTitleLabel.swift */,
 			);
 			name = ListViews;
+			sourceTree = "<group>";
+		};
+		728BAE7A1BAA370900BD4DB4 /* Finished */ = {
+			isa = PBXGroup;
+			children = (
+				725249CF1B9F0D53002FE589 /* FinishedViewController.swift */,
+			);
+			name = Finished;
+			sourceTree = "<group>";
+		};
+		728BAE7B1BAA371300BD4DB4 /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */,
+			);
+			name = Results;
+			sourceTree = "<group>";
+		};
+		728BAE7C1BAA377A00BD4DB4 /* Challenge */ = {
+			isa = PBXGroup;
+			children = (
+				72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */,
+			);
+			name = Challenge;
 			sourceTree = "<group>";
 		};
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
@@ -170,6 +205,9 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				728BAE7C1BAA377A00BD4DB4 /* Challenge */,
+				728BAE7B1BAA371300BD4DB4 /* Results */,
+				728BAE7A1BAA370900BD4DB4 /* Finished */,
 				725249D61BA50C76002FE589 /* ListViews */,
 				72C789841B9A6AD2002A2BBA /* Frameworks */,
 				72D1928B1B93279A0035CE11 /* Slider */,
@@ -182,7 +220,6 @@
 				72E8E77B1B7B70720011FE47 /* PlaceInTime.xcdatamodeld */,
 				72E8E7771B7B70720011FE47 /* Supporting Files */,
 				72E8E7A11B7B73D90011FE47 /* DataHandler.swift */,
-				72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */,
 				72E8E7A61B7B762C0011FE47 /* StaticValues.swift */,
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
 				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
@@ -190,7 +227,6 @@
 				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
 				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
 				72D192941B9728980035CE11 /* ClockView.swift */,
-				725249CF1B9F0D53002FE589 /* FinishedViewController.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
 				725249D41BA46FDE002FE589 /* SwiftyJSON.swift */,
 				725249E11BA747DF002FE589 /* Challenge.swift */,
@@ -343,9 +379,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				728BAE7E1BAACEF600BD4DB4 /* ResultTitleLabel.swift in Sources */,
 				725249E21BA747DF002FE589 /* Challenge.swift in Sources */,
 				725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */,
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
+				728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
@@ -362,10 +400,12 @@
 				72E8E7AB1B7B7AA00011FE47 /* PlayViewController.swift in Sources */,
 				72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */,
 				725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */,
+				728BAE791BAA2D3800BD4DB4 /* ResultItemView.swift in Sources */,
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
 				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,
 				72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */,
+				728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */,
 				72D192911B9327BE0035CE11 /* RangeWindowsLayer.swift in Sources */,
 				72E8E7AD1B7DFD220011FE47 /* Card.swift in Sources */,
 			);
