@@ -163,6 +163,18 @@
 			name = Challenge;
 			sourceTree = "<group>";
 		};
+		728BAE7F1BAB133D00BD4DB4 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
+				72E8E7AC1B7DFD220011FE47 /* Card.swift */,
+				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
+				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
+				72D192941B9728980035CE11 /* ClockView.swift */,
+			);
+			name = Play;
+			sourceTree = "<group>";
+		};
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +217,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				728BAE7F1BAB133D00BD4DB4 /* Play */,
 				728BAE7C1BAA377A00BD4DB4 /* Challenge */,
 				728BAE7B1BAA371300BD4DB4 /* Results */,
 				728BAE7A1BAA370900BD4DB4 /* Finished */,
@@ -222,11 +235,6 @@
 				72E8E7A11B7B73D90011FE47 /* DataHandler.swift */,
 				72E8E7A61B7B762C0011FE47 /* StaticValues.swift */,
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
-				72E8E7AA1B7B7AA00011FE47 /* PlayViewController.swift */,
-				72E8E7AC1B7DFD220011FE47 /* Card.swift */,
-				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
-				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
-				72D192941B9728980035CE11 /* ClockView.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
 				725249D41BA46FDE002FE589 /* SwiftyJSON.swift */,
 				725249E11BA747DF002FE589 /* Challenge.swift */,

@@ -9,8 +9,9 @@
 import Foundation
 import FBSDKLoginKit
 
+
 class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
-    
+    let datactrl = DataHandler()
     var client: MSClient?
     var activityLabel:UILabel!
     let backButton = UIButton()
@@ -22,6 +23,10 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //TEST
+        datactrl.addRecordToGameResults("--ptest--")
+        datactrl.saveGameData()
         
         self.client = (UIApplication.sharedApplication().delegate as! AppDelegate).client
         
@@ -81,6 +86,18 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             // Handle cancellations
         }
         else {
+            
+            println("fetched user: \(result)")
+            let userName : String = result.valueForKey("name") as! String
+            println("User Name is: \(userName)")
+            self.userName = userName
+            let userId2 = result.valueForKey("id") as! String
+            println("UserId2 is: \(userId2)")
+            self.userId = userId2
+            
+            
+            self.initElements()
+            
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             if result.grantedPermissions.contains("user_friends")

@@ -787,6 +787,12 @@ class DataHandler
         loveScoreID = Int(loveScoreID as! NSNumber) + deltaLovePoints
     }
     
+    func addRecordToGameResults(value:String)
+    {
+        self.gameResultsID.insertObject(value, atIndex: 0)
+    }
+
+    
     func getRandomHistoricEventsWithPrecision(precisionYears:Int, numEvents:Int) -> [HistoricEvent]
     {
         var historicEventsWithPrecision:[HistoricEvent] = []
@@ -958,6 +964,7 @@ class DataHandler
     let TagsKey = "Tags"
     let LevelKey = "Level"
     let EventsUpdateKey = "EventsUpdate"
+    let GameResultsKey = "GameResults"
     
     var dataPopulatedID:AnyObject = 0
     var okScoreID:AnyObject = 0
@@ -966,6 +973,8 @@ class DataHandler
     var tagsID:AnyObject = 0
     var levelID:AnyObject = 0
     var eventsUpdateID:AnyObject = 0
+    
+    var gameResultsID:NSMutableArray = []
     
     func loadGameData() {
         // getting path to GameData.plist
@@ -1001,6 +1010,7 @@ class DataHandler
             tagsID = dict.objectForKey(TagsKey)!
             levelID = dict.objectForKey(LevelKey)!
             eventsUpdateID = dict.objectForKey(EventsUpdateKey)!
+            gameResultsID = dict.objectForKey(GameResultsKey)! as! NSMutableArray
         } else {
             println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
         }
@@ -1019,6 +1029,8 @@ class DataHandler
         dict.setObject(tagsID, forKey: TagsKey)
         dict.setObject(levelID, forKey: LevelKey)
         dict.setObject(eventsUpdateID, forKey: EventsUpdateKey)
+        
+        dict.setObject(gameResultsID, forKey: GameResultsKey)
         //writing to GameData.plist
         dict.writeToFile(path, atomically: false)
         let resultDictionary = NSMutableDictionary(contentsOfFile: path)
