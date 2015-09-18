@@ -789,7 +789,8 @@ class DataHandler
     
     func addRecordToGameResults(value:String)
     {
-        self.gameResultsID.insertObject(value, atIndex: 0)
+        //self.gameResultsID.insertObject(value, atIndex: 0)
+        self.gameResultsID.append(value)
     }
 
     
@@ -974,7 +975,7 @@ class DataHandler
     var levelID:AnyObject = 0
     var eventsUpdateID:AnyObject = 0
     
-    var gameResultsID:NSMutableArray = []
+    var gameResultsID:[AnyObject] = []
     
     func loadGameData() {
         // getting path to GameData.plist
@@ -1010,7 +1011,7 @@ class DataHandler
             tagsID = dict.objectForKey(TagsKey)!
             levelID = dict.objectForKey(LevelKey)!
             eventsUpdateID = dict.objectForKey(EventsUpdateKey)!
-            gameResultsID = dict.objectForKey(GameResultsKey)! as! NSMutableArray
+            gameResultsID = dict.objectForKey(GameResultsKey)! as! [AnyObject]
         } else {
             println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
         }

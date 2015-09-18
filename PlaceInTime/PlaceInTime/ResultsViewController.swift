@@ -24,9 +24,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //TEST
-        datactrl.addRecordToGameResults("--ptest--")
-        datactrl.saveGameData()
+
         
         self.client = (UIApplication.sharedApplication().delegate as! AppDelegate).client
         
@@ -70,7 +68,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
                 self.userId = userId2
                 
                 
-                self.initElements()
+                self.initAndCollect()
                 
                 result
             }
@@ -96,7 +94,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             self.userId = userId2
             
             
-            self.initElements()
+            self.initAndCollect()
             
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
@@ -111,6 +109,12 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             
             
         }
+    }
+    
+    func initAndCollect()
+    {
+        initElements()
+        collectNewResults()
     }
     
     
@@ -158,7 +162,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     {
         
         //FB LOGIN
-        var jsonDictionary = ["fbid":"123123"]
+        var jsonDictionary = ["fbid":self.userId]
         
         self.client!.invokeAPI("collectchallenges", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
@@ -171,8 +175,12 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
                 var e: NSError?
                 var jsonArray = NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers, error: &e) as? NSArray
                 
-                self.saveChallengeToPlist(jsonArray as! [NSDictionary])
+                if jsonArray?.count > 0
+                {
+                    self.saveChallengeToPlist(jsonArray as! [NSDictionary])
+                }
                 self.activityLabel.alpha = 0
+                self.collectStoredResults()
                 
             }
             if response != nil
@@ -184,12 +192,44 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func collectStoredResults()
     {
+        var noValues = true
+        datactrl.loadGameData()
+        for record in datactrl.gameResultsID
+        {
+            let arrayOfValues = record.componentsSeparatedByString(",")
+            if arrayOfValues.count == 5
+            {
+                let myCorrectAnswers = arrayOfValues[0] as! Int
+                let myPoints = arrayOfValues[1] as! Int
+                let name = arrayOfValues[2] as! String
+                let opponentCorrectAnswers = arrayOfValues[3] as! Int
+                let opponentPoints = arrayOfValues[4] as! Int
+                resultsScrollView.addItem(myCorrectAnswers, myPoints: myPoints, opponentName: name, opponentCS: opponentCorrectAnswers, opponentPoints: opponentPoints)
+                
+                noValues = true
+            }
+        }
+        if noValues
+        {
+            self.activityLabel.alpha = 1
+            self.activityLabel.text = "No results😑 Challenge other players😊"
+        }
         
     }
     
     func saveChallengeToPlist(values:[NSDictionary])
     {
-        
+        for item in values
+        {
+            let myCorrectAnswers = item["mycorrectanswers"] as! Int
+            let myPoints = item["mypoints"] as! Int
+            let name = item["opponentsname"] as! String
+            let opponentCorrectAnswers = item["opponentcorrectanswers"] as! Int
+            let opponentPoints = item["opponentpoints"] as! Int
+            var valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints)"
+            datactrl.addRecordToGameResults(valuesStringFormat)
+        }
+        datactrl.saveGameData()
     }
     
     func backAction()

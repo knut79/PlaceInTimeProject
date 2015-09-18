@@ -202,12 +202,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/ResultsViewController.swift"
-            timestampString = "464196843.139178"
+            timestampString = "464290053.281054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "loginButton(_:didCompleteWithResult:error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/DataHandler.swift"
+            timestampString = "464279602.909502"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1034"
+            endingLineNumber = "1034"
+            landmarkName = "saveGameData()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/DataHandler.swift"
+            timestampString = "464279602.909502"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1014"
+            endingLineNumber = "1014"
+            landmarkName = "loadGameData()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/ResultsScrollView.swift"
+            timestampString = "464279949.029358"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "init(frame:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -218,12 +266,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/ResultsViewController.swift"
-            timestampString = "464197192.592349"
+            timestampString = "464293192.990721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "loginButton(_:didCompleteWithResult:error:)"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "collectStoredResults()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -233,14 +281,62 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/DataHandler.swift"
-            timestampString = "464197347.205159"
+            filePath = "PlaceInTime/ResultsViewController.swift"
+            timestampString = "464293192.990721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1033"
-            endingLineNumber = "1033"
-            landmarkName = "saveGameData()"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "collectNewResults()"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/ResultsViewController.swift"
+            timestampString = "464290276.351085"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "collectNewResults()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaceInTime.ResultsViewController.collectNewResults (PlaceInTime.ResultsViewController)() -&gt; ()"
+                  moduleName = "PlaceInTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/ResultsViewController.swift"
+                  timestampString = "464293083.963132"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "167"
+                  endingLineNumber = "167"
+                  offsetFromSymbolStart = "240">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaceInTime.ResultsViewController.(collectNewResults (PlaceInTime.ResultsViewController) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "PlaceInTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/ResultsViewController.swift"
+                  timestampString = "464293083.963337"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "169"
+                  endingLineNumber = "169"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -249,13 +345,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/DataHandler.swift"
-            timestampString = "464197539.825848"
+            filePath = "PlaceInTime/ResultsViewController.swift"
+            timestampString = "464293192.990721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1013"
-            endingLineNumber = "1013"
-            landmarkName = "loadGameData()"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
+            landmarkName = "collectNewResults()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

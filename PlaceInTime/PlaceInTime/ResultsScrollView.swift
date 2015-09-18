@@ -100,8 +100,10 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         
         
         self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
+        self.layer.borderColor = UIColor.blueColor().CGColor
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 5.0
         
 
         items = []
