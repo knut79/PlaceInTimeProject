@@ -19,11 +19,12 @@
                     </view>
                     <connections>
                         <segue destination="dTh-fT-S3s" kind="presentation" identifier="segueFromChallengeToPlay" id="XHW-7Q-S9W"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromChallengeToMainMenu" id="aLd-4E-9zH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vyD-Xs-Yck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="154" y="309"/>
+            <point key="canvasLocation" x="110" y="211"/>
         </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -62,7 +63,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromMainMenuToResults" id="AFh-lT-X9G"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="segueFromResultsToMainMenu" id="AFh-lT-X9G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6EK-ek-kEy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -114,7 +115,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="AFh-lT-X9G"/>
-        <segue reference="63O-fR-NDE"/>
+        <segue reference="aLd-4E-9zH"/>
+        <segue reference="XHW-7Q-S9W"/>
     </inferredMetricsTieBreakers>
 </document>

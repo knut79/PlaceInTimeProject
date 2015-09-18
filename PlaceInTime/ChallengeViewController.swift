@@ -25,6 +25,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     var gametype:gameType!
     
     var playButton:UIButton!
+    var backButton = UIButton()
+    var activityLabel:UILabel!
     var addRandomUserButton:UIButton!
     var titleLabel:UILabel!
     
@@ -44,10 +46,6 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             if self.gametype == gameType.makingChallenge
             {
                 self.initUserFriends()
-            }
-            else if self.gametype == gameType.takingChallenge
-            {
-                
             }
         }
         else
@@ -124,9 +122,9 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 self.userName = userName
                 let userId2 = result.valueForKey("id") as! String
                 println("UserId2 is: \(userId2)")
-                //self.userId = userId2
+                self.userId = userId2
                 //self.userId = "1492605914370841"
-                self.userId = "10155943015600858"
+                //self.userId = "10155943015600858"
                 if self.gametype == gameType.takingChallenge
                 {
                     self.initChallenges()
@@ -164,23 +162,10 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         })
     }
     
-    func initForNewChallenge(friendObjects:[NSDictionary])
+    func initCommonElements(margin:CGFloat,elementWidth:CGFloat,elementHeight:CGFloat)
     {
-        var initialValues:[String:String] = [:]
-        for friendObject in friendObjects {
-            initialValues.updateValue(friendObject.valueForKey("id") as! String, forKey: friendObject.valueForKey("name") as! String )
-        }
-
-        
-        let margin:CGFloat = 10
-        let elementWidth:CGFloat = 200
-        let elementHeight:CGFloat = 40
         titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.text = "Challenge users"
-        view.addSubview(titleLabel)
-        
-        
         
         
         self.playButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
@@ -189,7 +174,42 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         self.playButton.layer.cornerRadius = 5
         self.playButton.layer.masksToBounds = true
         self.playButton.setTitle("Play", forState: UIControlState.Normal)
-        self.view.addSubview(self.playButton)
+        
+        
+        activityLabel = UILabel(frame: CGRectMake(0, 0, 400, 50))
+        activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        activityLabel.textAlignment = NSTextAlignment.Center
+
+        
+
+        let backButtonMargin:CGFloat = 15
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+        backButton.backgroundColor = UIColor.whiteColor()
+        backButton.layer.borderColor = UIColor.grayColor().CGColor
+        backButton.layer.borderWidth = 1
+        backButton.layer.cornerRadius = 5
+        backButton.layer.masksToBounds = true
+        backButton.setTitle("🔙", forState: UIControlState.Normal)
+        backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+        
+    }
+    
+    func initForNewChallenge(friendObjects:[NSDictionary])
+    {
+        var initialValues:[String:String] = [:]
+        for friendObject in friendObjects {
+            initialValues.updateValue(friendObject.valueForKey("id") as! String, forKey: friendObject.valueForKey("name") as! String )
+        }
+
+        let margin:CGFloat = 10
+        let elementWidth:CGFloat = 200
+        let elementHeight:CGFloat = 40
+
+        self.initCommonElements(margin,elementWidth: elementWidth,elementHeight: elementHeight)
+        
+        titleLabel.text = "Challenge users"
+        
+        
         
         addRandomUserButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, playButton.frame.minY - margin - elementHeight, elementWidth , elementHeight))
         self.addRandomUserButton.addTarget(self, action: "addRandomUserAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -197,24 +217,36 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         self.addRandomUserButton.layer.cornerRadius = 5
         self.addRandomUserButton.layer.masksToBounds = true
         self.addRandomUserButton.setTitle("Add random user", forState: UIControlState.Normal)
-        self.view.addSubview(self.addRandomUserButton)
+
         
         let scrollViewHeight =  addRandomUserButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
         var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
-
-        /*
-        let values:[String:String] = ["#war":"#war","#headOfState":"#headOfState","#science":"#science","#discovery":"#discovery","#invention":"#invention","#sport":"#sport","#miscellaneous":"#miscellaneous"]
-        */
-        
         self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:initialValues, itemsChecked:false)
         self.usersToChallengeScrollView.delegate = self
         self.usersToChallengeScrollView.alpha = 1
-        self.view.addSubview(self.usersToChallengeScrollView)
         
-        addRandomUserAction()
-
+        view.addSubview(titleLabel)
+        view.addSubview(playButton)
+        view.addSubview(backButton)
+        view.addSubview(addRandomUserButton)
+        view.addSubview(usersToChallengeScrollView)
+        view.addSubview(activityLabel)
+        
+        if friendObjects.count == 0
+        {
+            
+            addRandomUser( { () in
+                self.activityLabel.alpha = 1
+                self.activityLabel.text = "No facebook friends with this app😢"
+            })
+        }
+        else
+        {
+            activityLabel.alpha = 0
+        }
+        
+        
     }
-
     
     
     func initChallenges()
@@ -223,32 +255,23 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         let margin:CGFloat = 10
         let elementWidth:CGFloat = 200
         let elementHeight:CGFloat = 40
-        titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
-        titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.text = "Pick a challenge"
-        view.addSubview(titleLabel)
 
+        self.initCommonElements(margin,elementWidth: elementWidth,elementHeight: elementHeight)
         
-        self.playButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
-        self.playButton.addTarget(self, action: "playAction", forControlEvents: UIControlEvents.TouchUpInside)
-        self.playButton.backgroundColor = UIColor.blueColor()
-        self.playButton.layer.cornerRadius = 5
-        self.playButton.layer.masksToBounds = true
-        self.playButton.setTitle("Play", forState: UIControlState.Normal)
-        self.view.addSubview(self.playButton)
-        
-        
+        titleLabel.text = "Pick a challenge"
+        activityLabel.text = "Collecting challenges..."
+
         let scrollViewHeight =  playButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
         var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
-        
-
-        
         self.challengeScrollView = ChallengeScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight), itemsChecked:false)
         //self.challengeScrollView.delegate = self
         self.challengeScrollView.alpha = 1
-        self.view.addSubview(self.challengeScrollView)
         
-        
+        view.addSubview(titleLabel)
+        view.addSubview(playButton)
+        view.addSubview(backButton)
+        view.addSubview(challengeScrollView)
+        view.addSubview(activityLabel)
         
         var jsonDictionary = ["fbid":userId,"name":userName]
         //var jsonDictionary = ["fbid":"10155943015600858","name":userName]
@@ -257,7 +280,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             
             if error != nil
             {
-                println("\(error)")
+                self.activityLabel.text = "\(error)"
             }
             if result != nil
             {
@@ -266,18 +289,24 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 var e: NSError?
                 var jsonArray = NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers, error: &e) as? NSArray
                 
-                if let array = jsonArray {
+                if let array = jsonArray
+                {
                     for item in array {
                         println("item : \(item)")
                         if let jsonDictionary = item as? NSDictionary {
                             let title = jsonDictionary["title"] as! String
                             self.challengeScrollView.addItem(title,value: jsonDictionary)
-                            //println("\(title!)")
+                            
+                            self.activityLabel.alpha = 0
                         }
+                    }
+                    if jsonArray?.count == 0
+                    {
+                        self.activityLabel.text = "No pending challenges from other users😒"
                     }
                     
                 } else {
-                    println("\(e)")
+                    self.activityLabel.text = "\(e)"
                 }
 
                 
@@ -337,15 +366,27 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 println("\(response)")
             }
+            
         })
     }
+    
+    
     
     var randomUsersAdded = 0
     func addRandomUserAction()
     {
+        activityLabel.alpha = 1
+        activityLabel.text = "Collecting random user..."
+        addRandomUser(nil)
+    }
+    
+    func addRandomUser(completionClosure: (() -> Void)? )
+    {
+
         randomUsersAdded++
         if randomUsersAdded > 2
         {
+            activityLabel.alpha = 0
             addRandomUserButton.alpha = 0
         }
         let userUsed:String = usersToChallengeScrollView.getAllItemsValueAsStringFormat()
@@ -378,11 +419,10 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 println("\(response)")
             }
+            self.activityLabel.alpha = 0
+            completionClosure?()
         })
-
         
-        
-        //self.usersToChallengeScrollView.addItem("julia test", value: "123456")
     }
     
     func playAction()
@@ -420,6 +460,11 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             self.performSegueWithIdentifier("segueFromChallengeToPlay", sender: nil)
         }
         
+    }
+    
+    func backAction()
+    {
+        self.performSegueWithIdentifier("segueFromChallengeToMainMenu", sender: nil)
     }
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {

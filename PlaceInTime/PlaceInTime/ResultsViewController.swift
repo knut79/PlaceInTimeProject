@@ -148,11 +148,14 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         activityLabel.text = "Collecting new results..."
         self.view.addSubview(activityLabel)
         
-        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide, 0, smallButtonSide, smallButtonSide)
+        let backButtonMargin:CGFloat = 15
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
         backButton.layer.borderColor = UIColor.grayColor().CGColor
         backButton.layer.borderWidth = 1
-        backButton.setTitle("🔚", forState: UIControlState.Normal)
+        backButton.layer.borderWidth = 1
+        backButton.layer.cornerRadius = 5
+        backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backButton)
 
@@ -234,7 +237,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func backAction()
     {
-        self.performSegueWithIdentifier("segueFromMainMenuToResults", sender: nil)
+        self.performSegueWithIdentifier("segueFromResultsToMainMenu", sender: nil)
     }
     
 }
