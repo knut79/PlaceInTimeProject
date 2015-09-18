@@ -12,6 +12,8 @@ import Foundation
 class ResultItemView: UIView
 {
     var title:String!
+    var stateWin:Int = 0
+    var stateLoss:Int = 0
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -25,13 +27,23 @@ class ResultItemView: UIView
         let titleElementHeight:CGFloat = 40
         
         var state = "Victory"
+        stateWin = 1
         if myCS < opponentCS
         {
+            stateWin = 0
+            stateLoss = 1
             state = "Loss"
         }
         else if myCS == opponentCS && myPoints < opponentPoints
         {
+            stateWin = 0
+            stateLoss = 1
             state = "Loss"
+        }
+        else if myCS == opponentCS && myPoints == opponentPoints
+        {
+            stateWin = 0
+            state = "Draw"
         }
         
         var myStateLabel = UILabel(frame: CGRectMake(margin , 0, secondLevelTitleWidth, titleElementHeight))

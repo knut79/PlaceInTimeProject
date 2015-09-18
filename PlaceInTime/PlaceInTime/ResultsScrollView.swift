@@ -13,6 +13,7 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
     
     var items:[ResultItemView]!
     var scrollView:UIScrollView!
+    var totalResultLabel:UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,14 +33,14 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         var myScoreLabel = ResultTitleLabel(frame: CGRectMake(margin , margin, topLevelTitleWidth, titleElementHeight))
         myScoreLabel.textAlignment = NSTextAlignment.Center
         myScoreLabel.text = "My score"
-        myScoreLabel.adjustsFontSizeToFitWidth = true
+
+        
         self.addSubview(myScoreLabel)
         
         
         var opponentsScoreLabel = ResultTitleLabel(frame: CGRectMake(myScoreLabel.frame.maxX , margin, topLevelTitleWidth, titleElementHeight))
         opponentsScoreLabel.textAlignment = NSTextAlignment.Center
         opponentsScoreLabel.text = "Opponent score"
-        opponentsScoreLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentsScoreLabel)
         
         let secondLevelTitleWidth:CGFloat = (self.bounds.width - ( margin * 2)) / 6
@@ -47,20 +48,17 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         var myStateLabel = ResultTitleLabel(frame: CGRectMake(margin , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         myStateLabel.textAlignment = NSTextAlignment.Center
         myStateLabel.text = "Result"
-        myStateLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(myStateLabel)
         
         var myScoreCorrectSequenceLabel = ResultTitleLabel(frame: CGRectMake(myStateLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         myScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
         myScoreCorrectSequenceLabel.text = "Correct\nsequence"
         myScoreCorrectSequenceLabel.numberOfLines = 2
-        myScoreCorrectSequenceLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(myScoreCorrectSequenceLabel)
         
         var myScorePointsLabel = ResultTitleLabel(frame: CGRectMake(myScoreCorrectSequenceLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         myScorePointsLabel.textAlignment = NSTextAlignment.Center
         myScorePointsLabel.text = "Points"
-        myScorePointsLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(myScorePointsLabel)
         
         
@@ -68,29 +66,32 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         var opponentNameLabel = ResultTitleLabel(frame: CGRectMake(myScorePointsLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         opponentNameLabel.textAlignment = NSTextAlignment.Center
         opponentNameLabel.text = "Name"
-        opponentNameLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentNameLabel)
         
         var opponentScoreCorrectSequenceLabel = ResultTitleLabel(frame: CGRectMake(opponentNameLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         opponentScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
         opponentScoreCorrectSequenceLabel.text = "Correct\nsequence"
         opponentScoreCorrectSequenceLabel.numberOfLines = 2
-        opponentScoreCorrectSequenceLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentScoreCorrectSequenceLabel)
         
         var opponentScorePointsLabel = ResultTitleLabel(frame: CGRectMake(opponentScoreCorrectSequenceLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         opponentScorePointsLabel.textAlignment = NSTextAlignment.Center
         opponentScorePointsLabel.text = "Points"
-        opponentScorePointsLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentScorePointsLabel)
         
         
         
         
-        var totalResultLabel = UILabel(frame: CGRectMake(margin ,self.bounds.height - titleElementHeight , topLevelTitleWidth, titleElementHeight))
-        totalResultLabel.textAlignment = NSTextAlignment.Center
-        totalResultLabel.text = "Victories 3 Losses 1 :)"
-        //opponentScorePointsLabel.adjustsFontSizeToFitWidth = true
+        totalResultLabel = UILabel(frame: CGRectMake(margin ,self.bounds.height - titleElementHeight , self.bounds.width, titleElementHeight))
+        totalResultLabel.textAlignment = NSTextAlignment.Left
+        
+        //😀😎😞
+        totalResultLabel.text = "    Victories 0 Losses 0 😐"
+        //totalResultLabel.layer.borderColor = UIColor.whiteColor().CGColor
+        //totalResultLabel.layer.borderWidth = 2.0
+        totalResultLabel.adjustsFontSizeToFitWidth = true
+        totalResultLabel.backgroundColor = UIColor.blueColor()
+        totalResultLabel.textColor = UIColor.whiteColor()
         self.addSubview(totalResultLabel)
         
         
@@ -140,6 +141,44 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         }
         
         scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
+        
+        
+    }
+    
+    func setResultText()
+    {
+        var wins:Int = 0
+        var losses:Int = 0
+        for item in items
+        {
+            if item.stateWin == 1
+            {
+                wins++
+            }
+            else if item.stateLoss == 1
+            {
+                losses++
+            }
+        }
+        var icon:String = {
+            if wins > 0 && losses == 0
+            {
+                return "😎"
+            }
+            else if wins > losses
+            {
+                return "😀"
+            }
+            else if losses > wins
+            {
+                return "😞"
+            }
+            else
+            {
+                return "😐"
+            }
+        }()
+        totalResultLabel.text = "    Victories \(wins) Losses \(losses) \(icon)"
     }
     
 }

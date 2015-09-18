@@ -16,7 +16,11 @@ class ResultTitleLabel:UILabel {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
+        self.layer.borderColor = UIColor.whiteColor().CGColor
+        self.layer.borderWidth = 1.5
+        
+        self.adjustsFontSizeToFitWidth = true
+        self.backgroundColor = UIColor.blueColor()
+        self.textColor = UIColor.whiteColor()
     }
 }

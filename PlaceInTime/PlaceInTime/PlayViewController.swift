@@ -68,9 +68,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         addDropZone()
 
-        let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.7
-        rightButton = UIButton(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width - rightButtonWidth) / 2, gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, UIScreen.mainScreen().bounds.size.height * 0.4))
-        rightButton.setTitle("OK (this is the right sequence)", forState: UIControlState.Normal)
+        let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.55
+        rightButton = UIButton(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width - rightButtonWidth) / 2, gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, UIScreen.mainScreen().bounds.size.height * 0.25))
+        rightButton.setTitle("OK 👍\nRight sequence", forState: UIControlState.Normal)
         rightButton.backgroundColor = UIColor.blueColor()
         rightButton.addTarget(self, action: "okAction", forControlEvents: UIControlEvents.TouchUpInside)
         rightButton.layer.cornerRadius = 5
@@ -298,7 +298,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     for var i = 0 ; i <  self.dropZones.count ; i++
                     {
                         self.dropZones[i]!.center = CGPointMake(self.dropZones[i]!.center.x, UIScreen.mainScreen().bounds.size.height / 2)
-                        self.dropZones[i]!.getHookedUpCard()!.center = self.dropZones[i]!.center
+                        self.dropZones[i]!.getHookedUpCard()?.center = self.dropZones[i]!.center
                     }
                     
                     
@@ -839,7 +839,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             return
         }
-        
+        self.rightButton.alpha = 0
         var touch = touches.first as? UITouch
         var touchLocation = touch!.locationInView(self.view)
         

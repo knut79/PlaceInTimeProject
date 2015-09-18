@@ -131,6 +131,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         let elementHeight:CGFloat = 40
         titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
         titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.font = UIFont.boldSystemFontOfSize(24)
         titleLabel.text = "Results"
         view.addSubview(titleLabel)
         
