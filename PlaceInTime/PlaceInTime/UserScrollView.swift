@@ -52,18 +52,26 @@ class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     init(frame: CGRect, initialValues:[String:String] = [:], itemsName:String = "item", itemsChecked:Bool = true) {
         super.init(frame: frame)
         
+
+        
         let itemheight:CGFloat = 40
         selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.bounds.width, itemheight))
         selectedInfoLabel.textAlignment = NSTextAlignment.Center
+        selectedInfoLabel.backgroundColor = UIColor.blueColor()
+        selectedInfoLabel.textColor = UIColor.whiteColor()
         
-        scrollView = UIScrollView(frame: CGRectMake(0, selectedInfoLabel.frame.height, self.bounds.width, self.bounds.height - selectedInfoLabel.frame.height))
+        let scrollMarginTop:CGFloat = 6
+        
+        scrollView = UIScrollView(frame: CGRectMake(0, selectedInfoLabel.frame.height + scrollMarginTop, self.bounds.width, self.bounds.height - selectedInfoLabel.frame.height - scrollMarginTop))
         
         scrollView.delegate = self
         
         
         self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
+        self.layer.borderColor = UIColor.blueColor().CGColor
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 5.0
         
         tags = initialValues
         checkItems = []

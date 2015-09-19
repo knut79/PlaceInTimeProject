@@ -16,10 +16,12 @@ class Challenge {
     var questionBlocks:[[Int]] = []
     var pointsToBeat:Int
     var correctAnswersToBeat:Int
+    var title:String
     let datactrl = DataHandler()
     
     init(values:NSDictionary)
     {
+        title = values["title"] as! String
         id = values["challengeId"] as! String
         fbIdToBeat = values["fbIdToBeat"] as! String
         pointsToBeat = values["pointsToBeat"] as! Int

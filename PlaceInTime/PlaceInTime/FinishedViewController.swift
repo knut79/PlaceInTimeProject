@@ -60,7 +60,7 @@ class FinishedViewController:UIViewController {
         if gametype == gameType.makingChallenge
         {
             newChallenge()
-            activityLabel.text = "Sending challenge \(challengeName)"
+            activityLabel.text = "Sending challenge \(challengeName)..."
         }
         
         if gametype == gameType.takingChallenge
@@ -71,15 +71,22 @@ class FinishedViewController:UIViewController {
             
             var resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
             resultChallengeLabel.textAlignment = NSTextAlignment.Center
-            resultChallengeLabel.text = "Result of challenge \(challengeName)"
+            resultChallengeLabel.text = "Result of challenge \(self.challengeToBeat.title)"
+            resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
             self.view.addSubview(resultChallengeLabel)
             
             let resultLabelHeight = backToMenuButton.frame.minX - resultChallengeLabel.frame.maxX
             resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
-            resultLabel.numberOfLines = 7
+            resultLabel.numberOfLines = 9
             resultLabel.backgroundColor = UIColor.grayColor()
             resultLabel.textAlignment = NSTextAlignment.Center
+            resultLabel.textColor = UIColor.whiteColor()
             resultLabel.adjustsFontSizeToFitWidth = true
+            resultLabel.backgroundColor = UIColor.blueColor()
+            resultLabel.layer.borderColor = UIColor.whiteColor().CGColor
+            resultLabel.layer.cornerRadius = 8
+            resultLabel.layer.masksToBounds = true
+            resultLabel.layer.borderWidth = 5.0
             self.view.addSubview(resultLabel)
             
             
@@ -104,16 +111,16 @@ class FinishedViewController:UIViewController {
     {
         resultLabel.text = "You lost 😖\n\n" +
             "\(correctAnswers) correct answers" + "\n\(points) points" +
-            "\nagainst" +
-            "\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
+            "\n\nagainst" +
+            "\n\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
     }
     
     func youWonChallenge()
     {
         resultLabel.text = "You won 😆\n\n" +
         "\(correctAnswers) correct answers" + "\n\(points) points" +
-        "\nagainst" +
-        "\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
+        "\n\nagainst" +
+        "\n\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
     }
     
     func test1()

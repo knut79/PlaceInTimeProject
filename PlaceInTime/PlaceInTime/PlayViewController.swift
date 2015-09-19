@@ -1170,7 +1170,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             var svc = segue!.destinationViewController as! FinishedViewController
             svc.completedQuestionsIds = completedQuestionsIds
             svc.usersIdsToChallenge = usersIdsToChallenge
-            svc.challengeName = "\(self.myIdAndName.1) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString()))"
             svc.userFbId = myIdAndName.0
             svc.correctAnswers = gameStats.lovePoints
             svc.points = gameStats.okPoints
@@ -1178,6 +1177,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             if gametype == gameType.takingChallenge
             {
                 svc.challengeToBeat = challenge
+            }
+            else if gametype == gameType.makingChallenge
+            {
+                svc.challengeName = "\(self.myIdAndName.1) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString())"
             }
         }
     }
@@ -1188,6 +1191,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         for item in tags
         {
             result += item
+        }
+        if result == ""
+        {
+            result = "All categories"
         }
         return result
     }

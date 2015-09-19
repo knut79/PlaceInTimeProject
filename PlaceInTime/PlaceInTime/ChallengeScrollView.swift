@@ -59,15 +59,11 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
         
         let itemheight:CGFloat = 40
 
-        
-        scrollView = UIScrollView(frame: CGRectMake(0, 0, self.bounds.width, self.bounds.height ))
+        let scrollMarginTop:CGFloat = 6
+        scrollView = UIScrollView(frame: CGRectMake(0, scrollMarginTop, self.bounds.width, self.bounds.height - scrollMarginTop))
         
         scrollView.delegate = self
         
-        
-        self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
         
         items = initialValues
         radiobuttonItems = []
@@ -86,6 +82,11 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
             i++
         }
 
+        self.backgroundColor = UIColor.whiteColor()
+        self.layer.borderColor = UIColor.blueColor().CGColor
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 5.0
         
         scrollView.contentSize = CGSizeMake(scrollView.frame.width, contentHeight)
       

@@ -53,6 +53,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             var loginButton: FBSDKLoginButton = FBSDKLoginButton()
             // Optional: Place the button in the center of your view.
             loginButton.center = self.view.center
+            loginButton.delegate = self
             loginButton.readPermissions = ["public_profile", "user_friends"]
             self.view.addSubview(loginButton)
         }
@@ -166,6 +167,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     {
         titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
         titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.font = UIFont.boldSystemFontOfSize(24)
         
         
         self.playButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))

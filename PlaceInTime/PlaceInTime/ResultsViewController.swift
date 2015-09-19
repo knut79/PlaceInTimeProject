@@ -42,6 +42,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             var loginButton: FBSDKLoginButton = FBSDKLoginButton()
             // Optional: Place the button in the center of your view.
             loginButton.center = self.view.center
+            loginButton.delegate = self
             loginButton.readPermissions = ["public_profile", "user_friends"]
             self.view.addSubview(loginButton)
         }
@@ -75,32 +76,26 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         })
     }
     
+    
+    
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         if ((error) != nil)
         {
+            println("Error: \(error)")
             // Process error
         }
         else if result.isCancelled {
+            println("FB login cancelled")
             // Handle cancellations
         }
         else {
             
-            println("fetched user: \(result)")
-            let userName : String = result.valueForKey("name") as! String
-            println("User Name is: \(userName)")
-            self.userName = userName
-            let userId2 = result.valueForKey("id") as! String
-            println("UserId2 is: \(userId2)")
-            self.userId = userId2
-            
-            
-            self.initAndCollect()
-            
+            initUserData()
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             if result.grantedPermissions.contains("user_friends")
             {
-
+                
             }
             else
             {
@@ -203,14 +198,22 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             let arrayOfValues = record.componentsSeparatedByString(",")
             if arrayOfValues.count == 5
             {
-                let myCorrectAnswers = arrayOfValues[0] as! Int
-                let myPoints = arrayOfValues[1] as! Int
+                for item in arrayOfValues
+                {
+                    println("\(item)")
+                }
+                for var i = 0 ; i < 5 ; i++
+                {
+                    println("\(arrayOfValues[i])")
+                }
+                let myCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[0] as! String)
+                let myPoints = NSNumberFormatter().numberFromString(arrayOfValues[1] as! String)
                 let name = arrayOfValues[2] as! String
-                let opponentCorrectAnswers = arrayOfValues[3] as! Int
-                let opponentPoints = arrayOfValues[4] as! Int
-                resultsScrollView.addItem(myCorrectAnswers, myPoints: myPoints, opponentName: name, opponentCS: opponentCorrectAnswers, opponentPoints: opponentPoints)
+                let opponentCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[3] as! String)
+                let opponentPoints = NSNumberFormatter().numberFromString(arrayOfValues[4] as! String)
+                resultsScrollView.addItem(myCorrectAnswers!.integerValue, myPoints: myPoints!.integerValue, opponentName: name, opponentCS: opponentCorrectAnswers!.integerValue, opponentPoints: opponentPoints!.integerValue)
                 
-                noValues = true
+                noValues = false
             }
         }
         if noValues
@@ -218,6 +221,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             self.activityLabel.alpha = 1
             self.activityLabel.text = "No results😑 Challenge other players😊"
         }
+        resultsScrollView.setResultText()
         
     }
     
@@ -227,7 +231,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         {
             let myCorrectAnswers = item["mycorrectanswers"] as! Int
             let myPoints = item["mypoints"] as! Int
-            let name = item["opponentsname"] as! String
+            let name = item["opponentname"] as! String
             let opponentCorrectAnswers = item["opponentcorrectanswers"] as! Int
             let opponentPoints = item["opponentpoints"] as! Int
             var valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints)"

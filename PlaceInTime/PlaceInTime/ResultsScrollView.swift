@@ -85,7 +85,6 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         totalResultLabel = UILabel(frame: CGRectMake(margin ,self.bounds.height - titleElementHeight , self.bounds.width, titleElementHeight))
         totalResultLabel.textAlignment = NSTextAlignment.Left
         
-        //😀😎😞
         totalResultLabel.text = "    Victories 0 Losses 0 😐"
         //totalResultLabel.layer.borderColor = UIColor.whiteColor().CGColor
         //totalResultLabel.layer.borderWidth = 2.0
