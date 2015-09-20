@@ -25,6 +25,10 @@ class HolderView: UIView {
     super.init(frame: frame)
     backgroundColor = Colors.clear
     //backgroundColor = UIColor.blueColor()
+    
+
+    
+    
   }
   
   required init(coder: NSCoder) {

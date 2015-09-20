@@ -46,6 +46,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var tags:[String] = []
     var holderView = HolderView(frame: CGRectZero)
     
+    let logo1 = UILabel()
+    let logo2 = UILabel()
+    let logo3 = UILabel()
+    
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,12 +58,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         datactrl = DataHandler()
         
-        self.canDisplayBannerAds = true
-        bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
-        //bannerView = ADBannerView(frame: CGRectZero)
-        self.view.addSubview(bannerView!)
-        self.bannerView?.delegate = self
-        self.bannerView?.hidden = false
+
         
         challengeUsersButton = UIButton(frame:CGRectZero)
         challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -124,6 +123,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         selectFilterTypeButton.addTarget(self, action: "openFilterList", forControlEvents: UIControlEvents.TouchUpInside)
         selectFilterTypeButton.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         
+        
+        //TODO if first load
+        //DO
         if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
         {
             loadingDataLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
@@ -143,10 +145,18 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             pulseAnimation.delegate = self
             loadingDataView.layer.addAnimation(pulseAnimation, forKey: "asd")
         }
+        
+        //!! populateDataIfNeeded()
+        //END DO
     }
     
     func loadScreenFinished() {
         
+        populateDataIfNeeded()
+    }
+    
+    func populateDataIfNeeded()
+    {
         if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
         {
             
@@ -164,7 +174,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
             setupAfterPopulateData()
         }
-        
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -174,7 +183,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidAppear(animated: Bool) {
         
         
-        
+        //DO at firstLoad
         let boxSize: CGFloat = 100.0
         holderView.frame = CGRect(x: view.bounds.width / 2 - boxSize / 2,
             y: view.bounds.height / 2 - boxSize / 2,
@@ -184,12 +193,65 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         holderView.delegate = self
         view.addSubview(holderView)
         holderView.startAnimation()
+        
+        logo1.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 225, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
+        logo1.textAlignment = NSTextAlignment.Right
+        logo1.textColor = UIColor.whiteColor()
+        logo1.font = UIFont.boldSystemFontOfSize(25)
+        logo1.alpha = 0
+        logo1.text = "Place"
+        
+        self.view.addSubview(logo1)
+        
+        logo2.frame = CGRectMake(logo1.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 50, 50)
+        logo2.textAlignment = NSTextAlignment.Center
+        logo2.textColor = UIColor.whiteColor()
+        logo2.font = UIFont.boldSystemFontOfSize(25)
+        logo2.alpha = 0
+        logo2.text = "In"
+        
+        self.view.addSubview(logo2)
+        
+        logo3.frame = CGRectMake(logo2.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
+        logo3.textAlignment = NSTextAlignment.Left
+        logo3.textColor = UIColor.whiteColor()
+        logo3.font = UIFont.boldSystemFontOfSize(25)
+        logo3.alpha = 0
+        logo3.text = "Time"
+        
+        self.view.addSubview(logo3)
+        
+        logo1.transform = CGAffineTransformScale(logo1.transform, 0.1, 0.1)
+        logo2.transform = CGAffineTransformScale(logo2.transform, 0.1, 0.1)
+        logo3.transform = CGAffineTransformScale(logo3.transform, 0.1, 0.1)
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.logo1.transform = CGAffineTransformIdentity
+            self.logo1.alpha = 1
+            }, completion: { (value: Bool) in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.logo2.transform = CGAffineTransformIdentity
+                    self.logo2.alpha = 1
+                    }, completion: { (value: Bool) in
+                        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                            self.logo3.transform = CGAffineTransformIdentity
+                            self.logo3.alpha = 1
+                            })
+                        
+                })
+                
+        })
+        //END DO
 
     }
     
     func setupAfterPopulateData()
     {
-        
+        self.canDisplayBannerAds = true
+        bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
+        //bannerView = ADBannerView(frame: CGRectZero)
+        self.view.addSubview(bannerView!)
+        self.bannerView?.delegate = self
+        self.bannerView?.hidden = false
         
         levelSlider.alpha = 0
         selectFilterTypeButton.alpha = 0
@@ -225,6 +287,19 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             datactrl.updateGameData(newGameStatsValues.0,deltaGoodPoints: newGameStatsValues.1,deltaLovePoints: newGameStatsValues.2)
             datactrl.saveGameData()
         }
+        
+        //DO if first load
+        challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
+        practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
+        resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.challengeUsersButton.transform = CGAffineTransformIdentity
+            self.practiceButton.transform = CGAffineTransformIdentity
+            self.resultsButton.transform = CGAffineTransformIdentity
+            }, completion: { (value: Bool) in
+        })
+        //END DO
     }
     
     

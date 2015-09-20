@@ -33,9 +33,6 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             // User is already logged in, do work such as go to next view controller.
             
             initUserData()
-            
-            
-
         }
         else
         {
@@ -46,6 +43,17 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             loginButton.readPermissions = ["public_profile", "user_friends"]
             self.view.addSubview(loginButton)
         }
+        
+        let backButtonMargin:CGFloat = 15
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+        backButton.backgroundColor = UIColor.whiteColor()
+        backButton.layer.borderColor = UIColor.grayColor().CGColor
+        backButton.layer.borderWidth = 1
+        backButton.layer.borderWidth = 1
+        backButton.layer.cornerRadius = 5
+        backButton.setTitle("🔙", forState: UIControlState.Normal)
+        backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(backButton)
     }
     
     func initUserData()
@@ -144,6 +152,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         activityLabel.text = "Collecting new results..."
         self.view.addSubview(activityLabel)
         
+        /*
         let backButtonMargin:CGFloat = 15
         backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
@@ -153,7 +162,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         backButton.layer.cornerRadius = 5
         backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(backButton)
+        view.addSubview(backButton)*/
 
     }
     
