@@ -54,7 +54,12 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blueColor()
+        
+        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
+        if firstLaunch
+        {
+            self.view.backgroundColor = UIColor.blueColor()
+        }
         
         datactrl = DataHandler()
         
@@ -124,30 +129,36 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         selectFilterTypeButton.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         
         
-        //TODO if first load
-        //DO
-        if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
+
+        if firstLaunch
         {
-            loadingDataLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
-            loadingDataLabel.text = "Loading data.."
-            loadingDataLabel.textAlignment = NSTextAlignment.Center
-            loadingDataView = UIView(frame: CGRectMake(50, 50, 200, 50))
-            loadingDataView.backgroundColor = UIColor.redColor()
-            loadingDataView.addSubview(loadingDataLabel)
-            self.view.addSubview(loadingDataView)
-            
-            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
-            pulseAnimation.duration = 0.3
-            pulseAnimation.toValue = NSNumber(float: 0.3)
-            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            pulseAnimation.autoreverses = true
-            pulseAnimation.repeatCount = 100
-            pulseAnimation.delegate = self
-            loadingDataView.layer.addAnimation(pulseAnimation, forKey: "asd")
+
+
+            if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
+            {
+                loadingDataLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
+                loadingDataLabel.text = "Loading data.."
+                loadingDataLabel.textAlignment = NSTextAlignment.Center
+                loadingDataView = UIView(frame: CGRectMake(50, 50, 200, 50))
+                loadingDataView.backgroundColor = UIColor.redColor()
+                loadingDataView.addSubview(loadingDataLabel)
+                self.view.addSubview(loadingDataView)
+                
+                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
+                pulseAnimation.duration = 0.3
+                pulseAnimation.toValue = NSNumber(float: 0.3)
+                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                pulseAnimation.autoreverses = true
+                pulseAnimation.repeatCount = 100
+                pulseAnimation.delegate = self
+                loadingDataView.layer.addAnimation(pulseAnimation, forKey: "asd")
+            }
         }
-        
-        //!! populateDataIfNeeded()
-        //END DO
+        else
+        {
+            setupAfterPopulateData()
+        }
+
     }
     
     func loadScreenFinished() {
@@ -184,62 +195,68 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         
         //DO at firstLoad
-        let boxSize: CGFloat = 100.0
-        holderView.frame = CGRect(x: view.bounds.width / 2 - boxSize / 2,
-            y: view.bounds.height / 2 - boxSize / 2,
-            width: boxSize,
-            height: boxSize)
-        holderView.parentFrame = view.frame
-        holderView.delegate = self
-        view.addSubview(holderView)
-        holderView.startAnimation()
-        
-        logo1.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 225, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
-        logo1.textAlignment = NSTextAlignment.Right
-        logo1.textColor = UIColor.whiteColor()
-        logo1.font = UIFont.boldSystemFontOfSize(25)
-        logo1.alpha = 0
-        logo1.text = "Place"
-        
-        self.view.addSubview(logo1)
-        
-        logo2.frame = CGRectMake(logo1.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 50, 50)
-        logo2.textAlignment = NSTextAlignment.Center
-        logo2.textColor = UIColor.whiteColor()
-        logo2.font = UIFont.boldSystemFontOfSize(25)
-        logo2.alpha = 0
-        logo2.text = "In"
-        
-        self.view.addSubview(logo2)
-        
-        logo3.frame = CGRectMake(logo2.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
-        logo3.textAlignment = NSTextAlignment.Left
-        logo3.textColor = UIColor.whiteColor()
-        logo3.font = UIFont.boldSystemFontOfSize(25)
-        logo3.alpha = 0
-        logo3.text = "Time"
-        
-        self.view.addSubview(logo3)
-        
-        logo1.transform = CGAffineTransformScale(logo1.transform, 0.1, 0.1)
-        logo2.transform = CGAffineTransformScale(logo2.transform, 0.1, 0.1)
-        logo3.transform = CGAffineTransformScale(logo3.transform, 0.1, 0.1)
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.logo1.transform = CGAffineTransformIdentity
-            self.logo1.alpha = 1
-            }, completion: { (value: Bool) in
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.logo2.transform = CGAffineTransformIdentity
-                    self.logo2.alpha = 1
-                    }, completion: { (value: Bool) in
-                        UIView.animateWithDuration(0.2, animations: { () -> Void in
-                            self.logo3.transform = CGAffineTransformIdentity
-                            self.logo3.alpha = 1
-                            })
-                        
-                })
-                
-        })
+        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
+        if firstLaunch
+        {
+            let boxSize: CGFloat = 100.0
+            holderView.frame = CGRect(x: view.bounds.width / 2 - boxSize / 2,
+                y: view.bounds.height / 2 - boxSize / 2,
+                width: boxSize,
+                height: boxSize)
+            holderView.parentFrame = view.frame
+            holderView.delegate = self
+            view.addSubview(holderView)
+            holderView.startAnimation()
+            
+            logo1.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 225, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
+            logo1.textAlignment = NSTextAlignment.Right
+            logo1.textColor = UIColor.whiteColor()
+            logo1.font = UIFont.boldSystemFontOfSize(25)
+            logo1.alpha = 0
+            logo1.text = "Place"
+            
+            self.view.addSubview(logo1)
+            
+            logo2.frame = CGRectMake(logo1.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 50, 50)
+            logo2.textAlignment = NSTextAlignment.Center
+            logo2.textColor = UIColor.whiteColor()
+            logo2.font = UIFont.boldSystemFontOfSize(25)
+            logo2.alpha = 0
+            logo2.text = "In"
+            
+            self.view.addSubview(logo2)
+            
+            logo3.frame = CGRectMake(logo2.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
+            logo3.textAlignment = NSTextAlignment.Left
+            logo3.textColor = UIColor.whiteColor()
+            logo3.font = UIFont.boldSystemFontOfSize(25)
+            logo3.alpha = 0
+            logo3.text = "Time"
+            
+            self.view.addSubview(logo3)
+            
+            logo1.transform = CGAffineTransformScale(logo1.transform, 0.1, 0.1)
+            logo2.transform = CGAffineTransformScale(logo2.transform, 0.1, 0.1)
+            logo3.transform = CGAffineTransformScale(logo3.transform, 0.1, 0.1)
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.logo1.transform = CGAffineTransformIdentity
+                self.logo1.alpha = 1
+                }, completion: { (value: Bool) in
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.logo2.transform = CGAffineTransformIdentity
+                        self.logo2.alpha = 1
+                        }, completion: { (value: Bool) in
+                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                self.logo3.transform = CGAffineTransformIdentity
+                                self.logo3.alpha = 1
+                                })
+                            
+                    })
+                    
+            })
+            
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstlaunch")
+        }
         //END DO
 
     }

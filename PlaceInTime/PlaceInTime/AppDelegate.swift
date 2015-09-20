@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstlaunch")
+        
         application.statusBarHidden = true
         self.client = MSClient(
             applicationURLString:"https://placeintime.azure-mobile.net/",

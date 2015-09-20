@@ -57,6 +57,17 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             loginButton.readPermissions = ["public_profile", "user_friends"]
             self.view.addSubview(loginButton)
         }
+        
+        let backButtonMargin:CGFloat = 15
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+        backButton.backgroundColor = UIColor.whiteColor()
+        backButton.layer.borderColor = UIColor.grayColor().CGColor
+        backButton.layer.borderWidth = 1
+        backButton.layer.cornerRadius = 5
+        backButton.layer.masksToBounds = true
+        backButton.setTitle("🔙", forState: UIControlState.Normal)
+        backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(backButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -183,7 +194,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         activityLabel.textAlignment = NSTextAlignment.Center
 
         
-
+/*
         let backButtonMargin:CGFloat = 15
         backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
@@ -193,7 +204,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         backButton.layer.masksToBounds = true
         backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
-        
+  */
     }
     
     func initForNewChallenge(friendObjects:[NSDictionary])
@@ -229,7 +240,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         
         view.addSubview(titleLabel)
         view.addSubview(playButton)
-        view.addSubview(backButton)
+        //view.addSubview(backButton)
         view.addSubview(addRandomUserButton)
         view.addSubview(usersToChallengeScrollView)
         view.addSubview(activityLabel)
