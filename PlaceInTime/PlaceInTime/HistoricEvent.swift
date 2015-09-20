@@ -24,6 +24,8 @@ class HistoricEvent: NSManagedObject {
     @NSManaged var level:Int16
     @NSManaged var tags:String
     
+    @NSManaged var used:Int32
+    
     @NSManaged var idForUpdate:Int16
     
     //added on picture with coordinates on parent filepoint
@@ -40,6 +42,7 @@ class HistoricEvent: NSManagedObject {
         newitem.okScore = 0
         newitem.goodScore = 0
         newitem.loveScore = 0
+        newitem.used = 0
         return newitem
     }
     
@@ -56,6 +59,7 @@ class HistoricEvent: NSManagedObject {
         newitem.okScore = 0
         newitem.goodScore = 0
         newitem.loveScore = 0
+        newitem.used = 0
         return newitem
     }
     

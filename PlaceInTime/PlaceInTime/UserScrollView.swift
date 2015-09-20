@@ -167,7 +167,7 @@ class UserScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
                 returnValue = "\(returnValue)\(item.value),"
             }
         }
-        returnValue = dropLast(returnValue)
+        //returnValue = dropLast(returnValue)
         return returnValue
     }
     

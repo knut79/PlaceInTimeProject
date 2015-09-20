@@ -189,9 +189,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         else
         {
-            datactrl.shuffleEvents()
+            //DONT shuffle, if will mess up the used sorting
+            //datactrl.shuffleEvents()
             randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
         }
+        
+        for historicEvent in randomHistoricEvents
+        {
+            historicEvent.used++
+        }
+        datactrl.save()
 
         animateNewCardInCardStack(0)
     }
@@ -245,14 +252,22 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func getRandomRotation() -> CGFloat
     {
-        var randomNum = Int(arc4random()) % 3
+        var randomNum = Int(arc4random_uniform(UInt32(5)))
         if randomNum == 0
         {
             return -0.05
         }
         else if randomNum == 1
         {
+            return -0.025
+        }
+        else if randomNum == 2
+        {
             return 0
+        }
+        else if randomNum == 3
+        {
+            return 0.025
         }
         else
         {
@@ -262,7 +277,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func getRandomOffset() -> CGFloat
     {
-        var randomNum = Int(arc4random()) % 3
+        var randomNum = Int(arc4random_uniform(UInt32(3)))
         if randomNum == 0
         {
             return 1.5

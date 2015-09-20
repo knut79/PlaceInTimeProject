@@ -391,7 +391,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             activityLabel.alpha = 0
             addRandomUserButton.alpha = 0
         }
-        let userUsed:String = usersToChallengeScrollView.getAllItemsValueAsStringFormat()
+        var userUsed:String = usersToChallengeScrollView.getAllItemsValueAsStringFormat()
+        userUsed = "\(userUsed)\(self.userId)"
         
         var jsonDictionary = ["fbid":userId,"name":userName,"usedusers":userUsed]
         

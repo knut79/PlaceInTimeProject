@@ -794,19 +794,26 @@ class DataHandler
     }
 
     
-    func getRandomHistoricEventsWithPrecision(precisionYears:Int, numEvents:Int) -> [HistoricEvent]
+    func getRandomHistoricEventsWithPrecision(var precisionYears:Int, numEvents:Int) -> [HistoricEvent]
     {
+        //this value is used to ensure events used less than others have a better chance of being used
+        var getValuesFromIndexCount = UInt32(Double(historicEventItems.count) * 0.75)
+        var failSafePercision:Int = 10
+        var failSafeIndexCount:UInt32 = UInt32(historicEventItems.count)
+        
         var historicEventsWithPrecision:[HistoricEvent] = []
-        var randomNum = Int(arc4random()) % historicEventItems.count
-        var event = historicEventItems![randomNum] as HistoricEvent
-        historicEventsWithPrecision.append(event)
+        //var randomNum:Int = Int(arc4random_uniform(UInt32(getValuesFromIndexCount)))
+        //var event = historicEventItems![randomNum] as HistoricEvent
+        //historicEventsWithPrecision.append(event)
 
+        var roundsBeforeFailSafe = 10
         var notAcceptableValues = false
         do{
             historicEventsWithPrecision = []
             for var i = 0 ; i < numEvents ; i++
             {
-                randomNum = Int(arc4random()) % historicEventItems.count
+                //randomNum = Int(arc4random()) % historicEventItems.count
+                let randomNum = Int(arc4random_uniform(UInt32(getValuesFromIndexCount)))
                 var event = historicEventItems![randomNum] as HistoricEvent
                 historicEventsWithPrecision.append(event)
                 
@@ -846,6 +853,18 @@ class DataHandler
         
                 }
             }
+            
+            if roundsBeforeFailSafe <= 0
+            {
+                getValuesFromIndexCount = failSafeIndexCount
+                precisionYears = failSafePercision
+                failSafeIndexCount = failSafeIndexCount <= 5 ? failSafeIndexCount : failSafeIndexCount - 1
+            }
+            else
+            {
+                roundsBeforeFailSafe--
+            }
+        
         }while(notAcceptableValues)
         return historicEventsWithPrecision
     }
@@ -907,6 +926,8 @@ class DataHandler
         let predicate = NSPredicate(format: "level >= \(fromLevel) AND level <= \(toLevel) AND tags  MATCHES '.*(\(predicateTags)).*'")
         //let predicate = tags == "" ? NSPredicate(format: "periods.@count > 0 AND level >= \(fromLevel) AND level <= \(toLevel)") : NSPredicate(format: "ANY tags == \(tags)")
         fetchEvents.predicate = predicate
+        
+        fetchEvents.sortDescriptors = [NSSortDescriptor(key: "used", ascending: true)]
         
         if let fetchResults = managedObjectContext!.executeFetchRequest(fetchEvents, error: nil) as? [HistoricEvent] {
             historicEventItems = fetchResults
