@@ -5,7 +5,7 @@
 //  Created by knut on 12/08/15.
 //  Copyright (c) 2015 knut. All rights reserved.
 //
-
+import AVFoundation
 import UIKit
 import iAd
 
@@ -43,6 +43,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var myIdAndName:(String,String)!
     
     var challenge:Challenge!
+    
+    var audioPlayer = AVAudioPlayer()
+    var cardInnSoundAudioPlayer = AVAudioPlayer()
+    var cardOutSoundAudioPlayer = AVAudioPlayer()
+    var timeIsUpSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("timeUp", ofType: "mp3")!)
+    var dealCardSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("dealingCard", ofType: "wav")!)
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
@@ -131,6 +137,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateTimeout()
     {
+        var error:NSError?
+        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.timeIsUpSound, error: &error)
+        self.audioPlayer.enableRate = true
+        self.audioPlayer.volume = 0.6
+        self.audioPlayer.numberOfLoops = 0
+        self.audioPlayer.prepareToPlay()
+        self.audioPlayer.play()
+        
+        
         view.bringSubviewToFront(clock)
         UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             
@@ -200,6 +215,14 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         datactrl.save()
 
+        var error:NSError?
+        self.cardInnSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.dealCardSound, error: &error)
+        self.cardInnSoundAudioPlayer.enableRate = true
+        self.cardInnSoundAudioPlayer.numberOfLoops = 0// randomHistoricEvents.count
+        self.cardInnSoundAudioPlayer.rate = 3
+        self.cardInnSoundAudioPlayer.prepareToPlay()
+        
+        
         animateNewCardInCardStack(0)
     }
     
@@ -208,7 +231,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateNewCardInCardStack(var i:Int)
     {
-        
+        self.cardInnSoundAudioPlayer.play()
         let orgCardWidth:CGFloat = 314
         let orgCardHeight:CGFloat = 226
         let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
@@ -302,7 +325,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.rightButton.alpha = 0
-            
+            self.rightButton.transform = CGAffineTransformScale(self.rightButton.transform, 0.1, 0.1)
             //self.clock.frame.offset(dx: 200, dy: 0)
             self.clock.transform = CGAffineTransformScale(self.clock.transform, 0.1, 0.1)
             self.clock.alpha = 0
@@ -623,6 +646,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateRemoveElementsAtRoundEnd(completion: (() -> (Void)))
     {
+        var error:NSError?
+        self.cardOutSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.dealCardSound, error: &error)
+        self.cardOutSoundAudioPlayer.enableRate = true
+        self.cardOutSoundAudioPlayer.numberOfLoops = 0// randomHistoricEvents.count
+        self.cardOutSoundAudioPlayer.rate = 4
+        self.cardOutSoundAudioPlayer.prepareToPlay()
+        
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.infoHelperView.alpha = 0
             self.rightButton.alpha = 0
@@ -644,6 +674,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
         if let card = self.cardToDrag
         {
+            cardOutSoundAudioPlayer.play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
                 //card.frame.offset(dx: -500, dy: 0)
@@ -657,6 +688,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         else if let card = self.newRevealedCard
         {
+            cardOutSoundAudioPlayer.play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
                 card.frame.offset(dx: -500, dy: 0)
@@ -669,6 +701,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         else if cardsStack.count > 0
         {
+            cardOutSoundAudioPlayer.play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
                 var card = self.cardsStack.last
@@ -693,6 +726,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateRemoveOneDropzoneWithCard(var i:Int, completion: (() -> (Void))? = nil)
     {
+        cardOutSoundAudioPlayer.play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
                 self.dropZones[i]?.center = CGPointMake(0 - self.dropZones[i]!.frame.width, self.dropZones[i]!.center.y )
@@ -1024,6 +1058,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                         else
                         {
                             self.rightButton.alpha = 1
+                            self.rightButton.transform = CGAffineTransformIdentity
                         }
                         //self.revealedCard = nil
                     }

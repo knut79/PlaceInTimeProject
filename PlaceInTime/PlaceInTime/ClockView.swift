@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import AVFoundation
 
 protocol ClockProtocol
 {
@@ -21,6 +21,12 @@ class ClockView:UIView {
     let clockHandLayer = CAShapeLayer()
     let circleLayer: CAShapeLayer = CAShapeLayer()
     var forceStop:Bool = false
+    let timeToUse:NSTimeInterval = 10
+    
+    var audioPlayer = AVAudioPlayer()
+    var slowClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clock-ticking-2", ofType: "mp3")!)
+    var normalClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clockNorm", ofType: "mp3")!)
+    var fastClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clockFast", ofType: "mp3")!)
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -72,11 +78,31 @@ class ClockView:UIView {
         layer.addSublayer(circleLayer)
     }
     
+
+    
+    func playFasterTicking()
+    {
+
+        self.audioPlayer.rate = self.audioPlayer.rate * 1.2
+
+    }
+    
+    var speedTimer:NSTimer!
     func start()
     {
+
+        var error:NSError?
+        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.slowClockSound, error: &error)
+        self.audioPlayer.enableRate = true
+        self.audioPlayer.numberOfLoops = -1
+        self.audioPlayer.prepareToPlay()
+        self.audioPlayer.play()
+        speedTimer = NSTimer.scheduledTimerWithTimeInterval(timeToUse / 6, target: self,
+            selector: "playFasterTicking",
+            userInfo: nil, repeats: true)
         
         //let time = timeCoords(CGRectGetMidX(self.bounds), y: CGRectGetMidY(self.bounds), time: ctime(),radius: 500)
-        self.animateCircle(10.0)
+        self.animateCircle(timeToUse)
         forceStop = false
         //rotateLayer(clockHandLayer,dur: 10)
 
@@ -84,6 +110,8 @@ class ClockView:UIView {
     
     func stop()
     {
+        speedTimer.invalidate()
+        audioPlayer.stop()
         forceStop = true
         //clockHandLayer.removeAllAnimations()
         circleLayer.removeAllAnimations()
@@ -180,6 +208,8 @@ class ClockView:UIView {
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         if !forceStop
         {
+            speedTimer.invalidate()
+            audioPlayer.stop()
             delegate?.timeup()
         }
     }
