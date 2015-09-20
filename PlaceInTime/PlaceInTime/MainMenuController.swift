@@ -11,7 +11,7 @@ import CoreGraphics
 import QuartzCore
 import iAd
 
-class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate {
+class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate {
     
     
     var backgroundView:UIView!
@@ -44,11 +44,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var gametype:gameType!
     
     var tags:[String] = []
-    
+    var holderView = HolderView(frame: CGRectZero)
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.blueColor()
         
         datactrl = DataHandler()
         
@@ -121,10 +123,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         selectFilterTypeButton.setTitle("📋", forState: UIControlState.Normal)
         selectFilterTypeButton.addTarget(self, action: "openFilterList", forControlEvents: UIControlEvents.TouchUpInside)
         selectFilterTypeButton.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
-
-        
-        
-        
         
         if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
         {
@@ -145,17 +143,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             pulseAnimation.delegate = self
             loadingDataView.layer.addAnimation(pulseAnimation, forKey: "asd")
         }
-        
-        
-
-
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+    func loadScreenFinished() {
         
         if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
         {
@@ -175,20 +165,25 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             setupAfterPopulateData()
         }
         
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         
         
-        if updateGlobalGameStats
-        {
-            globalGameStats.addOkPoints(newGameStatsValues.0, completion: { () in
-                self.globalGameStats.addLovePoints(self.newGameStatsValues.2)
-                
-            })
-            updateGlobalGameStats = false
-            datactrl.updateGameData(newGameStatsValues.0,deltaGoodPoints: newGameStatsValues.1,deltaLovePoints: newGameStatsValues.2)
-            datactrl.saveGameData()
-        }
         
-        
+        let boxSize: CGFloat = 100.0
+        holderView.frame = CGRect(x: view.bounds.width / 2 - boxSize / 2,
+            y: view.bounds.height / 2 - boxSize / 2,
+            width: boxSize,
+            height: boxSize)
+        holderView.parentFrame = view.frame
+        holderView.delegate = self
+        view.addSubview(holderView)
+        holderView.startAnimation()
 
     }
     
@@ -217,7 +212,19 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreID as! NSNumber),goodScore: Int(datactrl.goodScoreID as! NSNumber),loveScore: Int(datactrl.loveScoreID as! NSNumber))
         self.view.addSubview(globalGameStats)
+        
         setupCheckboxView()
+        
+        if updateGlobalGameStats
+        {
+            globalGameStats.addOkPoints(newGameStatsValues.0, completion: { () in
+                self.globalGameStats.addLovePoints(self.newGameStatsValues.2)
+                
+            })
+            updateGlobalGameStats = false
+            datactrl.updateGameData(newGameStatsValues.0,deltaGoodPoints: newGameStatsValues.1,deltaLovePoints: newGameStatsValues.2)
+            datactrl.saveGameData()
+        }
     }
     
     

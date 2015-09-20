@@ -31,6 +31,10 @@
 		728BAE971BAD8BDA00BD4DB4 /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 728BAE8A1BAD8BDA00BD4DB4 /* Icon-60@3x.png */; };
 		728BAE981BAD8BDA00BD4DB4 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 728BAE8B1BAD8BDA00BD4DB4 /* iTunesArtwork.png */; };
 		728BAE991BAD8BDA00BD4DB4 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 728BAE8C1BAD8BDA00BD4DB4 /* iTunesArtwork@2x.png */; };
+		728BAE9D1BAE4B5100BD4DB4 /* HolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE9C1BAE4B5100BD4DB4 /* HolderView.swift */; };
+		728BAEA01BAE4C2300BD4DB4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE9F1BAE4C2300BD4DB4 /* Colors.swift */; };
+		728BAEA31BAE4C3B00BD4DB4 /* RectangleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAEA11BAE4C3B00BD4DB4 /* RectangleLayer.swift */; };
+		728BAEA41BAE4C3B00BD4DB4 /* ArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAEA21BAE4C3B00BD4DB4 /* ArcLayer.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -97,6 +101,10 @@
 		728BAE8B1BAD8BDA00BD4DB4 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		728BAE8C1BAD8BDA00BD4DB4 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		728BAE9A1BAE1A3500BD4DB4 /* PlaceInTime 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PlaceInTime 2.xcdatamodel"; sourceTree = "<group>"; };
+		728BAE9C1BAE4B5100BD4DB4 /* HolderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HolderView.swift; sourceTree = "<group>"; };
+		728BAE9F1BAE4C2300BD4DB4 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		728BAEA11BAE4C3B00BD4DB4 /* RectangleLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleLayer.swift; sourceTree = "<group>"; };
+		728BAEA21BAE4C3B00BD4DB4 /* ArcLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcLayer.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -202,6 +210,25 @@
 			name = Play;
 			sourceTree = "<group>";
 		};
+		728BAE9B1BAE4ADE00BD4DB4 /* LoadScreen */ = {
+			isa = PBXGroup;
+			children = (
+				728BAE9F1BAE4C2300BD4DB4 /* Colors.swift */,
+				728BAE9E1BAE4C0100BD4DB4 /* Layers */,
+				728BAE9C1BAE4B5100BD4DB4 /* HolderView.swift */,
+			);
+			name = LoadScreen;
+			sourceTree = "<group>";
+		};
+		728BAE9E1BAE4C0100BD4DB4 /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				728BAEA11BAE4C3B00BD4DB4 /* RectangleLayer.swift */,
+				728BAEA21BAE4C3B00BD4DB4 /* ArcLayer.swift */,
+			);
+			name = Layers;
+			sourceTree = "<group>";
+		};
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +271,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				728BAE9B1BAE4ADE00BD4DB4 /* LoadScreen */,
 				728BAE7F1BAB133D00BD4DB4 /* Play */,
 				728BAE7C1BAA377A00BD4DB4 /* Challenge */,
 				728BAE7B1BAA371300BD4DB4 /* Results */,
@@ -441,10 +469,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				728BAE7E1BAACEF600BD4DB4 /* ResultTitleLabel.swift in Sources */,
+				728BAEA31BAE4C3B00BD4DB4 /* RectangleLayer.swift in Sources */,
 				725249E21BA747DF002FE589 /* Challenge.swift in Sources */,
 				725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */,
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */,
+				728BAEA01BAE4C2300BD4DB4 /* Colors.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
@@ -452,6 +482,7 @@
 				72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
+				728BAE9D1BAE4B5100BD4DB4 /* HolderView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */,
 				72D192951B9728980035CE11 /* ClockView.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
@@ -464,6 +495,7 @@
 				728BAE791BAA2D3800BD4DB4 /* ResultItemView.swift in Sources */,
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
 				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
+				728BAEA41BAE4C3B00BD4DB4 /* ArcLayer.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,
 				72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */,
 				728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */,
