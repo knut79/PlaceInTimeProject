@@ -112,6 +112,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var touchOverride:Bool = false
     func timeup()
     {
+        disableUserInteraction()
         //ensure touch is enabled
         touchOverride = true
         
@@ -315,13 +316,26 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
     }
     
+    func disableUserInteraction()
+    {
+        touchOverride = true
+        rightButton.userInteractionEnabled = false
+        self.newRevealedCard?.userInteractionEnabled = false
+        self.cardToDrag?.userInteractionEnabled = false
+        for var i = 0 ; i <  self.dropZones.count ; i++
+        {
+            self.dropZones[i]!.getHookedUpCard()?.userInteractionEnabled = false
+        }
+    }
+    
     var tempViews:[UIView] = []
     var tempYearLabel:[UILabel] = []
     var fails:Int = 0
     func okAction()
     {
+        disableUserInteraction()
         clock.stop()
-        rightButton.userInteractionEnabled = false
+        
         
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.rightButton.alpha = 0
