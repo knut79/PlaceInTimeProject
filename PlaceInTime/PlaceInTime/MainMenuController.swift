@@ -226,16 +226,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             logo1.textColor = UIColor.whiteColor()
             logo1.font = UIFont.boldSystemFontOfSize(25)
             logo1.alpha = 0
-            logo1.text = "Place"
+            logo1.text = "Time"
             
             self.view.addSubview(logo1)
             
             logo2.frame = CGRectMake(logo1.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 50, 50)
-            logo2.textAlignment = NSTextAlignment.Center
+            logo2.textAlignment = NSTextAlignment.Left
             logo2.textColor = UIColor.whiteColor()
             logo2.font = UIFont.boldSystemFontOfSize(25)
             logo2.alpha = 0
-            logo2.text = "In"
+            logo2.text = "line"
             
             self.view.addSubview(logo2)
             
@@ -244,7 +244,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             logo3.textColor = UIColor.whiteColor()
             logo3.font = UIFont.boldSystemFontOfSize(25)
             logo3.alpha = 0
-            logo3.text = "Time"
+            logo3.text = " Feud"
             
             self.view.addSubview(logo3)
             
@@ -257,17 +257,17 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             logo1.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
             logo2.center = logo1.center
             logo3.center = logo1.center
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
+            UIView.animateWithDuration(0.35, animations: { () -> Void in
                 self.logo1.transform = CGAffineTransformIdentity
                 self.logo1.alpha = 1
                 self.logo1.center = orgLogo1Center
                 }, completion: { (value: Bool) in
-                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    UIView.animateWithDuration(0.35, animations: { () -> Void in
                         self.logo2.transform = CGAffineTransformIdentity
                         self.logo2.alpha = 1
                         self.logo2.center = orgLogo2Center
                         }, completion: { (value: Bool) in
-                            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                            UIView.animateWithDuration(0.35, animations: { () -> Void in
                                 self.logo3.transform = CGAffineTransformIdentity
                                 self.logo3.alpha = 1
                                 self.logo3.center = orgLogo3Center
