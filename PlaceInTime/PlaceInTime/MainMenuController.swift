@@ -10,15 +10,22 @@ import UIKit
 import CoreGraphics
 import QuartzCore
 import iAd
+import StoreKit
 
 class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate {
     
     
     var backgroundView:UIView!
     
+    
+    //payment
+    var product: SKProduct?
+    var productID = "TimelineFeudAddFree1234"
+    
     //buttons
     var challengeUsersButton:UIButton!
     var resultsButton:UIButton!
+    var addFreeButton:UIButton!
     var dynamicPlayButton:UIButton!
     var newChallengeButton:UIButton!
     var pendingChallengesButton:UIButton!
@@ -62,9 +69,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
         
         datactrl = DataHandler()
-        
 
-        
         challengeUsersButton = UIButton(frame:CGRectZero)
         challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
         challengeUsersButton.backgroundColor = UIColor.blueColor()
@@ -85,6 +90,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         resultsButton.layer.cornerRadius = 5
         resultsButton.layer.masksToBounds = true
         resultsButton.setTitle("Results", forState: UIControlState.Normal)
+        
+        addFreeButton = UIButton(frame:CGRectZero)
+        addFreeButton.addTarget(self, action: "addFreeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        addFreeButton.backgroundColor = UIColor.blueColor()
+        addFreeButton.layer.cornerRadius = 5
+        addFreeButton.layer.masksToBounds = true
+        addFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        addFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
         
         //challenge type buttons
         newChallengeButton = UIButton(frame:CGRectZero)
@@ -235,20 +248,29 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             
             self.view.addSubview(logo3)
             
+            let orgLogo1Center = logo1.center
+            let orgLogo2Center = logo2.center
+            let orgLogo3Center = logo3.center
             logo1.transform = CGAffineTransformScale(logo1.transform, 0.1, 0.1)
             logo2.transform = CGAffineTransformScale(logo2.transform, 0.1, 0.1)
             logo3.transform = CGAffineTransformScale(logo3.transform, 0.1, 0.1)
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            logo1.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+            logo2.center = logo1.center
+            logo3.center = logo1.center
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.logo1.transform = CGAffineTransformIdentity
                 self.logo1.alpha = 1
+                self.logo1.center = orgLogo1Center
                 }, completion: { (value: Bool) in
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
                         self.logo2.transform = CGAffineTransformIdentity
                         self.logo2.alpha = 1
+                        self.logo2.center = orgLogo2Center
                         }, completion: { (value: Bool) in
-                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                            UIView.animateWithDuration(0.5, animations: { () -> Void in
                                 self.logo3.transform = CGAffineTransformIdentity
                                 self.logo3.alpha = 1
+                                self.logo3.center = orgLogo3Center
                                 })
                             
                     })
@@ -281,6 +303,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(challengeUsersButton)
         self.view.addSubview(practiceButton)
         self.view.addSubview(resultsButton)
+        self.view.addSubview(addFreeButton)
         
         self.view.addSubview(newChallengeButton)
         self.view.addSubview(pendingChallengesButton)
@@ -289,7 +312,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(levelSlider)
         self.view.addSubview(selectFilterTypeButton)
         
-        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreID as! NSNumber),goodScore: Int(datactrl.goodScoreID as! NSNumber),loveScore: Int(datactrl.loveScoreID as! NSNumber))
+        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreID as! NSNumber),goodScore: Int(datactrl.goodScoreID as! NSNumber),loveScore: Int(datactrl.loveScoreID as! NSNumber))
         self.view.addSubview(globalGameStats)
         
         setupCheckboxView()
@@ -309,11 +332,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
+        addFreeButton.transform = CGAffineTransformScale(addFreeButton.transform, 0.1, 0.1)
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.challengeUsersButton.transform = CGAffineTransformIdentity
             self.practiceButton.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
+            self.addFreeButton.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
         })
         //END DO
@@ -341,6 +366,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         practiceButton.frame = CGRectMake(challengeUsersButton.frame.maxX + marginButtons, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
         
         resultsButton.frame = CGRectMake(challengeUsersButton.frame.minX, challengeUsersButton.frame.maxY + marginButtons, buttonWidth, buttonHeight)
+        
+        addFreeButton.frame = CGRectMake(practiceButton.frame.minX, resultsButton.frame.minY, buttonWidth, buttonHeight)
     }
     
     func setupDynamicPlayButton()
@@ -457,13 +484,15 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
+            self.addFreeButton.center = centerScreen
+            self.addFreeButton.transform = CGAffineTransformScale(self.addFreeButton.transform, 0.1, 0.1)
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
-                
+                self.addFreeButton.alpha = 0
                 
                 self.dynamicPlayButton.alpha = 1
                 self.levelSlider.alpha = 1
@@ -529,12 +558,15 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
+            self.addFreeButton.center = centerScreen
+            self.addFreeButton.transform = CGAffineTransformScale(self.addFreeButton.transform, 0.1, 0.1)
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
+                self.addFreeButton.alpha = 0
                 
                 self.newChallengeButton.alpha = 1
                 self.pendingChallengesButton.alpha = 1

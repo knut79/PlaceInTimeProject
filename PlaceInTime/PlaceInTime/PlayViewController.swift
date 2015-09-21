@@ -47,8 +47,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var audioPlayer = AVAudioPlayer()
     var cardInnSoundAudioPlayer = AVAudioPlayer()
     var cardOutSoundAudioPlayer = AVAudioPlayer()
+
+    var wrongSoundAudioPlayerPool:[AVAudioPlayer] = []
+    var correctSoundAudioPlayerPool:[AVAudioPlayer] = []
     var timeIsUpSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("timeUp", ofType: "mp3")!)
     var dealCardSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("dealingCard", ofType: "wav")!)
+    var wrongSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("sigh", ofType: "wav")!)
+    var correctSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("yeah", ofType: "wav")!)
+    var correctSequenceSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("yeah-short", ofType: "mp3")!)
+    
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
@@ -63,11 +70,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         self.bannerView?.delegate = self
         self.bannerView?.hidden = false
         
-        gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.75, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
+        gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
         self.view.addSubview(gameStats)
         
         clock = ClockView(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width * 0.75, 10, gameStats.frame.height * 1.5, gameStats.frame.height * 1.5))
-        orgClockCenter = CGPointMake(marginFromGamestats + gameStats.frame.maxX + (self.clock.frame.width / 2),self.marginFromGamestats + (self.clock.frame.height / 2))
+        orgClockCenter = CGPointMake(UIScreen.mainScreen().bounds.size.width * 0.75 ,self.marginFromGamestats + (self.clock.frame.height / 2))
         clock.delegate = self
         
 
@@ -101,12 +108,41 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             view.addSubview(backButton)
         }
         self.view.addSubview(clock)
+        
+        self.setupAudioPlayers()
+        
+
     }
     
     override func viewDidAppear(animated: Bool) {
         bannerView?.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44)
         setCardStack()
         //revealNextCard()
+    }
+    
+    func setupAudioPlayers()
+    {
+        var rate:Float = 1.0
+        for var i:Int = 0 ; i < 6 ; i++
+        {
+            var error:NSError?
+            var wrongSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.wrongSound, error: &error)
+            wrongSoundAudioPlayer.enableRate = true
+            wrongSoundAudioPlayer.numberOfLoops = 0
+            wrongSoundAudioPlayer.rate = rate
+            wrongSoundAudioPlayer.prepareToPlay()
+            self.wrongSoundAudioPlayerPool.append(wrongSoundAudioPlayer)
+            
+            var correctSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.correctSound, error: &error)
+            correctSoundAudioPlayer.enableRate = true
+            correctSoundAudioPlayer.numberOfLoops = 0
+            correctSoundAudioPlayer.rate = rate
+            correctSoundAudioPlayer.prepareToPlay()
+            self.correctSoundAudioPlayerPool.append(correctSoundAudioPlayer)
+            
+            rate = rate + 1.0
+        }
+
     }
     
     var touchOverride:Bool = false
@@ -357,6 +393,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     }, completion: { (value: Bool) in
                         self.animateYears(0, completion: {() -> Void in
                             self.fails = 0
+                            
+                            
                             self.animateResult(0)
                         })
                 })
@@ -394,6 +432,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateResult(index:Int, lastYear:Int32? = nil, var dragOverlabel:UILabel? = nil)
     {
+
         let dropZone = dropZones[index]
         var label = tempYearLabel[index]
         
@@ -433,6 +472,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     {
                         if wrongAnswer == false
                         {
+                            self.correctSoundAudioPlayerPool[index].play()
+                            
                             label.textColor = UIColor.greenColor()
                             
                             var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
@@ -449,6 +490,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                         }
                         else
                         {
+                            self.wrongSoundAudioPlayerPool[index].play()
+                            
                             UIView.animateWithDuration(0.25, animations: { () -> Void in
 
                                     self.dropZones[index]?.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
@@ -554,7 +597,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     {
         var points = 1 //1 * (numberOfDropZones - (minNumDropZones - 1))
         
-
+        var error:NSError?
+        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.correctSequenceSound, error: &error)
+        self.audioPlayer.enableRate = true
+        self.audioPlayer.numberOfLoops = 0// randomHistoricEvents.count
+        self.audioPlayer.rate = 1
+        self.audioPlayer.prepareToPlay()
+        self.audioPlayer.play()
         
         var label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         label.textAlignment = NSTextAlignment.Center

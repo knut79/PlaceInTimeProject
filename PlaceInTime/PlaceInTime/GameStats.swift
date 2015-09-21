@@ -50,6 +50,7 @@ class GameStats:UIView {
         okPointsLabel.textAlignment = NSTextAlignment.Center
         okPointsLabel.textColor = UIColor.blackColor()
         //okPointsLabel.backgroundColor = UIColor.greenColor()
+        okPointsLabel.adjustsFontSizeToFitWidth = true
         okPointsLabel.text = "\(self.okPoints) 😌"
         okPointsView.addSubview(okPointsLabel)
         self.addSubview(okPointsView)
@@ -71,6 +72,7 @@ class GameStats:UIView {
         lovePointsLabel.textAlignment = NSTextAlignment.Center
         lovePointsLabel.textColor = UIColor.blackColor()
         //lovePointsLabel.backgroundColor = UIColor.greenColor()
+        lovePointsLabel.adjustsFontSizeToFitWidth = true
         lovePointsLabel.text = "\(self.lovePoints) 😍"
         lovePointsView.addSubview(lovePointsLabel)
         self.addSubview(lovePointsView)

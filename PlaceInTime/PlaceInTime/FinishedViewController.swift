@@ -5,7 +5,7 @@
 //  Created by knut on 08/09/15.
 //  Copyright (c) 2015 knut. All rights reserved.
 //
-
+import AVFoundation
 import Foundation
 import UIKit
 
@@ -25,6 +25,7 @@ class FinishedViewController:UIViewController {
     var activityLabel:UILabel!
     var backToMenuButton:UIButton!
     var resultLabel:UILabel!
+    var audioPlayer = AVAudioPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +90,8 @@ class FinishedViewController:UIViewController {
             resultLabel.layer.borderWidth = 5.0
             self.view.addSubview(resultLabel)
             
+
+
             
             //sending result
             
@@ -109,6 +112,12 @@ class FinishedViewController:UIViewController {
     
     func youLostChallenge()
     {
+        var error:NSError?
+        var sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("lostChallenge", ofType: "mp3")!)
+        audioPlayer = AVAudioPlayer(contentsOfURL: sound, error: &error)
+        audioPlayer.numberOfLoops = 0
+        audioPlayer.prepareToPlay()
+        audioPlayer.play()
         resultLabel.text = "You lost 😖\n\n" +
             "\(correctAnswers) correct answers" + "\n\(points) points" +
             "\n\nagainst" +
@@ -117,6 +126,12 @@ class FinishedViewController:UIViewController {
     
     func youWonChallenge()
     {
+        var error:NSError?
+        var sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("fanfare2", ofType: "wav")!)
+        audioPlayer = AVAudioPlayer(contentsOfURL: sound, error: &error)
+        audioPlayer.numberOfLoops = 0
+        audioPlayer.prepareToPlay()
+        audioPlayer.play()
         resultLabel.text = "You won 😆\n\n" +
         "\(correctAnswers) correct answers" + "\n\(points) points" +
         "\n\nagainst" +

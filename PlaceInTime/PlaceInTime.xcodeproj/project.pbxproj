@@ -45,9 +45,13 @@
 		728BAED01BAF036B00BD4DB4 /* yeah-short.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 728BAEC81BAF036B00BD4DB4 /* yeah-short.mp3 */; };
 		728BAED11BAF036B00BD4DB4 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAEC91BAF036B00BD4DB4 /* correct.wav */; };
 		728BAED21BAF036B00BD4DB4 /* dealingCard.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAECA1BAF036B00BD4DB4 /* dealingCard.wav */; };
-		728BAED31BAF036B00BD4DB4 /* fanfare_x.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAECB1BAF036B00BD4DB4 /* fanfare_x.wav */; };
+		728BAED31BAF036B00BD4DB4 /* fanfare1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAECB1BAF036B00BD4DB4 /* fanfare1.wav */; };
 		728BAED41BAF036B00BD4DB4 /* fanfare2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAECC1BAF036B00BD4DB4 /* fanfare2.wav */; };
 		728BAED51BAF036B00BD4DB4 /* fanfare3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAECD1BAF036B00BD4DB4 /* fanfare3.wav */; };
+		728BAED71BB0C52900BD4DB4 /* sigh.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAED61BB0C52900BD4DB4 /* sigh.wav */; };
+		728BAEDB1BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAED81BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav */; };
+		728BAEDC1BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAED91BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav */; };
+		728BAEDD1BB0C53400BD4DB4 /* yeah.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAEDA1BB0C53400BD4DB4 /* yeah.wav */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -128,9 +132,13 @@
 		728BAEC81BAF036B00BD4DB4 /* yeah-short.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "yeah-short.mp3"; sourceTree = "<group>"; };
 		728BAEC91BAF036B00BD4DB4 /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = correct.wav; sourceTree = "<group>"; };
 		728BAECA1BAF036B00BD4DB4 /* dealingCard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dealingCard.wav; sourceTree = "<group>"; };
-		728BAECB1BAF036B00BD4DB4 /* fanfare_x.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fanfare_x.wav; sourceTree = "<group>"; };
+		728BAECB1BAF036B00BD4DB4 /* fanfare1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fanfare1.wav; sourceTree = "<group>"; };
 		728BAECC1BAF036B00BD4DB4 /* fanfare2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fanfare2.wav; sourceTree = "<group>"; };
 		728BAECD1BAF036B00BD4DB4 /* fanfare3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fanfare3.wav; sourceTree = "<group>"; };
+		728BAED61BB0C52900BD4DB4 /* sigh.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sigh.wav; sourceTree = "<group>"; };
+		728BAED81BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "54008__domingus__yeah-2.wav"; sourceTree = "<group>"; };
+		728BAED91BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 189068__donnieozone__yeah1.wav; sourceTree = "<group>"; };
+		728BAEDA1BB0C53400BD4DB4 /* yeah.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yeah.wav; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -258,12 +266,16 @@
 		728BAEA51BAEEF8400BD4DB4 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				728BAED81BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav */,
+				728BAED91BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav */,
+				728BAEDA1BB0C53400BD4DB4 /* yeah.wav */,
+				728BAED61BB0C52900BD4DB4 /* sigh.wav */,
 				728BAEC61BAF036B00BD4DB4 /* wrong.wav */,
 				728BAEC71BAF036B00BD4DB4 /* yeah-long-and-laugh.mp3 */,
 				728BAEC81BAF036B00BD4DB4 /* yeah-short.mp3 */,
 				728BAEC91BAF036B00BD4DB4 /* correct.wav */,
 				728BAECA1BAF036B00BD4DB4 /* dealingCard.wav */,
-				728BAECB1BAF036B00BD4DB4 /* fanfare_x.wav */,
+				728BAECB1BAF036B00BD4DB4 /* fanfare1.wav */,
 				728BAECC1BAF036B00BD4DB4 /* fanfare2.wav */,
 				728BAECD1BAF036B00BD4DB4 /* fanfare3.wav */,
 				728BAEA61BAEEF9D00BD4DB4 /* clock-ticking-2.mp3 */,
@@ -480,6 +492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				728BAEDC1BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav in Resources */,
 				728BAEB81BAEEF9D00BD4DB4 /* clockNorm.mp3 in Resources */,
 				728BAE951BAD8BDA00BD4DB4 /* Icon-120.png in Resources */,
 				728BAE981BAD8BDA00BD4DB4 /* iTunesArtwork.png in Resources */,
@@ -501,15 +514,18 @@
 				728BAED01BAF036B00BD4DB4 /* yeah-short.mp3 in Resources */,
 				72E8E7821B7B70720011FE47 /* Main.storyboard in Resources */,
 				72E8E7871B7B70720011FE47 /* LaunchScreen.xib in Resources */,
+				728BAEDD1BB0C53400BD4DB4 /* yeah.wav in Resources */,
 				728BAEBE1BAEEF9D00BD4DB4 /* lostChallenge.mp3 in Resources */,
 				728BAE991BAD8BDA00BD4DB4 /* iTunesArtwork@2x.png in Resources */,
+				728BAEDB1BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav in Resources */,
 				72E8E7841B7B70720011FE47 /* Images.xcassets in Resources */,
 				728BAE8D1BAD8BDA00BD4DB4 /* Icon-76.png in Resources */,
 				728BAE931BAD8BDA00BD4DB4 /* Icon-40@3x.png in Resources */,
 				728BAE911BAD8BDA00BD4DB4 /* Icon-40@2x.png in Resources */,
-				728BAED31BAF036B00BD4DB4 /* fanfare_x.wav in Resources */,
+				728BAED31BAF036B00BD4DB4 /* fanfare1.wav in Resources */,
 				728BAEBC1BAEEF9D00BD4DB4 /* timeUp.mp3 in Resources */,
 				728BAED51BAF036B00BD4DB4 /* fanfare3.wav in Resources */,
+				728BAED71BB0C52900BD4DB4 /* sigh.wav in Resources */,
 				728BAED41BAF036B00BD4DB4 /* fanfare2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
