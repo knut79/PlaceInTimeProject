@@ -987,6 +987,7 @@ class DataHandler
     let LevelKey = "Level"
     let EventsUpdateKey = "EventsUpdate"
     let GameResultsKey = "GameResults"
+    let AdFreeKey = "AdFree"
     
     var dataPopulatedID:AnyObject = 0
     var okScoreID:AnyObject = 0
@@ -995,6 +996,7 @@ class DataHandler
     var tagsID:AnyObject = 0
     var levelID:AnyObject = 0
     var eventsUpdateID:AnyObject = 0
+    var adFreeID:AnyObject = 0
     
     var gameResultsID:[AnyObject] = []
     
@@ -1032,6 +1034,8 @@ class DataHandler
             tagsID = dict.objectForKey(TagsKey)!
             levelID = dict.objectForKey(LevelKey)!
             eventsUpdateID = dict.objectForKey(EventsUpdateKey)!
+            adFreeID = dict.objectForKey(AdFreeKey)!
+            NSUserDefaults.standardUserDefaults().setBool(adFreeID as! NSNumber == 1 ? true : false, forKey: "adFree")
             gameResultsID = dict.objectForKey(GameResultsKey)! as! [AnyObject]
         } else {
             println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
@@ -1051,6 +1055,7 @@ class DataHandler
         dict.setObject(tagsID, forKey: TagsKey)
         dict.setObject(levelID, forKey: LevelKey)
         dict.setObject(eventsUpdateID, forKey: EventsUpdateKey)
+        dict.setObject(adFreeID, forKey: AdFreeKey)
         
         dict.setObject(gameResultsID, forKey: GameResultsKey)
         //writing to GameData.plist

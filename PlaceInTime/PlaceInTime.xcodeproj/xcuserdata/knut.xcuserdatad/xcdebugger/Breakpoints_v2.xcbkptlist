@@ -6,272 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
+            filePath = "PlaceInTime/MainMenuController.swift"
+            timestampString = "464621013.580387"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
-            landmarkName = "animateResult(_:lastYear:dragOverlabel:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "504"
-            endingLineNumber = "504"
-            landmarkName = "animateResult(_:lastYear:dragOverlabel:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "505"
-            endingLineNumber = "505"
-            landmarkName = "animateResult(_:lastYear:dragOverlabel:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
-            landmarkName = "okAction()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.(okAction (PlaceInTime.PlayViewController) -&gt; () -&gt; ()).(closure #2).(closure #2)"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.062149"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "361"
-                  endingLineNumber = "361"
-                  offsetFromSymbolStart = "128">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.(okAction (PlaceInTime.PlayViewController) -&gt; () -&gt; ()).(closure #2).(closure #2).(closure #1)"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.0625"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "361"
-                  endingLineNumber = "361"
-                  offsetFromSymbolStart = "146">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
-            landmarkName = "okAction()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.(okAction (PlaceInTime.PlayViewController) -&gt; () -&gt; ()).(closure #2)"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.333334"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "362"
-                  endingLineNumber = "362"
-                  offsetFromSymbolStart = "652">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.(okAction (PlaceInTime.PlayViewController) -&gt; () -&gt; ()).(closure #2).(closure #2)"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.333526"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "362"
-                  endingLineNumber = "362"
-                  offsetFromSymbolStart = "144">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402"
-            landmarkName = "okAction()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.okAction (PlaceInTime.PlayViewController)() -&gt; ()"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.714948"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "363"
-                  endingLineNumber = "363"
-                  offsetFromSymbolStart = "870">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlaceInTime.PlayViewController.(okAction (PlaceInTime.PlayViewController) -&gt; () -&gt; ()).(closure #2)"
-                  moduleName = "PlaceInTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/PlaceInTime/PlayViewController.swift"
-                  timestampString = "464566612.71567"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "363"
-                  endingLineNumber = "363"
-                  offsetFromSymbolStart = "694">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "614"
-            endingLineNumber = "614"
-            landmarkName = "animateCorrectSequence()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "616"
-            endingLineNumber = "616"
-            landmarkName = "animateCorrectSequence()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
-            landmarkName = "animateCorrectSequence()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "608"
-            endingLineNumber = "608"
-            landmarkName = "animateCorrectSequence()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/FinishedViewController.swift"
-            timestampString = "464572030.651686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "youLostChallenge()"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "productsRequest(_:didReceiveResponse:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -281,13 +25,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/FinishedViewController.swift"
-            timestampString = "464572030.651686"
+            filePath = "PlaceInTime/MainMenuController.swift"
+            timestampString = "464621013.580387"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "youLostChallenge()"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "removeAdds()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/MainMenuController.swift"
+            timestampString = "464619858.176165"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "removeAdds()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlaceInTime/MainMenuController.swift"
+            timestampString = "464619858.550391"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "removeAdds()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

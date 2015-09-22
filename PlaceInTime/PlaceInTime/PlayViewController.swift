@@ -1333,7 +1333,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     }
     
     func bannerViewDidLoadAd(banner: ADBannerView!) {
-        self.bannerView?.hidden = false
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        self.bannerView?.hidden = adFree
     }
     
     func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {

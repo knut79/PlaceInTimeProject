@@ -12,7 +12,7 @@ import QuartzCore
 import iAd
 import StoreKit
 
-class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate {
+class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate{
     
     
     var backgroundView:UIView!
@@ -25,7 +25,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     //buttons
     var challengeUsersButton:UIButton!
     var resultsButton:UIButton!
-    var addFreeButton:UIButton!
+    var adFreeButton:UIButton!
     var dynamicPlayButton:UIButton!
     var newChallengeButton:UIButton!
     var pendingChallengesButton:UIButton!
@@ -61,6 +61,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        requestProductData()
         
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
         if firstLaunch
@@ -91,13 +92,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         resultsButton.layer.masksToBounds = true
         resultsButton.setTitle("Results", forState: UIControlState.Normal)
         
-        addFreeButton = UIButton(frame:CGRectZero)
-        addFreeButton.addTarget(self, action: "addFreeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        addFreeButton.backgroundColor = UIColor.blueColor()
-        addFreeButton.layer.cornerRadius = 5
-        addFreeButton.layer.masksToBounds = true
-        addFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        addFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
+        adFreeButton = UIButton(frame:CGRectZero)
+        adFreeButton.addTarget(self, action: "buyProductAction", forControlEvents: UIControlEvents.TouchUpInside)
+        adFreeButton.backgroundColor = UIColor.grayColor()
+        adFreeButton.userInteractionEnabled = false
+        adFreeButton.layer.cornerRadius = 5
+        adFreeButton.layer.masksToBounds = true
+        adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
         
         //challenge type buttons
         newChallengeButton = UIButton(frame:CGRectZero)
@@ -172,6 +174,116 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             setupAfterPopulateData()
         }
 
+    }
+    
+    func requestProductData()
+    {
+        if SKPaymentQueue.canMakePayments() {
+            let request = SKProductsRequest(productIdentifiers:
+                NSSet(objects: self.productID) as Set<NSObject>)
+            request.delegate = self
+            request.start()
+        } else {
+            var alert = UIAlertController(title: "In-App Purchases Not Enabled", message: "Please enable In App Purchase in Settings", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { alertAction in
+                alert.dismissViewControllerAnimated(true, completion: nil)
+                
+                let url: NSURL? = NSURL(string: UIApplicationOpenSettingsURLString)
+                if url != nil
+                {
+                    UIApplication.sharedApplication().openURL(url!)
+                }
+                
+            }))
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { alertAction in
+                alert.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
+        
+        var products = response.products
+        
+        if (products.count != 0) {
+            product = products[0] as? SKProduct
+            //buyButton.enabled = true
+            //productTitle.text = product!.localizedTitle
+            //productDescription.text = product!.localizedDescription
+            /*
+            var noMarkedNumbersPrompt = UIAlertController(title: product!.localizedTitle,
+                message: "\(product!.localizedDescription) \(product!.price as NSDecimalNumber)$",
+                preferredStyle: .Alert)
+            
+            noMarkedNumbersPrompt.addAction(UIAlertAction(title: "Buy",
+                style: .Default,
+                handler: { (action) -> Void in
+                    return
+            }))
+            noMarkedNumbersPrompt.addAction(UIAlertAction(title: "Cancel",
+                style: .Default,
+                handler: { (action) -> Void in
+                    return
+            }))
+            
+            self.presentViewController(noMarkedNumbersPrompt,
+                animated: true,
+                completion: nil)
+            */
+            
+            adFreeButton.backgroundColor = UIColor.blueColor()
+            adFreeButton.userInteractionEnabled = true
+            
+        } else {
+            //productTitle.text = "Product not found"
+        }
+        
+        products = response.invalidProductIdentifiers
+        
+        for product in products
+        {
+            println("Product not found: \(product)")
+        }
+    }
+    
+    func buyProductAction(sender: AnyObject) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.defaultQueue().addPayment(payment)
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+        
+        for transaction in transactions as! [SKPaymentTransaction] {
+            
+            switch transaction.transactionState {
+                
+            case SKPaymentTransactionState.Purchased:
+                self.removeAdds()
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            case SKPaymentTransactionState.Restored:
+                self.removeAdds()
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            case SKPaymentTransactionState.Failed:
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            default:
+                break
+            }
+        }
+    }
+    
+    func removeAdds() {
+        let appdelegate = UIApplication.sharedApplication().delegate
+            as! AppDelegate
+        
+        datactrl.adFreeID = 1
+        datactrl.saveGameData()
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
+        self.bannerView?.hidden = true
+        
+        adFreeButton.backgroundColor = UIColor.grayColor()
+        adFreeButton.userInteractionEnabled = false
+        adFreeButton.setTitle("Ad free version", forState: UIControlState.Normal)
     }
     
     func loadScreenFinished() {
@@ -303,7 +415,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(challengeUsersButton)
         self.view.addSubview(practiceButton)
         self.view.addSubview(resultsButton)
-        self.view.addSubview(addFreeButton)
+        self.view.addSubview(adFreeButton)
         
         self.view.addSubview(newChallengeButton)
         self.view.addSubview(pendingChallengesButton)
@@ -332,13 +444,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
-        addFreeButton.transform = CGAffineTransformScale(addFreeButton.transform, 0.1, 0.1)
+        adFreeButton.transform = CGAffineTransformScale(adFreeButton.transform, 0.1, 0.1)
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.challengeUsersButton.transform = CGAffineTransformIdentity
             self.practiceButton.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
-            self.addFreeButton.transform = CGAffineTransformIdentity
+            self.adFreeButton.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
         })
         //END DO
@@ -367,7 +479,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         resultsButton.frame = CGRectMake(challengeUsersButton.frame.minX, challengeUsersButton.frame.maxY + marginButtons, buttonWidth, buttonHeight)
         
-        addFreeButton.frame = CGRectMake(practiceButton.frame.minX, resultsButton.frame.minY, buttonWidth, buttonHeight)
+        adFreeButton.frame = CGRectMake(practiceButton.frame.minX, resultsButton.frame.minY, buttonWidth, buttonHeight)
     }
     
     func setupDynamicPlayButton()
@@ -375,14 +487,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let margin: CGFloat = 20.0
         let width = view.bounds.width - 2.0 * margin
         let sliderAndFilterbuttonHeight:CGFloat = 31.0
-        let marginSlider: CGFloat = dynamicPlayButton.frame.minX
+        
 
         var playbuttonWidth = self.practiceButton.frame.maxX - self.challengeUsersButton.frame.minX
         var playbuttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY - sliderAndFilterbuttonHeight - margin
 
         
         dynamicPlayButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY,playbuttonWidth, playbuttonHeight)
-        
+        let marginSlider: CGFloat = dynamicPlayButton.frame.minX
 
         playButtonExstraLabel.frame = CGRectMake(0, dynamicPlayButton.frame.height * 0.7   , dynamicPlayButton.frame.width, dynamicPlayButton.frame.height * 0.15)
         playButtonExstraLabel.text = "level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
@@ -484,15 +596,15 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.addFreeButton.center = centerScreen
-            self.addFreeButton.transform = CGAffineTransformScale(self.addFreeButton.transform, 0.1, 0.1)
+            self.adFreeButton.center = centerScreen
+            self.adFreeButton.transform = CGAffineTransformScale(self.adFreeButton.transform, 0.1, 0.1)
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
-                self.addFreeButton.alpha = 0
+                self.adFreeButton.alpha = 0
                 
                 self.dynamicPlayButton.alpha = 1
                 self.levelSlider.alpha = 1
@@ -558,15 +670,15 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.addFreeButton.center = centerScreen
-            self.addFreeButton.transform = CGAffineTransformScale(self.addFreeButton.transform, 0.1, 0.1)
+            self.adFreeButton.center = centerScreen
+            self.adFreeButton.transform = CGAffineTransformScale(self.adFreeButton.transform, 0.1, 0.1)
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
-                self.addFreeButton.alpha = 0
+                self.adFreeButton.alpha = 0
                 
                 self.newChallengeButton.alpha = 1
                 self.pendingChallengesButton.alpha = 1
@@ -603,7 +715,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     
     func bannerViewDidLoadAd(banner: ADBannerView!) {
-        self.bannerView?.hidden = false
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        self.bannerView?.hidden = adFree
     }
     
     func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
