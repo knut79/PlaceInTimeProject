@@ -106,11 +106,11 @@ class GameStats:UIView {
         return false
     }
     
-    func addOkPoints(points:Int,completion: (() -> (Void))? = nil)
+    func addOkPoints(points:Int,completionOKPoints: (() -> (Void))? = nil)
     {
         if points <= 0
         {
-            completion?()
+            completionOKPoints?()
         }
         else
         {
@@ -123,7 +123,7 @@ class GameStats:UIView {
                 
                 self.okPointsLabel.text = "\(self.okPoints!) 😌"
                 self.animateView(self.okPointsView)
-                completion?()
+                completionOKPoints?()
             })
         }
     }
@@ -154,11 +154,11 @@ class GameStats:UIView {
     }
     */
     
-    func addLovePoints(points:Int)
+    func addLovePoints(points:Int,completionLovePoints: (() -> (Void))? = nil)
     {
         if points <= 0
         {
-            return
+            completionLovePoints?()
         }
         else
         {
@@ -171,6 +171,7 @@ class GameStats:UIView {
                 
                 self.lovePointsLabel.text = "\(self.lovePoints!) 😍"
                 self.animateView(self.lovePointsView)
+                completionLovePoints?()
             })
         }
     }

@@ -296,6 +296,19 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func loadScreenFinished() {
         
+        challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
+        practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
+        resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
+        adFreeButton.transform = CGAffineTransformScale(adFreeButton.transform, 0.1, 0.1)
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.challengeUsersButton.transform = CGAffineTransformIdentity
+            self.practiceButton.transform = CGAffineTransformIdentity
+            self.resultsButton.transform = CGAffineTransformIdentity
+            self.adFreeButton.transform = CGAffineTransformIdentity
+            }, completion: { (value: Bool) in
+        })
+        
         populateDataIfNeeded()
     }
     
@@ -326,8 +339,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     override func viewDidAppear(animated: Bool) {
         
-        
-        //DO at firstLoad
+
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
         if firstLaunch
         {
@@ -399,7 +411,19 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstlaunch")
         }
-        //END DO
+        if updateGlobalGameStats
+        {
+            
+            globalGameStats.addOkPoints(newGameStatsValues.0, completionOKPoints: { () in
+                
+                self.globalGameStats.addLovePoints(self.newGameStatsValues.2, completionLovePoints: { () in
+                    self.updateGlobalGameStats = false
+                    self.datactrl.updateGameData(self.newGameStatsValues.0,deltaGoodPoints: self.newGameStatsValues.1,deltaLovePoints: self.newGameStatsValues.2)
+                    self.datactrl.saveGameData()
+                })
+                
+            })
+        }
 
     }
     
@@ -437,31 +461,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         setupCheckboxView()
         
-        if updateGlobalGameStats
-        {
-            globalGameStats.addOkPoints(newGameStatsValues.0, completion: { () in
-                self.globalGameStats.addLovePoints(self.newGameStatsValues.2)
-                
-            })
-            updateGlobalGameStats = false
-            datactrl.updateGameData(newGameStatsValues.0,deltaGoodPoints: newGameStatsValues.1,deltaLovePoints: newGameStatsValues.2)
-            datactrl.saveGameData()
-        }
         
-        //DO if first load
-        challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
-        practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
-        resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
-        adFreeButton.transform = CGAffineTransformScale(adFreeButton.transform, 0.1, 0.1)
-        
-        UIView.animateWithDuration(0.25, animations: { () -> Void in
-            self.challengeUsersButton.transform = CGAffineTransformIdentity
-            self.practiceButton.transform = CGAffineTransformIdentity
-            self.resultsButton.transform = CGAffineTransformIdentity
-            self.adFreeButton.transform = CGAffineTransformIdentity
-            }, completion: { (value: Bool) in
-        })
-        //END DO
+
+
+
         requestProductData()
 
     }
