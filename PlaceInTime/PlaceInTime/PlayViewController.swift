@@ -787,13 +787,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             comp!()
         }
-        poolIndex = poolIndex + 1 % cardOutSoundAudioPlayerPool.count
+        poolIndex = (poolIndex + 1) % cardOutSoundAudioPlayerPool.count
     }
     
     func animateRemoveOneDropzoneWithCard(var i:Int, completion: (() -> (Void))? = nil)
     {
         cardOutSoundAudioPlayerPool[poolIndex].play()
-        poolIndex = poolIndex + 1 % cardOutSoundAudioPlayerPool.count
+        poolIndex = (poolIndex + 1) % cardOutSoundAudioPlayerPool.count
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
                 self.dropZones[i]?.center = CGPointMake(0 - self.dropZones[i]!.frame.width, self.dropZones[i]!.center.y )

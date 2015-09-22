@@ -21,7 +21,7 @@ class ClockView:UIView {
     let clockHandLayer = CAShapeLayer()
     let circleLayer: CAShapeLayer = CAShapeLayer()
     var forceStop:Bool = false
-    let timeToUse:NSTimeInterval = 10
+    let timeToUse:NSTimeInterval = 20
     
     var audioPlayer = AVAudioPlayer()
     var slowClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clock-ticking-2", ofType: "mp3")!)
@@ -83,7 +83,7 @@ class ClockView:UIView {
     func playFasterTicking()
     {
 
-        self.audioPlayer.rate = self.audioPlayer.rate * 1.2
+        self.audioPlayer.rate = self.audioPlayer.rate * 1.35
 
     }
     
@@ -97,7 +97,7 @@ class ClockView:UIView {
         self.audioPlayer.numberOfLoops = -1
         self.audioPlayer.prepareToPlay()
         self.audioPlayer.play()
-        speedTimer = NSTimer.scheduledTimerWithTimeInterval(timeToUse / 6, target: self,
+        speedTimer = NSTimer.scheduledTimerWithTimeInterval(timeToUse / 4, target: self,
             selector: "playFasterTicking",
             userInfo: nil, repeats: true)
         

@@ -53,6 +53,7 @@ class FinishedViewController:UIViewController {
         
         activityLabel = UILabel(frame: CGRectMake(0, 0, 400, 50))
         activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        activityLabel.adjustsFontSizeToFitWidth = true
         activityLabel.textAlignment = NSTextAlignment.Center
         
         self.view.addSubview(activityLabel)
