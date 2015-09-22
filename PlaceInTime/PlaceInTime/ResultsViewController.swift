@@ -202,7 +202,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     {
         var noValues = true
         datactrl.loadGameData()
-        for record in datactrl.gameResultsID
+        for record in datactrl.gameResultsValues
         {
             let arrayOfValues = record.componentsSeparatedByString(",")
             if arrayOfValues.count == 5

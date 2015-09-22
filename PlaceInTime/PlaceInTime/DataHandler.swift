@@ -731,7 +731,7 @@ class DataHandler
         
         save()
         
-        dataPopulatedID = 1
+        dataPopulatedValue = 1
         saveGameData()
         
         completePopulating?()
@@ -782,15 +782,15 @@ class DataHandler
     
     func updateGameData(deltaOkPoints:Int,deltaGoodPoints:Int,deltaLovePoints:Int)
     {
-        okScoreID = Int(okScoreID as! NSNumber) + deltaOkPoints
-        goodScoreID = Int(goodScoreID as! NSNumber) + deltaGoodPoints
-        loveScoreID = Int(loveScoreID as! NSNumber) + deltaLovePoints
+        okScoreValue = Int(okScoreValue as! NSNumber) + deltaOkPoints
+        goodScoreValue = Int(goodScoreValue as! NSNumber) + deltaGoodPoints
+        loveScoreValue = Int(loveScoreValue as! NSNumber) + deltaLovePoints
     }
     
     func addRecordToGameResults(value:String)
     {
-        //self.gameResultsID.insertObject(value, atIndex: 0)
-        self.gameResultsID.append(value)
+        //self.gameResultsValue.insertObject(value, atIndex: 0)
+        self.gameResultsValues.append(value)
     }
 
     
@@ -989,16 +989,16 @@ class DataHandler
     let GameResultsKey = "GameResults"
     let AdFreeKey = "AdFree"
     
-    var dataPopulatedID:AnyObject = 0
-    var okScoreID:AnyObject = 0
-    var goodScoreID:AnyObject = 0
-    var loveScoreID:AnyObject = 0
-    var tagsID:AnyObject = 0
-    var levelID:AnyObject = 0
-    var eventsUpdateID:AnyObject = 0
-    var adFreeID:AnyObject = 0
+    var dataPopulatedValue:AnyObject = 0
+    var okScoreValue:AnyObject = 0
+    var goodScoreValue:AnyObject = 0
+    var loveScoreValue:AnyObject = 0
+    var tagsValue:AnyObject = 0
+    var levelValue:AnyObject = 0
+    var eventsUpdateValue:AnyObject = 0
+    var adFreeValue:AnyObject = 0
     
-    var gameResultsID:[AnyObject] = []
+    var gameResultsValues:[AnyObject] = []
     
     func loadGameData() {
         // getting path to GameData.plist
@@ -1027,16 +1027,16 @@ class DataHandler
         var myDict = NSDictionary(contentsOfFile: path)
         if let dict = myDict {
             //loading values
-            dataPopulatedID = dict.objectForKey(DataPopulatedKey)!
-            okScoreID = dict.objectForKey(OkScoreKey)!
-            goodScoreID = dict.objectForKey(GoodScoreKey)!
-            loveScoreID = dict.objectForKey(LoveScoreKey)!
-            tagsID = dict.objectForKey(TagsKey)!
-            levelID = dict.objectForKey(LevelKey)!
-            eventsUpdateID = dict.objectForKey(EventsUpdateKey)!
-            adFreeID = dict.objectForKey(AdFreeKey)!
-            NSUserDefaults.standardUserDefaults().setBool(adFreeID as! NSNumber == 1 ? true : false, forKey: "adFree")
-            gameResultsID = dict.objectForKey(GameResultsKey)! as! [AnyObject]
+            dataPopulatedValue = dict.objectForKey(DataPopulatedKey)!
+            okScoreValue = dict.objectForKey(OkScoreKey)!
+            goodScoreValue = dict.objectForKey(GoodScoreKey)!
+            loveScoreValue = dict.objectForKey(LoveScoreKey)!
+            tagsValue = dict.objectForKey(TagsKey)!
+            levelValue = dict.objectForKey(LevelKey)!
+            eventsUpdateValue = dict.objectForKey(EventsUpdateKey)!
+            adFreeValue = dict.objectForKey(AdFreeKey)!
+            NSUserDefaults.standardUserDefaults().setBool(adFreeValue as! NSNumber == 1 ? true : false, forKey: "adFree")
+            gameResultsValues = dict.objectForKey(GameResultsKey)! as! [AnyObject]
         } else {
             println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
         }
@@ -1048,16 +1048,16 @@ class DataHandler
         let path = documentsDirectory.stringByAppendingPathComponent("GameData.plist")
         var dict: NSMutableDictionary = ["XInitializerItem": "DoNotEverChangeMe"]
         //saving values
-        dict.setObject(dataPopulatedID, forKey: DataPopulatedKey)
-        dict.setObject(okScoreID, forKey: OkScoreKey)
-        dict.setObject(goodScoreID, forKey: GoodScoreKey)
-        dict.setObject(loveScoreID, forKey: LoveScoreKey)
-        dict.setObject(tagsID, forKey: TagsKey)
-        dict.setObject(levelID, forKey: LevelKey)
-        dict.setObject(eventsUpdateID, forKey: EventsUpdateKey)
-        dict.setObject(adFreeID, forKey: AdFreeKey)
+        dict.setObject(dataPopulatedValue, forKey: DataPopulatedKey)
+        dict.setObject(okScoreValue, forKey: OkScoreKey)
+        dict.setObject(goodScoreValue, forKey: GoodScoreKey)
+        dict.setObject(loveScoreValue, forKey: LoveScoreKey)
+        dict.setObject(tagsValue, forKey: TagsKey)
+        dict.setObject(levelValue, forKey: LevelKey)
+        dict.setObject(eventsUpdateValue, forKey: EventsUpdateKey)
+        dict.setObject(adFreeValue, forKey: AdFreeKey)
         
-        dict.setObject(gameResultsID, forKey: GameResultsKey)
+        dict.setObject(gameResultsValues, forKey: GameResultsKey)
         //writing to GameData.plist
         dict.writeToFile(path, atomically: false)
         let resultDictionary = NSMutableDictionary(contentsOfFile: path)

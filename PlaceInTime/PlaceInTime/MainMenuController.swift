@@ -61,7 +61,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        requestProductData()
         
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
         if firstLaunch
@@ -99,7 +98,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         adFreeButton.layer.cornerRadius = 5
         adFreeButton.layer.masksToBounds = true
         adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        if !adFree
+        {
+            adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
+        }
         
         //challenge type buttons
         newChallengeButton = UIButton(frame:CGRectZero)
@@ -149,7 +152,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
 
 
-            if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
+            if Int(datactrl.dataPopulatedValue as! NSNumber) <= 0
             {
                 loadingDataLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
                 loadingDataLabel.text = "Loading data.."
@@ -178,6 +181,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func requestProductData()
     {
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        if adFree
+        {
+            return
+        }
         if SKPaymentQueue.canMakePayments() {
             let request = SKProductsRequest(productIdentifiers:
                 NSSet(objects: self.productID) as Set<NSObject>)
@@ -247,7 +255,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
     }
     
-    func buyProductAction(sender: AnyObject) {
+    func buyProductAction() {
         let payment = SKPayment(product: product)
         SKPaymentQueue.defaultQueue().addPayment(payment)
     }
@@ -276,14 +284,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let appdelegate = UIApplication.sharedApplication().delegate
             as! AppDelegate
         
-        datactrl.adFreeID = 1
+        datactrl.adFreeValue = 1
         datactrl.saveGameData()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
         self.bannerView?.hidden = true
         
         adFreeButton.backgroundColor = UIColor.grayColor()
         adFreeButton.userInteractionEnabled = false
-        adFreeButton.setTitle("Ad free version", forState: UIControlState.Normal)
+        adFreeButton.setTitle(" ", forState: UIControlState.Normal)
     }
     
     func loadScreenFinished() {
@@ -293,7 +301,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func populateDataIfNeeded()
     {
-        if Int(datactrl.dataPopulatedID as! NSNumber) <= 0
+        if Int(datactrl.dataPopulatedValue as! NSNumber) <= 0
         {
             
             DataHandler().populateData({ () in
@@ -424,7 +432,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(levelSlider)
         self.view.addSubview(selectFilterTypeButton)
         
-        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreID as! NSNumber),goodScore: Int(datactrl.goodScoreID as! NSNumber),loveScore: Int(datactrl.loveScoreID as! NSNumber))
+        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreValue as! NSNumber),goodScore: Int(datactrl.goodScoreValue as! NSNumber),loveScore: Int(datactrl.loveScoreValue as! NSNumber))
         self.view.addSubview(globalGameStats)
         
         setupCheckboxView()
@@ -454,6 +462,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             }, completion: { (value: Bool) in
         })
         //END DO
+        requestProductData()
+
     }
     
     
@@ -567,8 +577,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                     self.levelSlider.transform = CGAffineTransformIdentity
                     self.selectFilterTypeButton.transform = CGAffineTransformIdentity
                     }, completion: { (value: Bool) in
-                        
-                        
+  
                 })
         })
     }
