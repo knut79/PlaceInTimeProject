@@ -295,7 +295,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     func loadScreenFinished() {
-        
+        self.view.backgroundColor = UIColor.whiteColor()
+        holderView.removeFromSuperview()
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
@@ -700,9 +701,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                     self.newChallengeButton.transform = CGAffineTransformIdentity
                     self.pendingChallengesButton.transform = CGAffineTransformIdentity
                     }, completion: { (value: Bool) in
-
                 })
-                
         })
     }
 

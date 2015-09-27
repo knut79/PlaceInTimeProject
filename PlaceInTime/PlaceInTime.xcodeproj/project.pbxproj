@@ -461,6 +461,7 @@
 				TargetAttributes = {
 					72E8E7731B7B70720011FE47 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = A887G5EA37;
 					};
 					72E8E78B1B7B70720011FE47 = {
 						CreatedOnToolsVersion = 6.4;
@@ -705,6 +706,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PlaceInTime",
@@ -713,6 +716,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7ccc7c52-4b4a-4314-85df-76341c723f5c";
 				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 			};
@@ -722,7 +726,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: knut dullum (A887G5EA37)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PlaceInTime",
@@ -731,6 +736,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7ccc7c52-4b4a-4314-85df-76341c723f5c";
 				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 			};
 			name = Release;
