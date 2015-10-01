@@ -254,4 +254,8 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         self.performSegueWithIdentifier("segueFromResultsToMainMenu", sender: nil)
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
 }
