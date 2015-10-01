@@ -510,4 +510,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             svc.myIdAndName = (self.userId,self.userName)
         }
     }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
 }
