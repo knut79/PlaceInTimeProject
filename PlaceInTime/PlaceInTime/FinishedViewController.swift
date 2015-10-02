@@ -55,6 +55,9 @@ class FinishedViewController:UIViewController {
         activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         activityLabel.adjustsFontSizeToFitWidth = true
         activityLabel.textAlignment = NSTextAlignment.Center
+        activityLabel.textAlignment = NSTextAlignment.Center
+        activityLabel.font = UIFont.boldSystemFontOfSize(24)
+        activityLabel.numberOfLines = 2
         
         self.view.addSubview(activityLabel)
         
@@ -62,13 +65,13 @@ class FinishedViewController:UIViewController {
         if gametype == gameType.makingChallenge
         {
             newChallenge()
-            activityLabel.text = "Sending challenge \(challengeName)..."
+            activityLabel.text = "Sending challenge\n\(challengeName)..."
         }
         
         if gametype == gameType.takingChallenge
         {
             
-            activityLabel.text = "Sending result of \(challengeName)"
+            activityLabel.text = "Sending result of\n\(challengeName)"
             respondToChallenge()
             
             var resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))

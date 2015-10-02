@@ -39,7 +39,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     let backButton = UIButton()
     var usersIdsToChallenge:[String] = []
     var completedQuestionsIds:[[String]] = []
-    var numOfQuestionsForRound:Int = 3
+    var numOfQuestionsForRound:Int!
     var myIdAndName:(String,String)!
     
     var challenge:Challenge!
@@ -1342,7 +1342,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     }
     
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
-        self.bannerView?.hidden = true
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        self.bannerView?.hidden = adFree
     }
     
 }

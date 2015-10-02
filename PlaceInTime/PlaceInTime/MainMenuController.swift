@@ -57,6 +57,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     let logo2 = UILabel()
     let logo3 = UILabel()
     
+    var numOfQuestionsForRound:Int = 5
+    
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -219,26 +221,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             //buyButton.enabled = true
             //productTitle.text = product!.localizedTitle
             //productDescription.text = product!.localizedDescription
-            /*
-            var noMarkedNumbersPrompt = UIAlertController(title: product!.localizedTitle,
-                message: "\(product!.localizedDescription) \(product!.price as NSDecimalNumber)$",
-                preferredStyle: .Alert)
-            
-            noMarkedNumbersPrompt.addAction(UIAlertAction(title: "Buy",
-                style: .Default,
-                handler: { (action) -> Void in
-                    return
-            }))
-            noMarkedNumbersPrompt.addAction(UIAlertAction(title: "Cancel",
-                style: .Default,
-                handler: { (action) -> Void in
-                    return
-            }))
-            
-            self.presentViewController(noMarkedNumbersPrompt,
-                animated: true,
-                completion: nil)
-            */
             
             adFreeButton.backgroundColor = UIColor.blueColor()
             adFreeButton.userInteractionEnabled = true
@@ -549,7 +531,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func newChallengeAction()
     {
-        dynamicPlayButton.setTitle("New challenge", forState: UIControlState.Normal)
+        dynamicPlayButton.titleLabel?.numberOfLines = 2
+        dynamicPlayButton.titleLabel?.textAlignment = NSTextAlignment.Center
+        dynamicPlayButton.setTitle("New challenge\n\(numOfQuestionsForRound) questions", forState: UIControlState.Normal)
         dynamicPlayButton.addTarget(self, action: "playNewChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
         self.dynamicPlayButton.alpha = 0
         self.dynamicPlayButton.transform = CGAffineTransformScale(self.dynamicPlayButton.transform, 0.1, 0.1)
@@ -720,6 +704,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             svc.passingLevelLow = Int(levelSlider.lowerValue)
             svc.passingLevelHigh = Int(levelSlider.upperValue)
             svc.passingTags = self.tags
+            svc.numOfQuestionsForRound = self.numOfQuestionsForRound
             svc.gametype = self.gametype
         }
     }
@@ -735,7 +720,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
-        self.bannerView?.hidden = true
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        self.bannerView?.hidden = adFree
     }
     
     //MARK: TagCheckViewProtocol

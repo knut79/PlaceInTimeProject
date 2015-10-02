@@ -29,7 +29,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     var activityLabel:UILabel!
     var addRandomUserButton:UIButton!
     var titleLabel:UILabel!
-    
+    var numOfQuestionsForRound:Int!
     var client: MSClient?
     
     override func viewDidLoad() {
@@ -500,6 +500,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             if self.gametype == gameType.makingChallenge
             {
                 svc.usersIdsToChallenge = self.usersToChallenge
+                svc.numOfQuestionsForRound = self.numOfQuestionsForRound
             }
             else if self.gametype == gameType.takingChallenge
             {
