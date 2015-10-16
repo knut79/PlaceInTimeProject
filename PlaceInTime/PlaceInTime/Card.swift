@@ -18,7 +18,7 @@ class Card: UIView
     var dragging:Bool = false
     var event:HistoricEvent!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

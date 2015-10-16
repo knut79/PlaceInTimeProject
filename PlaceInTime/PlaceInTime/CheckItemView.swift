@@ -23,7 +23,7 @@ class CheckItemView: UIView
     var value:String!
     var delegate:CheckItemProtocol!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

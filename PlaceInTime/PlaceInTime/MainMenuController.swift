@@ -53,24 +53,18 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var tags:[String] = []
     var holderView = HolderView(frame: CGRectZero)
     
-    let logo1 = UILabel()
-    let logo2 = UILabel()
-    let logo3 = UILabel()
-    
     var numOfQuestionsForRound:Int = 5
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
-        if firstLaunch
-        {
-            self.view.backgroundColor = UIColor.blueColor()
-        }
         
-        datactrl = DataHandler()
+        datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
 
         challengeUsersButton = UIButton(frame:CGRectZero)
         challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -78,6 +72,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         challengeUsersButton.layer.cornerRadius = 5
         challengeUsersButton.layer.masksToBounds = true
         challengeUsersButton.setTitle("Challenge", forState: UIControlState.Normal)
+        challengeUsersButton.alpha = 0
         
         practiceButton = UIButton(frame:CGRectZero)
         practiceButton.addTarget(self, action: "practiceAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -85,6 +80,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         practiceButton.layer.cornerRadius = 5
         practiceButton.layer.masksToBounds = true
         practiceButton.setTitle("Practice", forState: UIControlState.Normal)
+        practiceButton.alpha = 0
         
         resultsButton = UIButton(frame:CGRectZero)
         resultsButton.addTarget(self, action: "resultAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -92,6 +88,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         resultsButton.layer.cornerRadius = 5
         resultsButton.layer.masksToBounds = true
         resultsButton.setTitle("Results", forState: UIControlState.Normal)
+        resultsButton.alpha = 0
         
         adFreeButton = UIButton(frame:CGRectZero)
         adFreeButton.addTarget(self, action: "buyProductAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -100,10 +97,19 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         adFreeButton.layer.cornerRadius = 5
         adFreeButton.layer.masksToBounds = true
         adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        adFreeButton.alpha = 0
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
+            adFreeButton.backgroundColor = UIColor.blueColor()
+            adFreeButton.userInteractionEnabled = true
             adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
+            self.canDisplayBannerAds = true
+            bannerView = ADBannerView(frame: CGRectZero)
+
+            self.view.addSubview(bannerView!)
+            self.bannerView?.delegate = self
+            self.bannerView?.hidden = false
         }
         
         //challenge type buttons
@@ -113,6 +119,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         newChallengeButton.layer.cornerRadius = 5
         newChallengeButton.layer.masksToBounds = true
         newChallengeButton.setTitle("New", forState: UIControlState.Normal)
+        newChallengeButton.alpha = 0
         
         pendingChallengesButton = UIButton(frame:CGRectZero)
         pendingChallengesButton.addTarget(self, action: "pendingChallengesAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -120,6 +127,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         pendingChallengesButton.layer.cornerRadius = 5
         pendingChallengesButton.layer.masksToBounds = true
         pendingChallengesButton.setTitle("Pending", forState: UIControlState.Normal)
+        pendingChallengesButton.alpha = 0
+
         
         // Do any additional setup after loading the view, typically from a nib.
         dynamicPlayButton = UIButton(frame:CGRectZero)
@@ -149,11 +158,29 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         selectFilterTypeButton.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         
         
+        dynamicPlayButton.alpha = 0
+        levelSlider.alpha = 0
+        selectFilterTypeButton.alpha = 0
+        
+        self.view.addSubview(challengeUsersButton)
+        self.view.addSubview(practiceButton)
+        self.view.addSubview(resultsButton)
+        self.view.addSubview(adFreeButton)
+        
+        self.view.addSubview(newChallengeButton)
+        self.view.addSubview(pendingChallengesButton)
+        
+        self.view.addSubview(dynamicPlayButton)
+        self.view.addSubview(levelSlider)
+        self.view.addSubview(selectFilterTypeButton)
+        
+        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreValue as! NSNumber),goodScore: Int(datactrl.goodScoreValue as! NSNumber),loveScore: Int(datactrl.loveScoreValue as! NSNumber))
+        self.view.addSubview(globalGameStats)
+        
+        setupCheckboxView()
 
         if firstLaunch
         {
-
-
             if Int(datactrl.dataPopulatedValue as! NSNumber) <= 0
             {
                 loadingDataLabel = UILabel(frame: CGRectMake(0, 0, 200, 50))
@@ -164,7 +191,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 loadingDataView.addSubview(loadingDataLabel)
                 self.view.addSubview(loadingDataView)
                 
-                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
+                let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
                 pulseAnimation.duration = 0.3
                 pulseAnimation.toValue = NSNumber(float: 0.3)
                 pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -176,7 +203,12 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
         else
         {
-            setupAfterPopulateData()
+            self.challengeUsersButton.alpha = 1
+            self.practiceButton.alpha = 1
+            self.resultsButton.alpha = 1
+            self.adFreeButton.alpha = 1
+            requestProductData()
+            //setupAfterPopulateData()
         }
 
     }
@@ -189,12 +221,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             return
         }
         if SKPaymentQueue.canMakePayments() {
-            let request = SKProductsRequest(productIdentifiers:
-                NSSet(objects: self.productID) as Set<NSObject>)
+            let request = SKProductsRequest(productIdentifiers:  NSSet(objects: self.productID) as! Set<String>)
             request.delegate = self
             request.start()
         } else {
-            var alert = UIAlertController(title: "In-App Purchases Not Enabled", message: "Please enable In App Purchase in Settings", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "In-App Purchases Not Enabled", message: "Please enable In App Purchase in Settings", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { alertAction in
                 alert.dismissViewControllerAnimated(true, completion: nil)
                 
@@ -212,12 +243,12 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
     }
     
-    func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
+    func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
         
         var products = response.products
         
         if (products.count != 0) {
-            product = products[0] as? SKProduct
+            product = products[0]
             //buyButton.enabled = true
             //productTitle.text = product!.localizedTitle
             //productDescription.text = product!.localizedDescription
@@ -229,16 +260,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             //productTitle.text = "Product not found"
         }
         
-        products = response.invalidProductIdentifiers
+        let invalidProducts = response.invalidProductIdentifiers
         
-        for product in products
+        for product in invalidProducts
         {
-            println("Product not found: \(product)")
+            print("Product not found: \(product)")
         }
     }
     
     func buyProductAction() {
-        let payment = SKPayment(product: product)
+        let payment = SKPayment(product: product!)
         SKPaymentQueue.defaultQueue().addPayment(payment)
     }
     
@@ -263,12 +294,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     func removeAdds() {
-        let appdelegate = UIApplication.sharedApplication().delegate
-            as! AppDelegate
         
         datactrl.adFreeValue = 1
         datactrl.saveGameData()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
+        NSUserDefaults.standardUserDefaults().synchronize()
         self.bannerView?.hidden = true
         
         adFreeButton.backgroundColor = UIColor.grayColor()
@@ -278,20 +308,27 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func loadScreenFinished() {
         self.view.backgroundColor = UIColor.whiteColor()
-        holderView.removeFromSuperview()
+        //holderView.removeFromSuperview()
+        holderView.alpha = 0
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
         adFreeButton.transform = CGAffineTransformScale(adFreeButton.transform, 0.1, 0.1)
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.challengeUsersButton.alpha = 1
+            self.practiceButton.alpha = 1
+            self.resultsButton.alpha = 1
+            self.adFreeButton.alpha = 1
             self.challengeUsersButton.transform = CGAffineTransformIdentity
             self.practiceButton.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
             self.adFreeButton.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
+                self.bannerView!.center = CGPoint(x: self.bannerView!.center.x, y: self.view.bounds.size.height - self.bannerView!.frame.size.height / 2)
         })
         
+        requestProductData()
         populateDataIfNeeded()
     }
     
@@ -300,19 +337,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         if Int(datactrl.dataPopulatedValue as! NSNumber) <= 0
         {
             
-            DataHandler().populateData({ () in
+            datactrl.populateData({ () in
                 
-                self.setupAfterPopulateData()
-
                 self.loadingDataView.alpha = 0
                 self.loadingDataView.layer.removeAllAnimations()
             })
             
             loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
-        }
-        else
-        {
-            setupAfterPopulateData()
         }
     }
     
@@ -326,73 +357,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
         if firstLaunch
         {
-            let boxSize: CGFloat = 100.0
-            holderView.frame = CGRect(x: view.bounds.width / 2 - boxSize / 2,
-                y: view.bounds.height / 2 - boxSize / 2,
-                width: boxSize,
-                height: boxSize)
-            holderView.parentFrame = view.frame
+            holderView = HolderView(frame: view.bounds)
             holderView.delegate = self
             view.addSubview(holderView)
             holderView.startAnimation()
-            
-            logo1.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 225, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
-            logo1.textAlignment = NSTextAlignment.Right
-            logo1.textColor = UIColor.whiteColor()
-            logo1.font = UIFont.boldSystemFontOfSize(25)
-            logo1.alpha = 0
-            logo1.text = "Time"
-            
-            self.view.addSubview(logo1)
-            
-            logo2.frame = CGRectMake(logo1.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 50, 50)
-            logo2.textAlignment = NSTextAlignment.Left
-            logo2.textColor = UIColor.whiteColor()
-            logo2.font = UIFont.boldSystemFontOfSize(25)
-            logo2.alpha = 0
-            logo2.text = "line"
-            
-            self.view.addSubview(logo2)
-            
-            logo3.frame = CGRectMake(logo2.frame.maxX, UIScreen.mainScreen().bounds.size.height * 0.75, 200, 50)
-            logo3.textAlignment = NSTextAlignment.Left
-            logo3.textColor = UIColor.whiteColor()
-            logo3.font = UIFont.boldSystemFontOfSize(25)
-            logo3.alpha = 0
-            logo3.text = " Feud"
-            
-            self.view.addSubview(logo3)
-            
-            let orgLogo1Center = logo1.center
-            let orgLogo2Center = logo2.center
-            let orgLogo3Center = logo3.center
-            logo1.transform = CGAffineTransformScale(logo1.transform, 0.1, 0.1)
-            logo2.transform = CGAffineTransformScale(logo2.transform, 0.1, 0.1)
-            logo3.transform = CGAffineTransformScale(logo3.transform, 0.1, 0.1)
-            logo1.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
-            logo2.center = logo1.center
-            logo3.center = logo1.center
-            UIView.animateWithDuration(0.35, animations: { () -> Void in
-                self.logo1.transform = CGAffineTransformIdentity
-                self.logo1.alpha = 1
-                self.logo1.center = orgLogo1Center
-                }, completion: { (value: Bool) in
-                    UIView.animateWithDuration(0.35, animations: { () -> Void in
-                        self.logo2.transform = CGAffineTransformIdentity
-                        self.logo2.alpha = 1
-                        self.logo2.center = orgLogo2Center
-                        }, completion: { (value: Bool) in
-                            UIView.animateWithDuration(0.35, animations: { () -> Void in
-                                self.logo3.transform = CGAffineTransformIdentity
-                                self.logo3.alpha = 1
-                                self.logo3.center = orgLogo3Center
-                                })
-                            
-                    })
-                    
-            })
-            
+
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstlaunch")
+        }
+        else
+        {
+            bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
         }
         if updateGlobalGameStats
         {
@@ -410,53 +384,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
 
     }
     
-    func setupAfterPopulateData()
-    {
-        self.canDisplayBannerAds = true
-        bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
-        //bannerView = ADBannerView(frame: CGRectZero)
-        self.view.addSubview(bannerView!)
-        self.bannerView?.delegate = self
-        self.bannerView?.hidden = false
-        
-        levelSlider.alpha = 0
-        selectFilterTypeButton.alpha = 0
-        
-        
-        //self.view.addSubview(self.playButton)
 
-        //challengeUsersButton.alpha = 0
-        //practiceButton.alpha = 0
-        self.view.addSubview(challengeUsersButton)
-        self.view.addSubview(practiceButton)
-        self.view.addSubview(resultsButton)
-        self.view.addSubview(adFreeButton)
-        
-        self.view.addSubview(newChallengeButton)
-        self.view.addSubview(pendingChallengesButton)
-        
-        self.view.addSubview(dynamicPlayButton)
-        self.view.addSubview(levelSlider)
-        self.view.addSubview(selectFilterTypeButton)
-        
-        globalGameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: Int(datactrl.okScoreValue as! NSNumber),goodScore: Int(datactrl.goodScoreValue as! NSNumber),loveScore: Int(datactrl.loveScoreValue as! NSNumber))
-        self.view.addSubview(globalGameStats)
-        
-        setupCheckboxView()
-        
-        
-
-
-
-        requestProductData()
-
-    }
-    
-    
     override func viewDidLayoutSubviews() {
         
-        bannerView?.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44)
         loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
         
         setupFirstLevelMenu()
 
@@ -465,11 +397,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         setupDynamicPlayButton()
     }
     
+    
+    
     func setupFirstLevelMenu()
     {
         let marginButtons:CGFloat = 10
-        var buttonWidth = UIScreen.mainScreen().bounds.size.width * 0.17
-        var buttonHeight = buttonWidth //UIScreen.mainScreen().bounds.size.height * 0.34
+        let buttonWidth = UIScreen.mainScreen().bounds.size.width * 0.17
+        let buttonHeight = buttonWidth //UIScreen.mainScreen().bounds.size.height * 0.34
         challengeUsersButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - buttonWidth - (marginButtons / 2), UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
         practiceButton.frame = CGRectMake(challengeUsersButton.frame.maxX + marginButtons, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
         
@@ -481,12 +415,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     func setupDynamicPlayButton()
     {
         let margin: CGFloat = 20.0
-        let width = view.bounds.width - 2.0 * margin
         let sliderAndFilterbuttonHeight:CGFloat = 31.0
-        
 
-        var playbuttonWidth = self.practiceButton.frame.maxX - self.challengeUsersButton.frame.minX
-        var playbuttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY - sliderAndFilterbuttonHeight - margin
+        let playbuttonWidth = self.practiceButton.frame.maxX - self.challengeUsersButton.frame.minX
+        let playbuttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY - sliderAndFilterbuttonHeight - margin
 
         
         dynamicPlayButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY,playbuttonWidth, playbuttonHeight)
@@ -544,7 +476,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         
         
-        var centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.newChallengeButton.center = centerScreen
             self.newChallengeButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
@@ -585,7 +517,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         
         
-        var centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.challengeUsersButton.center = centerScreen
             self.challengeUsersButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
@@ -658,7 +590,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
 
         self.newChallengeButton.transform = CGAffineTransformScale(self.newChallengeButton.transform, 0.1, 0.1)
         self.pendingChallengesButton.transform = CGAffineTransformScale(self.pendingChallengesButton.transform, 0.1, 0.1)
-        var centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+        let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             
             self.challengeUsersButton.center = centerScreen
@@ -692,7 +624,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {
-            var svc = segue!.destinationViewController as! PlayViewController
+            let svc = segue!.destinationViewController as! PlayViewController
             svc.levelLow = Int(levelSlider.lowerValue)
             svc.levelHigh = Int(levelSlider.upperValue)
             svc.tags = self.tags
@@ -700,7 +632,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
         
         if (segue.identifier == "segueFromMainMenuToChallenge") {
-            var svc = segue!.destinationViewController as! ChallengeViewController
+            let svc = segue!.destinationViewController as! ChallengeViewController
             svc.passingLevelLow = Int(levelSlider.lowerValue)
             svc.passingLevelHigh = Int(levelSlider.upperValue)
             svc.passingTags = self.tags
@@ -735,11 +667,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         if self.tags.count < 3
         {
-            var numberPrompt = UIAlertController(title: "Pick 3",
+            let numberPrompt = UIAlertController(title: "Pick 3",
                 message: "Select at least 3 tags",
                 preferredStyle: .Alert)
-            
-            var numberTextField: UITextField?
+
             
             numberPrompt.addAction(UIAlertAction(title: "Ok",
                 style: .Default,
@@ -818,6 +749,20 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         })
         
     }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        print("supportedInterfaceOrientations", terminator: "")
+        return UIInterfaceOrientationMask.LandscapeLeft
+    }
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return UIInterfaceOrientation.LandscapeLeft
+    }
+    
     
 }
 

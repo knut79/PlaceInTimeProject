@@ -150,7 +150,7 @@ class RangeSlider: UIControl {
     func higlightUpperWindow(value:Int32?)
     {
         //updateLayerFrames()
-        upperWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        upperWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         upperWindowLayer.value = value == nil ? nil : Double(value!)
         if typeValue == sliderType.justUpper
         {
@@ -177,7 +177,7 @@ class RangeSlider: UIControl {
     func higlightLowerWindow(value:Int32?)
     {
         
-        lowerWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        lowerWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         lowerWindowLayer.value = value == nil ? nil : Double(value!)
         if typeValue == sliderType.justUpper
         {
@@ -212,8 +212,8 @@ class RangeSlider: UIControl {
     
     func higlightWindows(values:(Int32?,Int32?))
     {
-        upperWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
-        lowerWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        upperWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
+        lowerWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         lowerWindowLayer.value = values.0 == nil ? nil : Double(values.0!)
         upperWindowLayer.value = values.1 == nil ? nil : Double(values.1!)
         if typeValue == sliderType.justUpper
@@ -260,12 +260,12 @@ class RangeSlider: UIControl {
         layer.addSublayer(upperThumbLayer)
     }
     
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
     
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         previousLocation = touch.locationInView(self)
         var beginTracking = false
         // hit test the thumb layers
@@ -295,13 +295,13 @@ class RangeSlider: UIControl {
         
 
         
-        trackLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         trackLayer.setNeedsDisplay()
         
-        lowerWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        lowerWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         lowerWindowLayer.setNeedsDisplay()
         
-        upperWindowLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        upperWindowLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
         upperWindowLayer.setNeedsDisplay()
         
         let lowerThumbCenter = CGFloat(positionForValue(lowerValue))
@@ -364,7 +364,7 @@ class RangeSlider: UIControl {
     }
     */
     
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         let location = touch.locationInView(self)
         // determine by how much the user has dragged
         let deltaLocation = Double(location.x - previousLocation.x)
@@ -411,7 +411,7 @@ class RangeSlider: UIControl {
         return true
     }
     
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         lowerThumbLayer.highlighted = false
         upperThumbLayer.highlighted = false
     }

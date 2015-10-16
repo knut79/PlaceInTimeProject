@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
-		725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249D41BA46FDE002FE589 /* SwiftyJSON.swift */; };
 		725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DB1BA63315002FE589 /* UserScrollView.swift */; };
 		725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */; };
 		725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */; };
@@ -95,7 +94,6 @@
 		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
-		725249D41BA46FDE002FE589 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		725249DB1BA63315002FE589 /* UserScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserScrollView.swift; sourceTree = "<group>"; };
 		725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeScrollView.swift; sourceTree = "<group>"; };
 		725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadiobuttonItemView.swift; sourceTree = "<group>"; };
@@ -350,7 +348,6 @@
 				72E8E7A61B7B762C0011FE47 /* StaticValues.swift */,
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
-				725249D41BA46FDE002FE589 /* SwiftyJSON.swift */,
 				725249E11BA747DF002FE589 /* Challenge.swift */,
 			);
 			path = PlaceInTime;
@@ -456,7 +453,9 @@
 		72E8E76C1B7B70720011FE47 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = knut;
 				TargetAttributes = {
 					72E8E7731B7B70720011FE47 = {
@@ -564,7 +563,6 @@
 				72D192951B9728980035CE11 /* ClockView.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,
-				725249D51BA46FDE002FE589 /* SwiftyJSON.swift in Sources */,
 				725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */,
 				72E8E7AB1B7B7AA00011FE47 /* PlayViewController.swift in Sources */,
 				72E8E7A71B7B762C0011FE47 /* StaticValues.swift in Sources */,
@@ -636,10 +634,13 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -684,6 +685,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: knut dullum (A887G5EA37)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -706,8 +708,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PlaceInTime",
@@ -715,8 +716,9 @@
 				INFOPLIST_FILE = PlaceInTime/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.datadullum.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7ccc7c52-4b4a-4314-85df-76341c723f5c";
+				PROVISIONING_PROFILE = "5a63316a-f84e-4e74-8f26-01524e1fa2b2";
 				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "PlaceInTime/PlaceInTime-Bridging-Header.h";
 			};
@@ -726,8 +728,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: knut dullum (A887G5EA37)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: knut dullum (A887G5EA37)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PlaceInTime",
@@ -735,6 +737,7 @@
 				INFOPLIST_FILE = PlaceInTime/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.datadullum.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7ccc7c52-4b4a-4314-85df-76341c723f5c";
 				SWIFT_OBJC_BRIDGING_HEADER = "PlaceInTime/PlaceInTime-Bridging-Header.h";
@@ -745,16 +748,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = PlaceInTimeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.datadullum.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlaceInTime.app/PlaceInTime";
 			};
@@ -764,12 +765,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = PlaceInTimeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.datadullum.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlaceInTime.app/PlaceInTime";
 			};

@@ -28,7 +28,7 @@ class ClockView:UIView {
     var normalClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clockNorm", ofType: "mp3")!)
     var fastClockSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("clockFast", ofType: "mp3")!)
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -36,35 +36,7 @@ class ClockView:UIView {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
         
-        
-        let endAngle = CGFloat(2*M_PI)
-        /*
-        clockHandLayer.frame = self.bounds
-        let secondPath = CGPathCreateMutable()
-        CGPathMoveToPoint(secondPath, nil, CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
-        //CGPathAddLineToPoint(secondPath, nil, time.s.x, time.s.y)
-        CGPathAddLineToPoint(secondPath, nil, self.frame.width / 2, self.frame.minY + (self.frame.height * 0.165))
 
-        clockHandLayer.path = secondPath
-        clockHandLayer.lineWidth = 1
-        clockHandLayer.lineCap = kCALineCapRound
-        clockHandLayer.strokeColor = UIColor.blackColor().CGColor
-        clockHandLayer.rasterizationScale = UIScreen.mainScreen().scale
-        clockHandLayer.shouldRasterize = true
-        self.layer.addSublayer(clockHandLayer)
-        
-        
-
-        let centerPiece = CAShapeLayer()
-        let circle = UIBezierPath(arcCenter: CGPoint(x:CGRectGetMidX(self.bounds),y:CGRectGetMidX(self.bounds)), radius: 4.5, startAngle: 0, endAngle: endAngle, clockwise: true)
-        centerPiece.path = circle.CGPath
-        centerPiece.fillColor = UIColor.blackColor().CGColor
-        self.layer.addSublayer(centerPiece)
-        */
-        
-        
-        
-        //let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: (frame.size.width - 10)/2, startAngle: 0.0, endAngle: CGFloat(M_PI * 2.0), clockwise: false)
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: (frame.size.width - 10)/2, startAngle: CGFloat(M_PI) * 90.0/180, endAngle: CGFloat(M_PI) * 90.1/180, clockwise: false)
         
         circleLayer.path = circlePath.CGPath
@@ -91,8 +63,11 @@ class ClockView:UIView {
     func start()
     {
 
-        var error:NSError?
-        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.slowClockSound, error: &error)
+        do {
+            self.audioPlayer = try AVAudioPlayer(contentsOfURL: self.slowClockSound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
         self.audioPlayer.enableRate = true
         self.audioPlayer.numberOfLoops = -1
         self.audioPlayer.prepareToPlay()
@@ -188,10 +163,10 @@ class ClockView:UIView {
     
     func rotateLayer(currentLayer:CALayer,dur:CFTimeInterval){
         
-        var angle = degree2radian(360)
+        let angle = degree2radian(360)
         
         // rotation http://stackoverflow.com/questions/1414923/how-to-rotate-uiimageview-with-fix-point
-        var theAnimation = CABasicAnimation(keyPath:"transform.rotation.z")
+        let theAnimation = CABasicAnimation(keyPath:"transform.rotation.z")
         theAnimation.duration = dur
         // Make this view controller the delegate so it knows when the animation starts and ends
         theAnimation.delegate = self
@@ -205,7 +180,7 @@ class ClockView:UIView {
         
     }
     
-    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         if !forceStop
         {
             speedTimer.invalidate()
@@ -236,14 +211,14 @@ class ClockView:UIView {
         return points
     }
     
-    func secondMarkers(#ctx:CGContextRef,x:CGFloat, y:CGFloat, radius:CGFloat, sides:Int, color:UIColor) {
+    func secondMarkers(ctx ctx:CGContextRef,x:CGFloat, y:CGFloat, radius:CGFloat, sides:Int, color:UIColor) {
         // retrieve points
         let points = circleCircumferencePoints(sides,x: x,y: y,radius: radius)
         // create path
         let path = CGPathCreateMutable()
         // determine length of marker as a fraction of the total radius
         var divider:CGFloat = 1/16
-        for p in enumerate(points) {
+        for p in points.enumerate() {
             if p.index % 5 == 0 {
                 divider = 1/8
             }

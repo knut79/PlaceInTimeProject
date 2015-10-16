@@ -56,7 +56,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         }
         else
         {
-            var loginButton: FBSDKLoginButton = FBSDKLoginButton()
+            let loginButton: FBSDKLoginButton = FBSDKLoginButton()
             // Optional: Place the button in the center of your view.
             loginButton.center = self.view.center
             loginButton.delegate = self
@@ -135,17 +135,17 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             if ((error) != nil)
             {
                 // Process error
-                println("Error: \(error)")
+                print("Error: \(error)")
                 completion()
             }
             else
             {
-                println("fetched user: \(result)")
+                print("fetched user: \(result)")
                 let userName : String = result.valueForKey("name") as! String
-                println("User Name is: \(userName)")
+                print("User Name is: \(userName)")
                 self.userName = userName
                 let userId2 = result.valueForKey("id") as! String
-                println("UserId2 is: \(userId2)")
+                print("UserId2 is: \(userId2)")
                 self.userId = userId2
                 //self.userId = "1492605914370841"
                 //self.userId = "10155943015600858"
@@ -165,14 +165,14 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             if ((error) != nil)
             {
                 // Process error
-                println("Error: \(error)")
+                print("Error: \(error)")
                 
             }
             else
             {
-                println("fetched friends result: \(result)")
+                print("fetched friends result: \(result)")
 
-                var friendObjects = result.valueForKey("data") as! [NSDictionary]
+                let friendObjects = result.valueForKey("data") as! [NSDictionary]
 
                 self.initForNewChallenge(friendObjects)
                 
@@ -242,7 +242,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
 
         
         let scrollViewHeight =  addRandomUserButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
-        var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
+        let scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
         self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:initialValues, itemsChecked:false)
         self.usersToChallengeScrollView.delegate = self
         self.usersToChallengeScrollView.alpha = 1
@@ -284,18 +284,19 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         activityLabel.text = "Collecting challenges..."
 
         let scrollViewHeight =  playButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
-        var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
+        let scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
         self.challengeScrollView = ChallengeScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight), itemsChecked:false)
         //self.challengeScrollView.delegate = self
         self.challengeScrollView.alpha = 1
         
         view.addSubview(titleLabel)
+        playButton.alpha = 0
         view.addSubview(playButton)
         view.addSubview(backButton)
         view.addSubview(challengeScrollView)
         view.addSubview(activityLabel)
         
-        var jsonDictionary = ["fbid":userId,"name":userName]
+        let jsonDictionary = ["fbid":userId,"name":userName]
         //var jsonDictionary = ["fbid":"10155943015600858","name":userName]
         
         self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
@@ -308,85 +309,40 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 //Note ! root json object is not a dictionary but an array
                 
-                var e: NSError?
-                var jsonArray = NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers, error: &e) as? NSArray
-                
-                if let array = jsonArray
-                {
-                    for item in array {
-                        println("item : \(item)")
-                        if let jsonDictionary = item as? NSDictionary {
-                            let title = jsonDictionary["title"] as! String
-                            self.challengeScrollView.addItem(title,value: jsonDictionary)
-                            
-                            self.activityLabel.alpha = 0
-                        }
-                    }
-                    if jsonArray?.count == 0
-                    {
-                        self.activityLabel.text = "No pending challenges from other users😒"
-                    }
+                do{
+                    let jsonArray = try NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers) as? NSArray
                     
-                } else {
-                    self.activityLabel.text = "\(e)"
-                }
-
-                
-                /*
-                challengeId = "b1e050dc-e28f-47d9-a7a8-4fb9bbe4a3c0";
-                correctAnswersToBeat = 2;
-                fbIdToBeat = 1492605914370841;
-                pointsToBeat = 40;
-                questionsStringFormat = "187,55,49;240,22,30;136,239,139";
-                title = "(1492605914370841, Temp Tempesen) 1-2 )";
-                */
-                
-                /*
-                var error: NSError?
-                if let JSONData = result { // Check 1
-                    if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(JSONData, options: nil, error: &error) { // Check 2
-                        
-                        if let array = json as? NSArray
-                        {
-                                for item in array {
-                                    println("item : \(item)")
-                                    if let jsonDictionary = item as? NSDictionary { // Check 3
-                                        println("\(jsonDictionary[0])")
-                                    }
-                                }
-                        }
-                        
-                        if let jsonDictionary = json as? NSDictionary { // Check 3
-                            println("Dictionary received")
-                        }
-
-                        else {
-                            if let jsonString = NSString(data: JSONData, encoding: NSUTF8StringEncoding) {
-                                println("JSON String: \n\n \(jsonString)")
+                    if let array = jsonArray
+                    {
+                        for item in array {
+                            print("item : \(item)")
+                            if let jsonDictionary = item as? NSDictionary {
+                                let title = jsonDictionary["title"] as! String
+                                self.challengeScrollView.addItem(title,value: jsonDictionary)
+                                
+                                self.activityLabel.alpha = 0
+                                self.playButton.alpha = 1
                             }
-                            fatalError("JSON does not contain a dictionary \(json)")
                         }
+                        if jsonArray?.count == 0
+                        {
+                            self.activityLabel.text = "No pending challenges from other users😒"
+                        }
+                        
                     }
-                    else {
-                        fatalError("Can't parse JSON \(error)")
-                    }
-                }
-                else {
-                    fatalError("JSONData is nil")
-                }
-                */
 
-                /*
-                if let appName = json["feed"]["entry"][0]["im:name"]["label"].string {
-                    println("SwiftyJSON: \(appName)")
                 }
-                */
+                catch
+                {
+                    self.activityLabel.text = "\(error)"
+                }
+             
 
 
             }
             if response != nil
             {
-                println("\(response)")
+                print("\(response)")
             }
             
         })
@@ -414,33 +370,36 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         var userUsed:String = usersToChallengeScrollView.getAllItemsValueAsStringFormat()
         userUsed = "\(userUsed)\(self.userId)"
         
-        var jsonDictionary = ["fbid":userId,"name":userName,"usedusers":userUsed]
+        let jsonDictionary = ["fbid":userId,"name":userName,"usedusers":userUsed]
         
         self.client!.invokeAPI("randomuser", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
-                println("\(error)")
+                print("\(error)")
             }
             if result != nil
             {
                 //Note ! root json object is not a dictionary but an array
-                
-                var e: NSError?
-                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(result, options: nil, error: &e)
-                {
+
+                do {
+                    let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(result, options: [])
                     if let jsonDictionary = json as? NSDictionary { // Check 3
-                        println("Dictionary received")
+                        print("Dictionary received")
                         let name = jsonDictionary["name"] as! String
                         let fbId = jsonDictionary["fbid"] as! String
                         self.usersToChallengeScrollView.addItem("\(name) (random user)", value: fbId)
                     }
+                } catch let error as NSError {
+                    print(error)
+                } catch {
+                    fatalError()
                 }
                 
             }
             if response != nil
             {
-                println("\(response)")
+                print("\(response)")
             }
             self.activityLabel.alpha = 0
             completionClosure?()
@@ -456,11 +415,10 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             
             if usersToChallenge.count < 1
             {
-            var numberPrompt = UIAlertController(title: "Pick 1",
+            let numberPrompt = UIAlertController(title: "Pick 1",
                 message: "Select at least 1 user",
                 preferredStyle: .Alert)
             
-            var numberTextField: UITextField?
             
             numberPrompt.addAction(UIAlertAction(title: "Ok",
                 style: .Default,
@@ -492,7 +450,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromChallengeToPlay") {
-            var svc = segue!.destinationViewController as! PlayViewController
+            let svc = segue!.destinationViewController as! PlayViewController
             svc.levelLow = passingLevelLow
             svc.levelHigh = passingLevelHigh
             svc.tags = passingTags
@@ -504,7 +462,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             }
             else if self.gametype == gameType.takingChallenge
             {
-                var values = self.challengeScrollView.getSelectedValue()
+                let values = self.challengeScrollView.getSelectedValue()
                 svc.challenge = Challenge(values: values!)
             }
             

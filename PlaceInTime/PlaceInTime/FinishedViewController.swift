@@ -51,13 +51,13 @@ class FinishedViewController:UIViewController {
         backToMenuButton.alpha = 0
         self.view.addSubview(self.backToMenuButton)
         
-        activityLabel = UILabel(frame: CGRectMake(0, 0, 400, 50))
+        activityLabel = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width - 40, 50))
         activityLabel.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         activityLabel.adjustsFontSizeToFitWidth = true
         activityLabel.textAlignment = NSTextAlignment.Center
-        activityLabel.textAlignment = NSTextAlignment.Center
         activityLabel.font = UIFont.boldSystemFontOfSize(24)
         activityLabel.numberOfLines = 2
+        
         
         self.view.addSubview(activityLabel)
         
@@ -74,13 +74,13 @@ class FinishedViewController:UIViewController {
             activityLabel.text = "Sending result of\n\(challengeName)"
             respondToChallenge()
             
-            var resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
+            let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
             resultChallengeLabel.textAlignment = NSTextAlignment.Center
             resultChallengeLabel.text = "Result of challenge \(self.challengeToBeat.title)"
             resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
+            resultChallengeLabel.adjustsFontSizeToFitWidth = true
             self.view.addSubview(resultChallengeLabel)
             
-            let resultLabelHeight = backToMenuButton.frame.minX - resultChallengeLabel.frame.maxX
             resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
             resultLabel.numberOfLines = 9
             resultLabel.backgroundColor = UIColor.grayColor()
@@ -116,9 +116,12 @@ class FinishedViewController:UIViewController {
     
     func youLostChallenge()
     {
-        var error:NSError?
-        var sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("lostChallenge", ofType: "mp3")!)
-        audioPlayer = AVAudioPlayer(contentsOfURL: sound, error: &error)
+        let sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("lostChallenge", ofType: "mp3")!)
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: sound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
         audioPlayer.numberOfLoops = 0
         audioPlayer.prepareToPlay()
         audioPlayer.play()
@@ -130,9 +133,12 @@ class FinishedViewController:UIViewController {
     
     func youWonChallenge()
     {
-        var error:NSError?
-        var sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("fanfare2", ofType: "wav")!)
-        audioPlayer = AVAudioPlayer(contentsOfURL: sound, error: &error)
+        let sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("fanfare2", ofType: "wav")!)
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: sound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
         audioPlayer.numberOfLoops = 0
         audioPlayer.prepareToPlay()
         audioPlayer.play()
@@ -142,38 +148,16 @@ class FinishedViewController:UIViewController {
         "\n\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
     }
     
-    func test1()
-    {
-        var url : String = "http://google.com?test=toto&test2=titi"
-        var request : NSMutableURLRequest = NSMutableURLRequest()
-        request.URL = NSURL(string: url)
-        request.HTTPMethod = "GET"
-        
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler:{ (response:NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            var error: AutoreleasingUnsafeMutablePointer<NSError?> = nil
-            let jsonResult: NSDictionary! = NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers, error: error) as? NSDictionary
-            
-            if (jsonResult != nil) {
-                // process jsonResult
-            } else {
-                // couldn't load JSON, look at error
-            }
-            
-            
-        })
-    }
-
-    
     func newChallenge()
     {
         
-        var questionIds:String = questionsToFormattedString()
+        let questionIds:String = questionsToFormattedString()
         //var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIds":toIdsArray,"questions":questionsArray]
-        var toIds:String = usersToCommaseparatedString()
+        let toIds:String = usersToCommaseparatedString()
         //var dataPass = .dataWithJSONObject(toIdsArray, options: NSJSONWritingOptions.allZeros, error: nil)
         //var dataTest = NSJSONSerialization.dataWithJSONObject(
-        var jsonDictionary = ["title":challengeName,"fromId":userFbId,"fromResultPoints":points,"fromResultCorrect":correctAnswers,"toIdsPar":toIds,"questionsPar":questionIds]
-        self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+        let jsonDictionary = ["title":challengeName,"fromId":userFbId,"fromResultPoints":points,"fromResultCorrect":correctAnswers,"toIdsPar":toIds,"questionsPar":questionIds]
+        self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
@@ -182,7 +166,7 @@ class FinishedViewController:UIViewController {
             }
             if result != nil
             {
-                println("\(result)")
+                print("\(result)")
                 
                 self.backToMenuButton.alpha = 1
                 //self.activityLabel.alpha = 0
@@ -191,15 +175,15 @@ class FinishedViewController:UIViewController {
             }
             if response != nil
             {
-                println("\(response)")
+                print("\(response)")
             }
         })
     }
     
     func respondToChallenge()
     {
-        var jsonDictionary = ["userfbid":userFbId,"challengeid":challengeToBeat.id,"resultpoints":points,"resultcorrect":correctAnswers]
-        self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+        let jsonDictionary = ["userfbid":userFbId,"challengeid":challengeToBeat.id,"resultpoints":points,"resultcorrect":correctAnswers]
+        self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
@@ -208,14 +192,14 @@ class FinishedViewController:UIViewController {
             }
             if result != nil
             {
-                println("\(result)")
+                print("\(result)")
                 
                 self.backToMenuButton.alpha = 1
                 self.activityLabel.alpha = 0
             }
             if response != nil
             {
-                println("\(response)")
+                print("\(response)")
             }
             
             
@@ -230,7 +214,7 @@ class FinishedViewController:UIViewController {
             returnString += item + ","
             
         }
-        return dropLast(returnString)
+        return String(returnString.characters.dropLast())
     }
     
     func questionsToFormattedString() -> String
@@ -242,10 +226,10 @@ class FinishedViewController:UIViewController {
             {
                 returnString += question + ","
             }
-            returnString = dropLast(returnString)
+            returnString = String(returnString.characters.dropLast())
             returnString += ";"
         }
-        return dropLast(returnString)
+        return String(returnString.characters.dropLast())
         
     }
     
@@ -256,7 +240,7 @@ class FinishedViewController:UIViewController {
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromFinishedToMainMenu") {
-            var svc = segue!.destinationViewController as! MainMenuViewController
+            let svc = segue!.destinationViewController as! MainMenuViewController
 
             svc.updateGlobalGameStats = true
             svc.newGameStatsValues = (points,0,correctAnswers)

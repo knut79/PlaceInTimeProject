@@ -11,7 +11,7 @@ import FBSDKLoginKit
 
 
 class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
-    let datactrl = DataHandler()
+    let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
     var client: MSClient?
     var activityLabel:UILabel!
     let backButton = UIButton()
@@ -36,7 +36,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
         else
         {
-            var loginButton: FBSDKLoginButton = FBSDKLoginButton()
+            let loginButton: FBSDKLoginButton = FBSDKLoginButton()
             // Optional: Place the button in the center of your view.
             loginButton.center = self.view.center
             loginButton.delegate = self
@@ -64,16 +64,16 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             if ((error) != nil)
             {
                 // Process error
-                println("Error: \(error)")
+                print("Error: \(error)")
             }
             else
             {
-                println("fetched user: \(result)")
+                print("fetched user: \(result)")
                 let userName : String = result.valueForKey("name") as! String
-                println("User Name is: \(userName)")
+                print("User Name is: \(userName)")
                 self.userName = userName
                 let userId2 = result.valueForKey("id") as! String
-                println("UserId2 is: \(userId2)")
+                print("UserId2 is: \(userId2)")
                 self.userId = userId2
                 
                 
@@ -89,11 +89,11 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         if ((error) != nil)
         {
-            println("Error: \(error)")
+            print("Error: \(error)")
             // Process error
         }
         else if result.isCancelled {
-            println("FB login cancelled")
+            print("FB login cancelled")
             // Handle cancellations
         }
         else {
@@ -140,7 +140,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         
         let scrollViewHeight =  UIScreen.mainScreen().bounds.size.height - titleLabel.frame.maxY - ( margin * 2 )
-        var scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
+        let scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
         self.resultsScrollView = ResultsScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight))
         self.resultsScrollView.alpha = 1
         self.view.addSubview(self.resultsScrollView)
@@ -170,22 +170,25 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     {
         
         //FB LOGIN
-        var jsonDictionary = ["fbid":self.userId]
+        let jsonDictionary = ["fbid":self.userId]
         
         self.client!.invokeAPI("collectchallenges", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
-                println("\(error)")
+                print("\(error)")
             }
             if result != nil
             {
-                var e: NSError?
-                var jsonArray = NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers, error: &e) as? NSArray
-                
-                if jsonArray?.count > 0
-                {
-                    self.saveChallengeToPlist(jsonArray as! [NSDictionary])
+                do{
+                    let jsonArray = try NSJSONSerialization.JSONObjectWithData(result, options: NSJSONReadingOptions.MutableContainers) as? NSArray
+                    
+                    if jsonArray?.count > 0
+                    {
+                        self.saveChallengeToPlist(jsonArray as! [NSDictionary])
+                    }
+                } catch {
+                    print(error)
                 }
                 self.activityLabel.alpha = 0
                 self.collectStoredResults()
@@ -193,7 +196,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             }
             if response != nil
             {
-                println("\(response)")
+                print("\(response)")
             }
         })
     }
@@ -209,17 +212,17 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             {
                 for item in arrayOfValues
                 {
-                    println("\(item)")
+                    print("\(item)")
                 }
                 for var i = 0 ; i < 5 ; i++
                 {
-                    println("\(arrayOfValues[i])")
+                    print("\(arrayOfValues[i])")
                 }
-                let myCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[0] as! String)
-                let myPoints = NSNumberFormatter().numberFromString(arrayOfValues[1] as! String)
-                let name = arrayOfValues[2] as! String
-                let opponentCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[3] as! String)
-                let opponentPoints = NSNumberFormatter().numberFromString(arrayOfValues[4] as! String)
+                let myCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[0] )
+                let myPoints = NSNumberFormatter().numberFromString(arrayOfValues[1] )
+                let name = arrayOfValues[2] 
+                let opponentCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[3] )
+                let opponentPoints = NSNumberFormatter().numberFromString(arrayOfValues[4] )
                 resultsScrollView.addItem(myCorrectAnswers!.integerValue, myPoints: myPoints!.integerValue, opponentName: name, opponentCS: opponentCorrectAnswers!.integerValue, opponentPoints: opponentPoints!.integerValue)
                 
                 noValues = false
@@ -243,7 +246,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             let name = item["opponentname"] as! String
             let opponentCorrectAnswers = item["opponentcorrectanswers"] as! Int
             let opponentPoints = item["opponentpoints"] as! Int
-            var valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints)"
+            let valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints)"
             datactrl.addRecordToGameResults(valuesStringFormat)
         }
         datactrl.saveGameData()

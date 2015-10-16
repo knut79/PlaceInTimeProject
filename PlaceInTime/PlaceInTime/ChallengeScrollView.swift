@@ -49,7 +49,7 @@ class ChallengeScrollView: UIView , UIScrollViewDelegate, RadiobuttonItemProtoco
     var delegate:UserViewProtocol!
     var itemName:String!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
     }

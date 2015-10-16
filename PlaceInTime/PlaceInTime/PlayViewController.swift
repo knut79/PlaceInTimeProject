@@ -14,7 +14,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var gameStats:GameStats!
     var cardsStack:[Card] = []
     var backOfCard:UIImageView!
-    let datactrl = DataHandler()
+    let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
     var dropZones:[Int:DropZone] = [:]
     
     var infoHelperView:InfoHelperView!
@@ -61,14 +61,18 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         super.viewDidLoad()
 
         
-        datactrl.fetchData(tags: tags,fromLevel:levelLow,toLevel: levelHigh)
+        datactrl.fetchData(tags,fromLevel:levelLow,toLevel: levelHigh)
         
-        self.canDisplayBannerAds = true
-        bannerView = ADBannerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44))
-        self.view.addSubview(bannerView!)
-        self.bannerView?.delegate = self
-        self.bannerView?.hidden = false
-        
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        if !adFree
+        {
+            self.canDisplayBannerAds = true
+            bannerView = ADBannerView(frame: CGRectZero)
+            bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+            self.view.addSubview(bannerView!)
+            self.bannerView?.delegate = self
+            self.bannerView?.hidden = false
+        }
         gameStats = GameStats(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width * 0.4, UIScreen.mainScreen().bounds.size.height * 0.08),okScore: 0,goodScore: 0,loveScore: 0)
         self.view.addSubview(gameStats)
         
@@ -114,7 +118,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     }
     
     override func viewDidAppear(animated: Bool) {
-        bannerView?.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 44, UIScreen.mainScreen().bounds.size.width, 44)
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
         setCardStack()
         //revealNextCard()
     }
@@ -124,15 +128,26 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         var rate:Float = 1.0
         for var i:Int = 0 ; i < 6 ; i++
         {
-            var error:NSError?
-            var wrongSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.wrongSound, error: &error)
+            var wrongSoundAudioPlayer: AVAudioPlayer!
+            do {
+                wrongSoundAudioPlayer = try AVAudioPlayer(contentsOfURL: self.wrongSound)
+            } catch let error1 as NSError {
+                print(error1)
+                wrongSoundAudioPlayer = nil
+            }
             wrongSoundAudioPlayer.enableRate = true
             wrongSoundAudioPlayer.numberOfLoops = 0
             wrongSoundAudioPlayer.rate = rate
             wrongSoundAudioPlayer.prepareToPlay()
             self.wrongSoundAudioPlayerPool.append(wrongSoundAudioPlayer)
             
-            var correctSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.correctSound, error: &error)
+            var correctSoundAudioPlayer: AVAudioPlayer!
+            do {
+                correctSoundAudioPlayer = try AVAudioPlayer(contentsOfURL: self.correctSound)
+            } catch let error1 as NSError {
+                print(error1)
+                correctSoundAudioPlayer = nil
+            }
             correctSoundAudioPlayer.enableRate = true
             correctSoundAudioPlayer.numberOfLoops = 0
             correctSoundAudioPlayer.rate = rate
@@ -141,14 +156,26 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             
             rate = rate + 1.0
             
-            var cardInnSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.dealCardSound, error: &error)
+            var cardInnSoundAudioPlayer: AVAudioPlayer!
+            do {
+                cardInnSoundAudioPlayer = try AVAudioPlayer(contentsOfURL: self.dealCardSound)
+            } catch let error1 as NSError {
+                print(error1)
+                cardInnSoundAudioPlayer = nil
+            }
             cardInnSoundAudioPlayer.enableRate = true
             cardInnSoundAudioPlayer.numberOfLoops = 0
             cardInnSoundAudioPlayer.rate = 2
             cardInnSoundAudioPlayer.prepareToPlay()
             cardInnSoundAudioPlayerPool.append(cardInnSoundAudioPlayer)
             
-            var cardOutSoundAudioPlayer = AVAudioPlayer(contentsOfURL: self.dealCardSound, error: &error)
+            var cardOutSoundAudioPlayer: AVAudioPlayer!
+            do {
+                cardOutSoundAudioPlayer = try AVAudioPlayer(contentsOfURL: self.dealCardSound)
+            } catch let error1 as NSError {
+                print(error1)
+                cardOutSoundAudioPlayer = nil
+            }
             cardOutSoundAudioPlayer.enableRate = true
             cardOutSoundAudioPlayer.numberOfLoops = 0
             cardOutSoundAudioPlayer.rate = 3
@@ -189,8 +216,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateTimeout()
     {
-        var error:NSError?
-        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.timeIsUpSound, error: &error)
+        do {
+            self.audioPlayer = try AVAudioPlayer(contentsOfURL: self.timeIsUpSound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
         self.audioPlayer.enableRate = true
         self.audioPlayer.volume = 0.6
         self.audioPlayer.numberOfLoops = 0
@@ -207,7 +237,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 
                 self.rightButton.userInteractionEnabled = false
                 
-                var label = UILabel(frame: CGRectMake(0, 0, 100, 40))
+                let label = UILabel(frame: CGRectMake(0, 0, 100, 40))
                 label.textAlignment = NSTextAlignment.Center
                 label.font = UIFont.boldSystemFontOfSize(20)
                 label.adjustsFontSizeToFitWidth = true
@@ -278,7 +308,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         self.cardInnSoundAudioPlayerPool[i].play()
         let orgCardWidth:CGFloat = 314
         let orgCardHeight:CGFloat = 226
-        let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
+        //let cardWidthToHeightRatio:CGFloat =   orgCardHeight / orgCardWidth
 
 
         let cardWidth:CGFloat = orgCardWidth / 2.5
@@ -292,8 +322,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         
         
-        var yOffset:CGFloat = getRandomOffset()
-        var xOffset:CGFloat = getRandomOffset()
+        let yOffset:CGFloat = getRandomOffset()
+        let xOffset:CGFloat = getRandomOffset()
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
 
@@ -319,7 +349,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func getRandomRotation() -> CGFloat
     {
-        var randomNum = Int(arc4random_uniform(UInt32(5)))
+        let randomNum = Int(arc4random_uniform(UInt32(5)))
         if randomNum == 0
         {
             return -0.05
@@ -344,7 +374,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func getRandomOffset() -> CGFloat
     {
-        var randomNum = Int(arc4random_uniform(UInt32(3)))
+        let randomNum = Int(arc4random_uniform(UInt32(3)))
         if randomNum == 0
         {
             return 1.5
@@ -410,7 +440,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateYears(var i:Int,completion: (() -> (Void)))
     {
-        var label = UILabel(frame: dropZones[i]!.frame)
+        let label = UILabel(frame: dropZones[i]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
@@ -420,7 +450,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         tempYearLabel.append(label)
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             
-            label.frame.offset(dx: 0, dy: label.frame.size.height * -1)
+            label.frame.offsetInPlace(dx: 0, dy: label.frame.size.height * -1)
             label.transform = CGAffineTransformScale(label.transform, 1.3, 1.3)
             label.alpha = 1
             }, completion: { (value: Bool) in
@@ -441,7 +471,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     {
 
         let dropZone = dropZones[index]
-        var label = tempYearLabel[index]
+        let label = tempYearLabel[index]
         
         if dragOverlabel == nil && index > 0
         {
@@ -483,7 +513,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                             
                             label.textColor = UIColor.greenColor()
                             
-                            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+                            let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
                             pulseAnimation.duration = 0.3
                             pulseAnimation.toValue = NSNumber(float: 0.3)
                             pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -501,12 +531,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                             
                             UIView.animateWithDuration(0.25, animations: { () -> Void in
 
-                                    self.dropZones[index]?.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
+                                    self.dropZones[index]?.frame.offsetInPlace(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
                                     //self.dropZones[index]?.getHookedUpCard()!.frame.offset(dx: 0, dy: self.dropZones[index]!.frame.height / 2)
                                     self.dropZones[index]!.getHookedUpCard()!.center = self.dropZones[index]!.center
                                 
                                     label.textColor = UIColor.redColor()
-                                    label.frame.offset(dx: 0, dy: (label.frame.size.height / 2) )
+                                    label.frame.offsetInPlace(dx: 0, dy: (label.frame.size.height / 2) )
                                     label.transform = CGAffineTransformScale(label.transform, 0.75, 0.75)
                                     label.text = "\(label.text!)\(self.getFailsEmoji(self.fails))"
 
@@ -560,7 +590,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateCleanupAndStartNewRound()
     {
-        var tapViewForNextRound = UIView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
+        let tapViewForNextRound = UIView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         tapViewForNextRound.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.01)
         tapViewForNextRound.alpha = 0
         tempViews.append(tapViewForNextRound)
@@ -602,17 +632,20 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animateCorrectSequence()
     {
-        var points = 1 //1 * (numberOfDropZones - (minNumDropZones - 1))
+        let points = 1 //1 * (numberOfDropZones - (minNumDropZones - 1))
         
-        var error:NSError?
-        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.correctSequenceSound, error: &error)
+        do {
+            self.audioPlayer = try AVAudioPlayer(contentsOfURL: self.correctSequenceSound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
         self.audioPlayer.enableRate = true
         self.audioPlayer.numberOfLoops = 0// randomHistoricEvents.count
         self.audioPlayer.rate = 1
         self.audioPlayer.prepareToPlay()
         self.audioPlayer.play()
         
-        var label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
+        let label = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(24)
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
@@ -629,7 +662,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 card.layer.borderWidth = 2
                 card.layer.borderColor = UIColor.greenColor().CGColor
                 
-                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+                let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
                 pulseAnimation.duration = 0.3
                 pulseAnimation.toValue = NSNumber(float: 0.3)
                 pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -723,7 +756,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }, completion: { (value: Bool) in
                 self.animateRemoveOneDropzoneWithCard(0,completion: {() -> Void in
 
-                    self.animateRemoveOneCardFromCardStack(comp: {() -> Void in
+                    self.animateRemoveOneCardFromCardStack({() -> Void in
                         completion()
                     })
 
@@ -748,7 +781,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 }, completion: { (value: Bool) in
                     self.cardToDrag = nil
                     card.removeFromSuperview()
-                    self.animateRemoveOneCardFromCardStack(comp: comp)
+                    self.animateRemoveOneCardFromCardStack(comp)
             })
         }
         else if let card = self.newRevealedCard
@@ -756,12 +789,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             cardOutSoundAudioPlayerPool[poolIndex].play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
-                card.frame.offset(dx: -500, dy: 0)
+                card.frame.offsetInPlace(dx: -500, dy: 0)
                 
                 }, completion: { (value: Bool) in
                     self.newRevealedCard = nil
                     card.removeFromSuperview()
-                    self.animateRemoveOneCardFromCardStack(comp: comp)
+                    self.animateRemoveOneCardFromCardStack(comp)
             })
         }
         else if cardsStack.count > 0
@@ -769,8 +802,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             cardOutSoundAudioPlayerPool[poolIndex].play()
             UIView.animateWithDuration(0.25, animations: { () -> Void in
                 
-                var card = self.cardsStack.last
-                card?.frame.offset(dx: -500, dy: 0)
+                let card = self.cardsStack.last
+                card?.frame.offsetInPlace(dx: -500, dy: 0)
                 
                 }, completion: { (value: Bool) in
                     self.cardsStack.removeLast()
@@ -779,7 +812,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                         card.removeFromSuperview()
                     }
 
-                    self.animateRemoveOneCardFromCardStack(comp: comp)
+                    self.animateRemoveOneCardFromCardStack(comp)
 
             })
         }
@@ -818,8 +851,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animatePoints(centerPoint:CGPoint)
     {
-        var points = 10 * (numberOfDropZones - (minNumDropZones - 1))
-        var label = UILabel(frame: dropZones[0]!.frame)
+        let points = 10 * (numberOfDropZones - (minNumDropZones - 1))
+        let label = UILabel(frame: dropZones[0]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
@@ -865,8 +898,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         let dropZoneWidth = (UIScreen.mainScreen().bounds.size.width - (margin * (devidingFactor + 1))) / devidingFactor
         let dropZoneHeight = dropZoneWidth * cardWidthToHeightRatio
-        var xOffset = margin
-        var key = dropZones.count
+        let xOffset = margin
+        let key = dropZones.count
         originalDropZoneYCenter = UIScreen.mainScreen().bounds.size.height - (dropZoneHeight / 2)
         
         let dropZone = DropZone(frame: CGRectMake(xOffset,UIScreen.mainScreen().bounds.size.height - dropZoneHeight , dropZoneWidth, dropZoneHeight),key:key)
@@ -949,15 +982,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     private var xOffset: CGFloat = 0.0
     private var yOffset: CGFloat = 0.0
 
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         if tapOverride || touchOverride
         {
             return
         }
         self.rightButton.alpha = 0
-        var touch = touches.first as? UITouch
-        var touchLocation = touch!.locationInView(self.view)
+        let touch = touches.first
+        let touchLocation = touch!.locationInView(self.view)
         
         if let card = cardToDrag
         {
@@ -969,7 +1002,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
 
 
-            var isInnView = CGRectContainsPoint(cardToDrag!.frame,touchLocation)
+            let isInnView = CGRectContainsPoint(cardToDrag!.frame,touchLocation)
             if(isInnView)
             {
 
@@ -987,7 +1020,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     })
                 }
                 
-                let point = (touches.first as? UITouch)!.locationInView(self.view) //touches.anyObject()!.locationInView(self.view)
+                let point = touches.first!.locationInView(self.view) //touches.anyObject()!.locationInView(self.view)
                 xOffset = point.x - card.center.x
                 yOffset = point.y - card.center.y
                 //pointLabel.transform = CGAffineTransformMakeRotation(10.0 * CGFloat(Float(M_PI)) / 180.0)
@@ -1022,7 +1055,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
     }
 
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if touchOverride
         {
             return
@@ -1030,9 +1063,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         if let card = cardToDrag
         {
-            var touch = touches.first as? UITouch //touches.anyObject()
-            var touchLocation = touch!.locationInView(self.view)
-            var isInnView = CGRectContainsPoint(card.frame,touchLocation)
+            let touch = touches.first //touches.anyObject()
+            let touchLocation = touch!.locationInView(self.view)
+            let isInnView = CGRectContainsPoint(card.frame,touchLocation)
             
             if(isInnView)
             {
@@ -1041,7 +1074,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 if dropZone?.getHookedUpCard() != nil
                 {
 
-                    var isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
+                    let isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
                     if(isInnView)
                     {
                          UIView.animateWithDuration(0.15, animations: { () -> Void in
@@ -1053,7 +1086,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     }
                 }
                 
-                let point = (touches.first as? UITouch)!.locationInView(self.view) //touches.anyObject()!.locationInView(self.view)
+                let point = touches.first!.locationInView(self.view) //touches.anyObject()!.locationInView(self.view)
                 card.center = CGPointMake(point.x - xOffset, point.y - yOffset)
             }
         }
@@ -1080,7 +1113,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         return dropZoneToGiveFocus
     }
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
       
         if touchOverride
         {
@@ -1093,14 +1126,14 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             if let card = self.cardToDrag
             {
                 
-                var touch = touches.first as? UITouch //touches.anyObject()
-                var touchLocation = touch!.locationInView(self.view)
+                let touch = touches.first//touches.anyObject()
+                let touchLocation = touch!.locationInView(self.view)
                 
                 //self.directionLabel.alpha = 0
                 
                 if let dropzone = self.getFocusDropZone()
                 {
-                    var isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
+                    let isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
                     if(isInnView)
                     {
                         self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
@@ -1162,9 +1195,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             self.pushBackwardAndMakeSpace(self.dropZones[dropzone.key]!)
             
-            var textLeft:String? = dropZones[dropzone.key - 1]?.getHookedUpCard()?.event.title
-            var textMid = cardToDrag!.event.title
-            var textRight:String? = dropZones[dropzone.key + 1]?.getHookedUpCard()?.event.title
+            let textLeft:String? = dropZones[dropzone.key - 1]?.getHookedUpCard()?.event.title
+            let textMid = cardToDrag!.event.title
+            let textRight:String? = dropZones[dropzone.key + 1]?.getHookedUpCard()?.event.title
             infoHelperView.setText(textLeft, main:textMid , right: textRight)
             
             
@@ -1173,9 +1206,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             self.pushForwardAndMakeSpace(self.dropZones[dropzone.key]!)
             
-            var textLeft:String? = dropZones[dropzone.key - 1]?.getHookedUpCard()?.event.title
-            var textMid = cardToDrag!.event.title
-            var textRight:String? = dropZones[dropzone.key + 1]?.getHookedUpCard()?.event.title
+            let textLeft:String? = dropZones[dropzone.key - 1]?.getHookedUpCard()?.event.title
+            let textMid = cardToDrag!.event.title
+            let textRight:String? = dropZones[dropzone.key + 1]?.getHookedUpCard()?.event.title
             infoHelperView.setText(textLeft, main:textMid , right: textRight)
             
         }
@@ -1275,7 +1308,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromPlayToMainMenu") {
-            var svc = segue!.destinationViewController as! MainMenuViewController
+            let svc = segue!.destinationViewController as! MainMenuViewController
             if gameStats.newValues()
             {
                 svc.updateGlobalGameStats = true
@@ -1284,7 +1317,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
         }
         if (segue.identifier == "segueFromPlayToFinished") {
-            var svc = segue!.destinationViewController as! FinishedViewController
+            let svc = segue!.destinationViewController as! FinishedViewController
             svc.completedQuestionsIds = completedQuestionsIds
             svc.usersIdsToChallenge = usersIdsToChallenge
             svc.userFbId = myIdAndName.0
@@ -1344,6 +1377,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         self.bannerView?.hidden = adFree
+    }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
     }
     
 }

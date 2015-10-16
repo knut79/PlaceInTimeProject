@@ -25,7 +25,7 @@ class DropZone: UIView {
     private var hookedUpCard:Card?
     var delegate:DropZoneProtocol?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -55,7 +55,6 @@ class DropZone: UIView {
     
     func resetHookedUpCard()
     {
-        let tempCard = hookedUpCard
         hookedUpCard = lastHookedUpCard
         lastHookedUpCard = nil
         if let card = hookedUpCard

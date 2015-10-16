@@ -17,7 +17,7 @@ class Challenge {
     var pointsToBeat:Int
     var correctAnswersToBeat:Int
     var title:String
-    let datactrl = DataHandler()
+    let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
     
     init(values:NSDictionary)
     {
@@ -26,7 +26,7 @@ class Challenge {
         fbIdToBeat = values["fbIdToBeat"] as! String
         pointsToBeat = values["pointsToBeat"] as! Int
         correctAnswersToBeat = values["correctAnswersToBeat"] as! Int
-        var questionsStringFormat = values["questionsStringFormat"] as! String
+        let questionsStringFormat = values["questionsStringFormat"] as! String
         
         let questionBlocksStringFormat = questionsStringFormat.componentsSeparatedByString(";")
         for item in questionBlocksStringFormat

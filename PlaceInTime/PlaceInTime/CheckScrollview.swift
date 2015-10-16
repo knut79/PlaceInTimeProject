@@ -29,7 +29,7 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
     var selectedInfoLabel:UILabel!
     var itemName:String!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
     }

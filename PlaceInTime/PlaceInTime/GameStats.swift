@@ -26,7 +26,7 @@ class GameStats:UIView {
     
     var animationLabel:UILabel!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -203,7 +203,7 @@ class GameStats:UIView {
         var positiveNegativePoints = points < 0 ? points * -1 : points
         
         okPointsView.layer.removeAllAnimations()
-        var deltaPoints = positiveNegativePoints - self.okPoints!
+        let deltaPoints = positiveNegativePoints - self.okPoints!
         self.okPoints! -= positiveNegativePoints
         if( okPoints < 0)
         {
@@ -256,7 +256,7 @@ class GameStats:UIView {
         animationLabel.alpha = 1
         UIView.animateWithDuration(1, animations: { () -> Void in
             
-            self.animationLabel.frame.offset(dx: 0, dy: self.animationLabel.frame.height )
+            self.animationLabel.frame.offsetInPlace(dx: 0, dy: self.animationLabel.frame.height )
             self.animationLabel.alpha = 0
             self.animationLabel.transform = CGAffineTransformScale(self.animationLabel.transform, 0.3, 0.3)
             }, completion: { (value: Bool) in
@@ -270,7 +270,7 @@ class GameStats:UIView {
     
     func animateView(view:UIView)
     {
-        var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
+        let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
         pulseAnimation.duration = 0.3
         pulseAnimation.toValue = NSNumber(float: 0.3)
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)

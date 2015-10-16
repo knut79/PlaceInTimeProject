@@ -26,7 +26,7 @@ class DataHandler
         
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(NSCalendarUnit.CalendarUnitYear, fromDate: date)
+        let components = calendar.components(NSCalendarUnit.Year, fromDate: date)
         todaysYear = Double(components.year)
         historicEventItems = []
     }
@@ -725,7 +725,7 @@ class DataHandler
         //newEvent(id++,title: "King David conquers Jerusalem", year:-990,level:2,tags:"#war")
         //newEvent(id++,title:"First Olympiad in Greece", year:-776,level:2,tags:"#war#curiosa")
         
-        println("populated new data")
+        print("populated new data")
         
         
         
@@ -739,12 +739,12 @@ class DataHandler
     
     func newEvent(idForUpdate:Int,title:String, from: Int32, to:Int32, text:String = "", level:Int = 3, tags:String = "")
     {
-        let q1 = HistoricEvent.createInManagedObjectContext(self.managedObjectContext!,idForUpdate:idForUpdate,  title:title, from: from, to:to, text:text, level:level,tags:tags)
+        HistoricEvent.createInManagedObjectContext(self.managedObjectContext!,idForUpdate:idForUpdate,  title:title, from: from, to:to, text:text, level:level,tags:tags)
     }
     
     func newEvent(idForUpdate:Int,title:String, year: Int32, text:String = "", level:Int = 3, tags:String = "")
     {
-        let q1 = HistoricEvent.createInManagedObjectContext(self.managedObjectContext!,idForUpdate:idForUpdate,  title:title, year:year, text:text,level:level, tags:tags)
+        HistoricEvent.createInManagedObjectContext(self.managedObjectContext!,idForUpdate:idForUpdate,  title:title, year:year, text:text,level:level, tags:tags)
     }
     
     func updateOkScore(historicEvent:HistoricEvent, deltaScore:Int)
@@ -798,7 +798,7 @@ class DataHandler
     {
         //this value is used to ensure events used less than others have a better chance of being used
         var getValuesFromIndexCount = UInt32(Double(historicEventItems.count) * 0.75)
-        var failSafePercision:Int = 10
+        let failSafePercision:Int = 10
         var failSafeIndexCount:UInt32 = UInt32(historicEventItems.count)
         
         var historicEventsWithPrecision:[HistoricEvent] = []
@@ -808,13 +808,13 @@ class DataHandler
 
         var roundsBeforeFailSafe = 10
         var notAcceptableValues = false
-        do{
+        repeat{
             historicEventsWithPrecision = []
             for var i = 0 ; i < numEvents ; i++
             {
                 //randomNum = Int(arc4random()) % historicEventItems.count
                 let randomNum = Int(arc4random_uniform(UInt32(getValuesFromIndexCount)))
-                var event = historicEventItems![randomNum] as HistoricEvent
+                let event = historicEventItems![randomNum] as HistoricEvent
                 historicEventsWithPrecision.append(event)
                 
             }
@@ -823,7 +823,7 @@ class DataHandler
             for var i = 0 ; i < numEvents ; i++
             {
                 var foundMySelfOnce = false
-                var value = historicEventsWithPrecision[i].fromYear
+                let value = historicEventsWithPrecision[i].fromYear
                 for item in historicEventsWithPrecision
                 {
                     if item == historicEventsWithPrecision[i]
@@ -875,23 +875,22 @@ class DataHandler
     }
     
     func shuffle<C: MutableCollectionType where C.Index == Int>(var list: C) -> C {
-        let ecount = count(list)
+        let ecount = list.count
         for i in 0..<(ecount - 1) {
             let j = Int(arc4random_uniform(UInt32(ecount - i))) + i
-            swap(&list[i], &list[j])
+            if j != i {
+                swap(&list[i], &list[j])
+            }
         }
         return list
     }
 
     
     func save() {
-        var error : NSError?
-        if(managedObjectContext!.save(&error) ) {
-            if let err = error
-            {
-                println(err.localizedDescription)
-                
-            }
+        do{
+            try managedObjectContext!.save()
+        } catch {
+            print(error)
         }
     }
     
@@ -929,7 +928,7 @@ class DataHandler
         
         fetchEvents.sortDescriptors = [NSSortDescriptor(key: "used", ascending: true)]
         
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchEvents, error: nil) as? [HistoricEvent] {
+        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchEvents)) as? [HistoricEvent] {
             historicEventItems = fetchResults
         }
         
@@ -962,7 +961,7 @@ class DataHandler
             predicateIds = "\(predicateIds)\(item),"
         }
         
-        predicateIds = dropLast(predicateIds)
+        predicateIds = String(predicateIds.characters.dropLast())
         predicateIds = "\(predicateIds)}"
         //predicateIds.removeAtIndex(predicateIds.startIndex)
 
@@ -970,7 +969,7 @@ class DataHandler
         //let predicate = tags == "" ? NSPredicate(format: "periods.@count > 0 AND level >= \(fromLevel) AND level <= \(toLevel)") : NSPredicate(format: "ANY tags == \(tags)")
         fetchEvents.predicate = predicate
         
-        if let fetchResults = managedObjectContext!.executeFetchRequest(fetchEvents, error: nil) as? [HistoricEvent] {
+        if let fetchResults = (try? managedObjectContext!.executeFetchRequest(fetchEvents)) as? [HistoricEvent] {
             return fetchResults
         }
         else
@@ -1004,27 +1003,30 @@ class DataHandler
         // getting path to GameData.plist
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
         let documentsDirectory = paths[0] as! String
-        let path = documentsDirectory.stringByAppendingPathComponent("GameData.plist")
+        let path = (documentsDirectory as NSString).stringByAppendingPathComponent("GameData.plist")
         let fileManager = NSFileManager.defaultManager()
         //check if file exists
         if(!fileManager.fileExistsAtPath(path)) {
             // If it doesn't, copy it from the default file in the Bundle
             if let bundlePath = NSBundle.mainBundle().pathForResource("GameData", ofType: "plist") {
                 let resultDictionary = NSMutableDictionary(contentsOfFile: bundlePath)
-                println("Bundle GameData.plist file is --> \(resultDictionary?.description)")
-                fileManager.copyItemAtPath(bundlePath, toPath: path, error: nil)
-                println("copy")
+                print("Bundle GameData.plist file is --> \(resultDictionary?.description)")
+                do {
+                    try fileManager.copyItemAtPath(bundlePath, toPath: path)
+                } catch _ {
+                }
+                print("copy")
             } else {
-                println("GameData.plist not found. Please, make sure it is part of the bundle.")
+                print("GameData.plist not found. Please, make sure it is part of the bundle.")
             }
         } else {
-            println("GameData.plist already exits at path. \(path)")
+            print("GameData.plist already exits at path. \(path)")
             // use this to delete file from documents directory
             //fileManager.removeItemAtPath(path, error: nil)
         }
         let resultDictionary = NSMutableDictionary(contentsOfFile: path)
-        println("Loaded GameData.plist file is --> \(resultDictionary?.description)")
-        var myDict = NSDictionary(contentsOfFile: path)
+        print("Loaded GameData.plist file is --> \(resultDictionary?.description)")
+        let myDict = NSDictionary(contentsOfFile: path)
         if let dict = myDict {
             //loading values
             dataPopulatedValue = dict.objectForKey(DataPopulatedKey)!
@@ -1036,9 +1038,10 @@ class DataHandler
             eventsUpdateValue = dict.objectForKey(EventsUpdateKey)!
             adFreeValue = dict.objectForKey(AdFreeKey)!
             NSUserDefaults.standardUserDefaults().setBool(adFreeValue as! NSNumber == 1 ? true : false, forKey: "adFree")
+            NSUserDefaults.standardUserDefaults().synchronize()
             gameResultsValues = dict.objectForKey(GameResultsKey)! as! [AnyObject]
         } else {
-            println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
+            print("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
         }
     }
     
@@ -1046,7 +1049,7 @@ class DataHandler
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
         let documentsDirectory = paths.objectAtIndex(0) as! NSString
         let path = documentsDirectory.stringByAppendingPathComponent("GameData.plist")
-        var dict: NSMutableDictionary = ["XInitializerItem": "DoNotEverChangeMe"]
+        let dict: NSMutableDictionary = ["XInitializerItem": "DoNotEverChangeMe"]
         //saving values
         dict.setObject(dataPopulatedValue, forKey: DataPopulatedKey)
         dict.setObject(okScoreValue, forKey: OkScoreKey)
@@ -1061,7 +1064,7 @@ class DataHandler
         //writing to GameData.plist
         dict.writeToFile(path, atomically: false)
         let resultDictionary = NSMutableDictionary(contentsOfFile: path)
-        println("Saved GameData.plist file is --> \(resultDictionary?.description)")
+        print("Saved GameData.plist file is --> \(resultDictionary?.description)")
     }
     
     func getMaxTimeLimit(year: Double) -> Double

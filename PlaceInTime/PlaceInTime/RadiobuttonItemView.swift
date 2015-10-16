@@ -23,7 +23,7 @@ class RadiobuttonItemView: UIView
     var value:NSDictionary!
     var delegate:RadiobuttonItemProtocol!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

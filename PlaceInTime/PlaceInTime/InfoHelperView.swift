@@ -18,7 +18,7 @@ class InfoHelperView: UIView {
     var arrowUp:UILabel!
     var arrowDown:UILabel!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
