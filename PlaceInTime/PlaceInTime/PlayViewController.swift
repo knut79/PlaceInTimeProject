@@ -67,7 +67,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         if !adFree
         {
             self.canDisplayBannerAds = true
-            bannerView = ADBannerView(frame: CGRectZero)
+            bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
             self.view.addSubview(bannerView!)
             self.bannerView?.delegate = self
@@ -116,12 +116,23 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
 
     }
+
     
     override func viewDidAppear(animated: Bool) {
+        
+        bannerView?.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
         bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+        
         setCardStack()
-        //revealNextCard()
     }
+    /*
+    override func viewWillAppear(animated: Bool) {
+        bannerView?.translatesAutoresizingMaskIntoConstraints = false
+        
+        bannerView?.frame = CGRectZero
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+    }
+    */
     
     func setupAudioPlayers()
     {
@@ -1381,6 +1392,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     override func shouldAutorotate() -> Bool {
         return false
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
+    }
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return UIInterfaceOrientation.LandscapeRight
+        
     }
     
 }

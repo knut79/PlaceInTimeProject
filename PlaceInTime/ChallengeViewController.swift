@@ -473,4 +473,13 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
+    }
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return UIInterfaceOrientation.LandscapeRight
+        
+    }
 }

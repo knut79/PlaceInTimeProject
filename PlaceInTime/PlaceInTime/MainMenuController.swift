@@ -53,7 +53,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var tags:[String] = []
     var holderView = HolderView(frame: CGRectZero)
     
-    var numOfQuestionsForRound:Int = 5
+    var numOfQuestionsForRound:Int = 8
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
@@ -105,7 +105,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             adFreeButton.userInteractionEnabled = true
             adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
             self.canDisplayBannerAds = true
-            bannerView = ADBannerView(frame: CGRectZero)
+            bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
 
             self.view.addSubview(bannerView!)
             self.bannerView?.delegate = self
@@ -213,6 +213,61 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
 
     }
     
+    override func viewDidAppear(animated: Bool) {
+        
+        
+        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
+        if firstLaunch
+        {
+            holderView = HolderView(frame: view.bounds)
+            holderView.delegate = self
+            view.addSubview(holderView)
+            holderView.startAnimation()
+            
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstlaunch")
+        }
+        
+        if updateGlobalGameStats
+        {
+            
+            globalGameStats.addOkPoints(newGameStatsValues.0, completionOKPoints: { () in
+                
+                self.globalGameStats.addLovePoints(self.newGameStatsValues.2, completionLovePoints: { () in
+                    self.updateGlobalGameStats = false
+                    self.datactrl.updateGameData(self.newGameStatsValues.0,deltaGoodPoints: self.newGameStatsValues.1,deltaLovePoints: self.newGameStatsValues.2)
+                    self.datactrl.saveGameData()
+                })
+                
+            })
+        }
+        
+        bannerView?.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+        
+    }
+
+    /*
+    override func viewWillAppear(animated: Bool) {
+        bannerView?.translatesAutoresizingMaskIntoConstraints = false
+        
+        bannerView?.frame = CGRectZero
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+    }
+*/
+    
+    
+    override func viewDidLayoutSubviews() {
+        
+        loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
+        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+        
+        setupFirstLevelMenu()
+        
+        setupChallengeTypeButtons()
+        
+        setupDynamicPlayButton()
+    }
+    
     func requestProductData()
     {
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
@@ -269,6 +324,32 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     func buyProductAction() {
+        
+        let numberPrompt = UIAlertController(title: "Remove ads",
+            message: "",
+            preferredStyle: .Alert)
+        
+        
+        numberPrompt.addAction(UIAlertAction(title: "Buy",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.addProductPayment()
+        }))
+        numberPrompt.addAction(UIAlertAction(title: "Restore purchase",
+            style: .Default,
+            handler: { (action) -> Void in
+                
+                self.addProductPayment()
+                
+        }))
+        
+        self.presentViewController(numberPrompt,
+            animated: true,
+            completion: nil)
+    }
+    
+    func addProductPayment()
+    {
         let payment = SKPayment(product: product!)
         SKPaymentQueue.defaultQueue().addPayment(payment)
     }
@@ -284,7 +365,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             case SKPaymentTransactionState.Restored:
                 self.removeAdds()
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
             case SKPaymentTransactionState.Failed:
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             default:
@@ -350,54 +431,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        
 
-        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
-        if firstLaunch
-        {
-            holderView = HolderView(frame: view.bounds)
-            holderView.delegate = self
-            view.addSubview(holderView)
-            holderView.startAnimation()
-
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstlaunch")
-        }
-        else
-        {
-            bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
-        }
-        if updateGlobalGameStats
-        {
-            
-            globalGameStats.addOkPoints(newGameStatsValues.0, completionOKPoints: { () in
-                
-                self.globalGameStats.addLovePoints(self.newGameStatsValues.2, completionLovePoints: { () in
-                    self.updateGlobalGameStats = false
-                    self.datactrl.updateGameData(self.newGameStatsValues.0,deltaGoodPoints: self.newGameStatsValues.1,deltaLovePoints: self.newGameStatsValues.2)
-                    self.datactrl.saveGameData()
-                })
-                
-            })
-        }
-
-    }
-    
-
-    override func viewDidLayoutSubviews() {
-        
-        loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
-        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
-        
-        setupFirstLevelMenu()
-
-        setupChallengeTypeButtons()
-        
-        setupDynamicPlayButton()
-    }
-    
-    
     
     func setupFirstLevelMenu()
     {
@@ -755,12 +789,12 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        print("supportedInterfaceOrientations", terminator: "")
-        return UIInterfaceOrientationMask.LandscapeLeft
+        return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
     }
     
     override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.LandscapeLeft
+        return UIInterfaceOrientation.LandscapeRight
+
     }
     
     

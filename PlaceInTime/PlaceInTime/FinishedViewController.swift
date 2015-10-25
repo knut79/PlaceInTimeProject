@@ -248,31 +248,12 @@ class FinishedViewController:UIViewController {
 
     }
     
-    /*
-    func sendChallenge()
-    {
-        let url = NSURL(string: "http://myrestservice")
-        let theRequest = NSURLRequest(URL: url)
-        
-        NSURLConnection.sendAsynchronousRequest(theRequest, queue: nil, completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            if data.length > 0 && error == nil {
-                let response : AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.fromMask(0), error: nil)
-            }
-        })
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
     }
-    */
     
-    /*
-    - (void) sendChallenge:(NSDictionary*) jsonDictionary completion:(MSAPIDataBlock)completion
-    {
-    //NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: @"1", @"level", nil];
-    [self.client
-    invokeAPI:@"dynamicchallenge"
-    data:nil
-    HTTPMethod:@"POST"
-    parameters:jsonDictionary
-    headers:nil
-    completion:completion ];
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return UIInterfaceOrientation.LandscapeRight
+        
     }
-    */
 }
