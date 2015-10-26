@@ -13,10 +13,8 @@ import iAd
 import StoreKit
 
 class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate{
-    
-    
+
     var backgroundView:UIView!
-    
     
     //payment
     var product: SKProduct?
@@ -97,13 +95,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         adFreeButton.layer.cornerRadius = 5
         adFreeButton.layer.masksToBounds = true
         adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        adFreeButton.titleLabel?.numberOfLines = 2
+        adFreeButton.titleLabel?.textAlignment = NSTextAlignment.Center
+        adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
         adFreeButton.alpha = 0
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
             adFreeButton.backgroundColor = UIColor.blueColor()
             adFreeButton.userInteractionEnabled = true
-            adFreeButton.setTitle("Remove ads", forState: UIControlState.Normal)
+            adFreeButton.setTitle("Remove\nads", forState: UIControlState.Normal)
             self.canDisplayBannerAds = true
             bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
 
@@ -361,10 +362,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             switch transaction.transactionState {
                 
             case SKPaymentTransactionState.Purchased:
-                self.removeAdds()
+                self.removeAds()
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             case SKPaymentTransactionState.Restored:
-                self.removeAdds()
+                self.removeAds()
                 SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
             case SKPaymentTransactionState.Failed:
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
@@ -374,13 +375,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
     }
     
-    func removeAdds() {
+    func removeAds() {
         
         datactrl.adFreeValue = 1
         datactrl.saveGameData()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
         NSUserDefaults.standardUserDefaults().synchronize()
         self.bannerView?.hidden = true
+        self.bannerView?.frame.offsetInPlace(dx: 0, dy: self.bannerView!.frame.height)
         
         adFreeButton.backgroundColor = UIColor.grayColor()
         adFreeButton.userInteractionEnabled = false
@@ -608,9 +610,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     {
         newChallengeButton.alpha = 0
         pendingChallengesButton.alpha = 0
-        let buttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY
-        newChallengeButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY, self.challengeUsersButton.frame.width, buttonHeight)
-        pendingChallengesButton.frame = CGRectMake(self.practiceButton.frame.minX, self.challengeUsersButton.frame.minY, self.challengeUsersButton.frame.width, buttonHeight)
+
+        
+        let buttonWidth = practiceButton.frame.maxX - challengeUsersButton.frame.minX
+        let buttonHeight = practiceButton.frame.height
+        
+        newChallengeButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
+        pendingChallengesButton.frame = CGRectMake(self.resultsButton.frame.minX, self.resultsButton.frame.minY , buttonWidth, buttonHeight)
 
     }
     

@@ -50,8 +50,8 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         
         let myScoreCorrectSequenceLabel = ResultTitleLabel(frame: CGRectMake(myStateLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         myScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
-        myScoreCorrectSequenceLabel.text = "Correct\nsequence"
-        myScoreCorrectSequenceLabel.numberOfLines = 2
+        myScoreCorrectSequenceLabel.text = "Bullseye"
+        myScoreCorrectSequenceLabel.numberOfLines = 1
         self.addSubview(myScoreCorrectSequenceLabel)
         
         let myScorePointsLabel = ResultTitleLabel(frame: CGRectMake(myScoreCorrectSequenceLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
@@ -68,8 +68,8 @@ class ResultsScrollView: UIView , UIScrollViewDelegate{
         
         let opponentScoreCorrectSequenceLabel = ResultTitleLabel(frame: CGRectMake(opponentNameLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
         opponentScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
-        opponentScoreCorrectSequenceLabel.text = "Correct\nsequence"
-        opponentScoreCorrectSequenceLabel.numberOfLines = 2
+        opponentScoreCorrectSequenceLabel.text = "Bullseye"
+        opponentScoreCorrectSequenceLabel.numberOfLines = 1
         self.addSubview(opponentScoreCorrectSequenceLabel)
         
         let opponentScorePointsLabel = ResultTitleLabel(frame: CGRectMake(opponentScoreCorrectSequenceLabel.frame.maxX , myScoreLabel.frame.maxY, secondLevelTitleWidth, titleElementHeight))
