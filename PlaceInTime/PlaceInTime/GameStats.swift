@@ -119,40 +119,16 @@ class GameStats:UIView {
             
             animationLabel.text = "+\(points)"
             
+            self.okPointsLabel.text = "\(self.okPoints!) 😀"
             animateAddPoints(okPointsView,completion: {() -> Void in
-                
-                self.okPointsLabel.text = "\(self.okPoints!) 😌"
+                self.okPointsLabel.text = "\(self.okPoints!) 😀"
                 self.animateView(self.okPointsView)
                 completionOKPoints?()
             })
         }
     }
     
-    /*
-    func addGoodPoints(points:Int,completion: (() -> (Void))? = nil)
-    {
-    
-    if points <= 0
-    {
-    completion?()
-    }
-    else
-    {
-    goodPointsView.layer.removeAllAnimations()
-    goodPoints! += points
-    
-    animationLabel.text = "+\(points)"
-    
-    animateAddPoints(goodPointsView,completion: {() -> Void in
-    
-    self.goodPointsLabel.text = "\(self.goodPoints!) 😀"
-    self.animateView(self.goodPointsView)
-    completion?()
-    })
-    }
-    
-    }
-    */
+
     
     func addLovePoints(points:Int,completionLovePoints: (() -> (Void))? = nil)
     {
@@ -167,9 +143,9 @@ class GameStats:UIView {
             
             animationLabel.text = "+\(points)"
             
+            self.lovePointsLabel.text = "\(self.lovePoints!) 😀"
             animateAddPoints(lovePointsView,completion: {() -> Void in
                 
-                self.lovePointsLabel.text = "\(self.lovePoints!) 😍"
                 self.animateView(self.lovePointsView)
                 completionLovePoints?()
             })
@@ -212,41 +188,14 @@ class GameStats:UIView {
         }
         
         animationLabel.text = "-\(positiveNegativePoints)"
-        self.okPointsLabel.text = "\(self.okPoints!) 😌"
+        self.okPointsLabel.text = "\(self.okPoints!) 😧"
         animateSubractPoints(okPointsView,completion: {() -> Void in
             
             self.animateView(self.okPointsView)
         })
         
     }
-    
-    /*
-    func subtractGoodPoints(var points:Int)
-    {
-    if self.goodPoints <= 0
-    {
-    return
-    }
-    goodPointsView.layer.removeAllAnimations()
-    var deltaPoints = points - self.okPoints!
-    self.goodPoints! -= points
-    if( goodPoints < 0)
-    {
-    goodPoints = 0
-    points = deltaPoints
-    }
-    
-    animationLabel.text = "-\(points)"
-    self.goodPointsLabel.text = "\(self.goodPoints!) 😀"
-    animateSubractPoints(goodPointsView,completion: {() -> Void in
-    
-    self.animateView(self.goodPointsView)
-    })
-    
-    animationLabel.transform = CGAffineTransformScale(animationLabel.transform, 1.5, 1.5)
-    }
-    */
-    
+
     func animateSubractPoints(animateView:UIView,completion: (() -> Void)?)
     {
         self.animationLabel.transform = CGAffineTransformIdentity
@@ -278,6 +227,11 @@ class GameStats:UIView {
         pulseAnimation.repeatCount = 5
         pulseAnimation.delegate = self
         view.layer.addAnimation(pulseAnimation, forKey: "asd")
+    }
+    
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        self.okPointsLabel.text = "\(self.okPoints!) 😌"
+        self.lovePointsLabel.text = "\(self.lovePoints!) 😍"
     }
     
 }

@@ -21,13 +21,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var productID = "TimelineFeudAddFree1234"
     
     //buttons
-    var challengeUsersButton:UIButton!
-    var resultsButton:UIButton!
+    var challengeUsersButton:MenuButton!
+    var practiceButton:MenuButton!
+    var resultsButton:MenuButton!
+    
     var adFreeButton:UIButton!
     var dynamicPlayButton:UIButton!
     var newChallengeButton:UIButton!
     var pendingChallengesButton:UIButton!
-    var practiceButton:UIButton!
     var selectFilterTypeButton:UIButton!
     
     
@@ -64,31 +65,30 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
 
-        challengeUsersButton = UIButton(frame:CGRectZero)
-        challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        challengeUsersButton.backgroundColor = UIColor.blueColor()
-        challengeUsersButton.layer.cornerRadius = 5
-        challengeUsersButton.layer.masksToBounds = true
-        challengeUsersButton.setTitle("Challenge", forState: UIControlState.Normal)
-        challengeUsersButton.alpha = 0
         
-        practiceButton = UIButton(frame:CGRectZero)
+        let marginButtons:CGFloat = 10
+        let buttonWidth = UIScreen.mainScreen().bounds.size.width * 0.5
+        var buttonHeight = UIScreen.mainScreen().bounds.size.height * 0.2 //UIScreen.mainScreen().bounds.size.height * 0.34
+
+        
+        challengeUsersButton = MenuButton(frame:CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (buttonWidth / 2), UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight), title:"Challenge")
+        challengeUsersButton.addTarget(self, action: "challengeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        let challengeBadge = NSUserDefaults.standardUserDefaults().integerForKey("challengesBadge")
+        challengeUsersButton.setbadge(challengeBadge)
+        challengeUsersButton.alpha = 0
+
+        
+        practiceButton = MenuButton(frame:CGRectMake(challengeUsersButton.frame.minX, challengeUsersButton.frame.maxY + marginButtons, buttonWidth, buttonHeight),title:"Practice")
         practiceButton.addTarget(self, action: "practiceAction", forControlEvents: UIControlEvents.TouchUpInside)
-        practiceButton.backgroundColor = UIColor.blueColor()
-        practiceButton.layer.cornerRadius = 5
-        practiceButton.layer.masksToBounds = true
-        practiceButton.setTitle("Practice", forState: UIControlState.Normal)
         practiceButton.alpha = 0
         
-        resultsButton = UIButton(frame:CGRectZero)
+        resultsButton = MenuButton(frame:CGRectMake(challengeUsersButton.frame.minX, practiceButton.frame.maxY + marginButtons, buttonWidth, buttonHeight),title:"Results")
         resultsButton.addTarget(self, action: "resultAction", forControlEvents: UIControlEvents.TouchUpInside)
-        resultsButton.backgroundColor = UIColor.blueColor()
-        resultsButton.layer.cornerRadius = 5
-        resultsButton.layer.masksToBounds = true
-        resultsButton.setTitle("Results", forState: UIControlState.Normal)
+        let resultsBadge = NSUserDefaults.standardUserDefaults().integerForKey("resultsBadge")
+        resultsButton.setbadge(resultsBadge)
         resultsButton.alpha = 0
         
-        adFreeButton = UIButton(frame:CGRectZero)
+        adFreeButton = UIButton(frame:CGRectMake(resultsButton.frame.maxX + marginButtons, resultsButton.frame.minY, buttonWidth / 3, buttonHeight))
         adFreeButton.addTarget(self, action: "buyProductAction", forControlEvents: UIControlEvents.TouchUpInside)
         adFreeButton.backgroundColor = UIColor.grayColor()
         adFreeButton.userInteractionEnabled = false
@@ -104,17 +104,21 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
             adFreeButton.backgroundColor = UIColor.blueColor()
             adFreeButton.userInteractionEnabled = true
-            adFreeButton.setTitle("Remove\nads", forState: UIControlState.Normal)
+            adFreeButton.setTitle("Remove\n ads☂ ", forState: UIControlState.Normal)
             self.canDisplayBannerAds = true
+            //bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
-
             self.view.addSubview(bannerView!)
             self.bannerView?.delegate = self
             self.bannerView?.hidden = false
         }
         
+        
+        buttonHeight = UIScreen.mainScreen().bounds.size.height * 0.3
+        
+
         //challenge type buttons
-        newChallengeButton = UIButton(frame:CGRectZero)
+        newChallengeButton = UIButton(frame:CGRectMake(self.challengeUsersButton.frame.minX, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight))
         newChallengeButton.addTarget(self, action: "newChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
         newChallengeButton.backgroundColor = UIColor.blueColor()
         newChallengeButton.layer.cornerRadius = 5
@@ -122,7 +126,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         newChallengeButton.setTitle("New", forState: UIControlState.Normal)
         newChallengeButton.alpha = 0
         
-        pendingChallengesButton = UIButton(frame:CGRectZero)
+        pendingChallengesButton = UIButton(frame:CGRectMake(self.resultsButton.frame.minX, self.newChallengeButton.frame.maxY + (marginButtons * 2) , buttonWidth, buttonHeight))
         pendingChallengesButton.addTarget(self, action: "pendingChallengesAction", forControlEvents: UIControlEvents.TouchUpInside)
         pendingChallengesButton.backgroundColor = UIColor.blueColor()
         pendingChallengesButton.layer.cornerRadius = 5
@@ -262,9 +266,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
         bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
         
-        setupFirstLevelMenu()
         
-        setupChallengeTypeButtons()
+        
+        //setupFirstLevelMenu()
+        
+        //setupChallengeTypeButtons()
         
         setupDynamicPlayButton()
     }

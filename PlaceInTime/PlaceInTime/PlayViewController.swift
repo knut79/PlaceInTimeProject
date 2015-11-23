@@ -84,12 +84,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         addDropZone()
 
-        let rightButtonWidth = UIScreen.mainScreen().bounds.size.width * 0.55
-        rightButton = UIButton(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width - rightButtonWidth) / 2, gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, UIScreen.mainScreen().bounds.size.height * 0.25))
-        rightButton.setTitle("OK 👍\nRight sequence", forState: UIControlState.Normal)
+        let rightButtonWidth = UIScreen.mainScreen().bounds.size.height * 0.25
+        rightButton = UIButton(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width / 2 - (rightButtonWidth / 2), gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, rightButtonWidth))
+        rightButton.setTitle("OK 👍", forState: UIControlState.Normal)
         rightButton.backgroundColor = UIColor.blueColor()
         rightButton.addTarget(self, action: "okAction", forControlEvents: UIControlEvents.TouchUpInside)
-        rightButton.layer.cornerRadius = 5
+        rightButton.layer.cornerRadius = rightButtonWidth / 2
         rightButton.layer.masksToBounds = true
         rightButton.alpha = 0
         view.addSubview(rightButton)
@@ -616,7 +616,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 
                 let tapGesture = UITapGestureRecognizer(target: self, action: "tapForNextRound")
                 tapGesture.numberOfTapsRequired = 1
+                
+                let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "tapForNextRound")
+                swipeUpGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+                swipeUpGestureRecognizer.enabled = true
+                swipeUpGestureRecognizer.cancelsTouchesInView = false
+                
                 tapViewForNextRound.addGestureRecognizer(tapGesture)
+                tapViewForNextRound.addGestureRecognizer(swipeUpGestureRecognizer)
+
                 self.tapOverride = true
         })
     }
@@ -1397,10 +1405,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
     }
-    
-    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.LandscapeRight
-        
-    }
+
     
 }
