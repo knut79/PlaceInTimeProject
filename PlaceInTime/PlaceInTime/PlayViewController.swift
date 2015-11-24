@@ -100,7 +100,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         if self.gametype == gameType.training
         {
             let backButtonMargin:CGFloat = 15
-            backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+            backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
             backButton.backgroundColor = UIColor.whiteColor()
             backButton.layer.borderColor = UIColor.grayColor().CGColor
             backButton.layer.borderWidth = 1

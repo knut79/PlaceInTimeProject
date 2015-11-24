@@ -17,19 +17,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var client: MSClient?
     var datactrl:DataHandler!
+    var reportErrorHandler: ReportErrorHandler?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         datactrl = DataHandler()
-        
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstlaunch")
-        
+
         application.statusBarHidden = true
         self.client = MSClient(
             applicationURLString:"https://placeintime.azure-mobile.net/",
             applicationKey:"EPexqUWpxpiDBffWuGuiNUgjgTzeMz22"
         )
+        
+        reportErrorHandler = ReportErrorHandler()
+        
+        let settings = UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories:nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
         
          return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -43,6 +50,80 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 openURL: url,
                 sourceApplication: sourceApplication,
                 annotation: annotation)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+        
+        var badge:Int = 0
+        if let aps = userInfo["aps"] as? NSDictionary {
+            if let b = aps["badge"] as? Int {
+                badge = b
+            }
+            
+            if let alert = aps["alert"] as? NSDictionary {
+                if let title = alert["title"] as? NSString {
+                    
+                    if title == "Challenge"
+                    {
+                        NSUserDefaults.standardUserDefaults().setInteger(badge, forKey: "challengesBadge")
+                        
+                    }
+                    if title == "Result"
+                    {
+                        NSUserDefaults.standardUserDefaults().setInteger(badge, forKey: "resultsBadge")
+                    }
+                }
+            }
+            
+            
+            
+            /*else if let alert = aps["alert"] as? NSString {
+            print(alert)
+            }*/
+        }
+        
+        
+        if let info = userInfo["aps"] as? Dictionary<String, AnyObject>
+        {
+        let alertMsg = info["alert"] as! String
+        var alert: UIAlertView!
+        alert = UIAlertView(title: "", message: alertMsg, delegate: nil, cancelButtonTitle: "OK")
+        alert.show()
+        }
+        
+        
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        print("The token is \(deviceToken)")
+        
+        //var deviceTokenString:NSString = deviceToken.description.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+        //deviceTokenString = deviceTokenString.stringByReplacingOccurrencesOfString(" ", withString: "").uppercaseString
+        var deviceTokenString:NSString = deviceToken.description.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+        deviceTokenString = deviceTokenString.stringByReplacingOccurrencesOfString(" ", withString: "").uppercaseString
+        
+        let hub = SBNotificationHub.init(connectionString: HUBLISTENACCESS, notificationHubPath: HUBNAME)
+        
+        NSUserDefaults.standardUserDefaults().setValue(deviceTokenString, forKey: "deviceToken")
+
+        
+        let tags: Set<NSObject> = Set([deviceTokenString])
+        hub.registerNativeWithDeviceToken(deviceToken, tags: tags, completion: {(error) -> Void in
+            
+            if error != nil
+            {
+                print("Error registering for notifications: \(error)")
+            }
+            else
+            {
+                print("Registered for notifications")
+            }
+        })
+        
+
+        
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -144,6 +225,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     NSLog("Unresolved error \(error), \(error!.userInfo)")
                     abort()
                 }
+            }
+        }
+    }
+    
+    func backgroundThread(delay: Double = 0.0, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
+        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+            if(background != nil){ background!(); }
+            
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+            dispatch_after(popTime, dispatch_get_main_queue()) {
+                if(completion != nil){ completion!(); }
             }
         }
     }

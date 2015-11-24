@@ -25,15 +25,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var practiceButton:MenuButton!
     var resultsButton:MenuButton!
     
+    var newChallengeButton:ChallengeButton!
+    var pendingChallengesButton:ChallengeButton!
     var adFreeButton:UIButton!
-    var dynamicPlayButton:UIButton!
-    var newChallengeButton:UIButton!
-    var pendingChallengesButton:UIButton!
     var selectFilterTypeButton:UIButton!
-    
-    
-    var playButtonExstraLabel:UILabel!
-    //var playButtonExstraLabel2:UILabel!
+
+    var practicePlayButtonExstraLabel:UILabel!
+    var challengePlayButtonExstraLabel:UILabel!
+    var practicePlayButton:UIButton!
+    var challengePlayButton:UIButton!
+
     
     var loadingDataView:UIView!
     var loadingDataLabel:UILabel!
@@ -53,6 +54,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var holderView = HolderView(frame: CGRectZero)
     
     var numOfQuestionsForRound:Int = 8
+    var backButton:UIButton!
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
@@ -118,42 +120,50 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
 
         //challenge type buttons
-        newChallengeButton = UIButton(frame:CGRectMake(self.challengeUsersButton.frame.minX, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight))
+        newChallengeButton = ChallengeButton(frame:CGRectMake(self.challengeUsersButton.frame.minX, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight),title: "Make new")
         newChallengeButton.addTarget(self, action: "newChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        newChallengeButton.backgroundColor = UIColor.blueColor()
-        newChallengeButton.layer.cornerRadius = 5
-        newChallengeButton.layer.masksToBounds = true
-        newChallengeButton.setTitle("New", forState: UIControlState.Normal)
         newChallengeButton.alpha = 0
         
-        pendingChallengesButton = UIButton(frame:CGRectMake(self.resultsButton.frame.minX, self.newChallengeButton.frame.maxY + (marginButtons * 2) , buttonWidth, buttonHeight))
+        pendingChallengesButton = ChallengeButton(frame:CGRectMake(self.resultsButton.frame.minX, self.newChallengeButton.frame.maxY + (marginButtons * 2) , buttonWidth, buttonHeight),title: "Take pending")
         pendingChallengesButton.addTarget(self, action: "pendingChallengesAction", forControlEvents: UIControlEvents.TouchUpInside)
-        pendingChallengesButton.backgroundColor = UIColor.blueColor()
-        pendingChallengesButton.layer.cornerRadius = 5
-        pendingChallengesButton.layer.masksToBounds = true
-        pendingChallengesButton.setTitle("Pending", forState: UIControlState.Normal)
+        pendingChallengesButton.setbadge(challengeBadge)
         pendingChallengesButton.alpha = 0
 
         
-        // Do any additional setup after loading the view, typically from a nib.
-        dynamicPlayButton = UIButton(frame:CGRectZero)
-        dynamicPlayButton.backgroundColor = UIColor.blueColor()
-        dynamicPlayButton.layer.cornerRadius = 5
-        dynamicPlayButton.layer.masksToBounds = true
-        dynamicPlayButton.setTitle("Play", forState: UIControlState.Normal)
+        practicePlayButton = UIButton(frame:CGRectZero)
+        practicePlayButton.setTitle("Practice", forState: UIControlState.Normal)
+        practicePlayButton.addTarget(self, action: "playPracticeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        practicePlayButton.backgroundColor = UIColor.blueColor()
+        practicePlayButton.layer.cornerRadius = 5
+        practicePlayButton.layer.masksToBounds = true
         
-        playButtonExstraLabel = UILabel(frame:CGRectZero)
-        playButtonExstraLabel.backgroundColor = dynamicPlayButton.backgroundColor?.colorWithAlphaComponent(0)
-        playButtonExstraLabel.textColor = UIColor.whiteColor()
-        playButtonExstraLabel.font = UIFont.systemFontOfSize(12)
-        playButtonExstraLabel.textAlignment = NSTextAlignment.Center
-        dynamicPlayButton.addSubview(playButtonExstraLabel)
+        challengePlayButton = UIButton(frame:CGRectZero)
+        challengePlayButton.setTitle("New challenge\n\(numOfQuestionsForRound) questions", forState: UIControlState.Normal)
+        challengePlayButton.titleLabel!.numberOfLines = 2
+        challengePlayButton.addTarget(self, action: "playNewChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        challengePlayButton.backgroundColor = UIColor.blueColor()
+        challengePlayButton.layer.cornerRadius = 5
+        challengePlayButton.layer.masksToBounds = true
+        
+        challengePlayButtonExstraLabel = UILabel(frame:CGRectZero)
+        challengePlayButtonExstraLabel.backgroundColor = challengePlayButton.backgroundColor?.colorWithAlphaComponent(0)
+        challengePlayButtonExstraLabel.textColor = UIColor.whiteColor()
+        challengePlayButtonExstraLabel.font = UIFont.systemFontOfSize(12)
+        challengePlayButtonExstraLabel.textAlignment = NSTextAlignment.Center
+        challengePlayButton.addSubview(challengePlayButtonExstraLabel)
+
+        practicePlayButtonExstraLabel = UILabel(frame:CGRectZero)
+        practicePlayButtonExstraLabel.backgroundColor = practicePlayButton.backgroundColor?.colorWithAlphaComponent(0)
+        practicePlayButtonExstraLabel.textColor = UIColor.whiteColor()
+        practicePlayButtonExstraLabel.font = UIFont.systemFontOfSize(12)
+        practicePlayButtonExstraLabel.textAlignment = NSTextAlignment.Center
+        practicePlayButton.addSubview(practicePlayButtonExstraLabel)
 
 
         levelSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
         levelSlider.curvaceousness = 0.0
-        levelSlider.maximumValue = Double(maxLevel) + 0.5
-        levelSlider.minimumValue = Double(minLevel)
+        levelSlider.maximumValue = Double(GlobalConstants.maxLevel) + 0.5
+        levelSlider.minimumValue = Double(GlobalConstants.minLevel)
         levelSlider.typeValue = sliderType.bothLowerAndUpper
 
         
@@ -163,7 +173,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         selectFilterTypeButton.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         
         
-        dynamicPlayButton.alpha = 0
+        challengePlayButton.alpha = 0
+        practicePlayButton.alpha = 0
         levelSlider.alpha = 0
         selectFilterTypeButton.alpha = 0
         
@@ -175,7 +186,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(newChallengeButton)
         self.view.addSubview(pendingChallengesButton)
         
-        self.view.addSubview(dynamicPlayButton)
+        self.view.addSubview(challengePlayButton)
+        self.view.addSubview(practicePlayButton)
         self.view.addSubview(levelSlider)
         self.view.addSubview(selectFilterTypeButton)
         
@@ -183,6 +195,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(globalGameStats)
         
         setupCheckboxView()
+        setupFirstLevelMenu()
+        setupDynamicPlayButton()
 
         if firstLaunch
         {
@@ -215,7 +229,23 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             requestProductData()
             //setupAfterPopulateData()
         }
+        
+        updateBadges()
+        
+        let backButtonMargin:CGFloat = 10
+        backButton = UIButton(frame: CGRectZero)
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
+        backButton.backgroundColor = UIColor.whiteColor()
+        backButton.layer.borderColor = UIColor.grayColor().CGColor
+        backButton.layer.borderWidth = 1
+        backButton.layer.cornerRadius = 5
+        backButton.layer.masksToBounds = true
+        backButton.setTitle("🔙", forState: UIControlState.Normal)
+        backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+        backButton.alpha = 0
+        view.addSubview(backButton)
 
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -272,7 +302,33 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         //setupChallengeTypeButtons()
         
-        setupDynamicPlayButton()
+        //setupDynamicPlayButton()
+    }
+    
+    func enterForground()
+    {
+        updateBadges()
+    }
+    
+    func updateBadges()
+    {
+        /*
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+        // do some task
+        dispatch_async(dispatch_get_main_queue()) {
+        // update some UI
+        }
+        }
+        */
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            self.recieveNumberOfResultsNotDownloaded()
+        }
+        
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            self.recieveNumberOfPendingChallenges()
+        }
     }
     
     func requestProductData()
@@ -443,15 +499,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func setupFirstLevelMenu()
     {
-        let marginButtons:CGFloat = 10
-        let buttonWidth = UIScreen.mainScreen().bounds.size.width * 0.17
-        let buttonHeight = buttonWidth //UIScreen.mainScreen().bounds.size.height * 0.34
-        challengeUsersButton.frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - buttonWidth - (marginButtons / 2), UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
-        practiceButton.frame = CGRectMake(challengeUsersButton.frame.maxX + marginButtons, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
-        
-        resultsButton.frame = CGRectMake(challengeUsersButton.frame.minX, challengeUsersButton.frame.maxY + marginButtons, buttonWidth, buttonHeight)
-        
-        adFreeButton.frame = CGRectMake(practiceButton.frame.minX, resultsButton.frame.minY, buttonWidth, buttonHeight)
+        challengeUsersButton.orgCenter = challengeUsersButton.center
+        practiceButton.orgCenter = practiceButton.center
+        resultsButton.orgCenter = resultsButton.center
     }
     
     func setupDynamicPlayButton()
@@ -463,17 +513,21 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let playbuttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY - sliderAndFilterbuttonHeight - margin
 
         
-        dynamicPlayButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY,playbuttonWidth, playbuttonHeight)
-        let marginSlider: CGFloat = dynamicPlayButton.frame.minX
+        practicePlayButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY,playbuttonWidth, playbuttonHeight)
+        challengePlayButton.frame = practicePlayButton.frame
+        let marginSlider: CGFloat = practicePlayButton.frame.minX
 
-        playButtonExstraLabel.frame = CGRectMake(0, dynamicPlayButton.frame.height * 0.7   , dynamicPlayButton.frame.width, dynamicPlayButton.frame.height * 0.15)
-        playButtonExstraLabel.text = "level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
         
-        levelSlider.frame = CGRect(x:  marginSlider, y: dynamicPlayButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2) - (dynamicPlayButton.frame.width * 0.2), height: sliderAndFilterbuttonHeight)
+        practicePlayButtonExstraLabel.frame = CGRectMake(0, practicePlayButton.frame.height * 0.7   , practicePlayButton.frame.width, practicePlayButton.frame.height * 0.15)
+        practicePlayButtonExstraLabel.text = "Level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
         
-        selectFilterTypeButton.frame = CGRectMake(levelSlider.frame.maxX, dynamicPlayButton.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width * 0.2, levelSlider.frame.height)
+        challengePlayButtonExstraLabel.frame = CGRectMake(0, challengePlayButton.frame.height * 0.7   , practicePlayButton.frame.width, challengePlayButton.frame.height * 0.15)
+        challengePlayButtonExstraLabel.text = "Level \(Int(levelSlider.lowerValue)) - \(sliderUpperLevelText())"
         
-        dynamicPlayButton.alpha = 0
+        levelSlider.frame = CGRect(x:  marginSlider, y: practicePlayButton.frame.maxY  + margin, width: UIScreen.mainScreen().bounds.size.width - (marginSlider * 2) - (practicePlayButton.frame.width * 0.2), height: sliderAndFilterbuttonHeight)
+        
+        selectFilterTypeButton.frame = CGRectMake(levelSlider.frame.maxX, practicePlayButton.frame.maxY + margin, UIScreen.mainScreen().bounds.size.width * 0.2, levelSlider.frame.height)
+
         levelSlider.alpha = 0
         selectFilterTypeButton.alpha = 0
         
@@ -492,8 +546,18 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     func rangeSliderValueChanged(slider: RangeSlider) {
-        //println("Range slider value changed: (\(Int(slider.lowerValue)) \(Int(slider.upperValue)))")
-        playButtonExstraLabel.text = "level \(Int(slider.lowerValue)) - \(sliderUpperLevelText())"
+        if Int(slider.lowerValue) == Int(slider.upperValue)
+        {
+            let text = "Level \(sliderUpperLevelText())"
+            practicePlayButtonExstraLabel.text = text
+            challengePlayButtonExstraLabel.text = text
+        }
+        else
+        {
+            let text = "Level \(Int(slider.lowerValue)) - \(sliderUpperLevelText())"
+            practicePlayButtonExstraLabel.text = text
+            challengePlayButtonExstraLabel.text = text
+        }
     }
     
     func playAction()
@@ -503,20 +567,40 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
     }
     
+    func backAction()
+    {
+        backButton.alpha = 0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.challengeUsersButton.center = self.challengeUsersButton.orgCenter
+            self.challengeUsersButton.alpha = 1
+            self.challengeUsersButton.transform = CGAffineTransformIdentity
+            self.practiceButton.center = self.practiceButton.orgCenter
+            self.practiceButton.alpha = 1
+            self.practiceButton.transform = CGAffineTransformIdentity
+            self.resultsButton.center = self.resultsButton.orgCenter
+            self.resultsButton.alpha = 1
+            self.resultsButton.transform = CGAffineTransformIdentity
+            
+            self.practicePlayButton.alpha = 0
+            self.levelSlider.alpha = 0
+            self.selectFilterTypeButton.alpha = 0
+            self.newChallengeButton.alpha = 0
+            self.pendingChallengesButton.alpha = 0
+            
+            self.challengePlayButton.alpha = 0
+            }, completion: { (value: Bool) in
+                
+                
+        })
+    }
+    
     func newChallengeAction()
     {
-        dynamicPlayButton.titleLabel?.numberOfLines = 2
-        dynamicPlayButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        dynamicPlayButton.setTitle("New challenge\n\(numOfQuestionsForRound) questions", forState: UIControlState.Normal)
-        dynamicPlayButton.addTarget(self, action: "playNewChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        self.dynamicPlayButton.alpha = 0
-        self.dynamicPlayButton.transform = CGAffineTransformScale(self.dynamicPlayButton.transform, 0.1, 0.1)
+        self.challengePlayButton.alpha = 0
+        self.challengePlayButton.transform = CGAffineTransformScale(self.challengePlayButton.transform, 0.1, 0.1)
         self.levelSlider.alpha = 0
         self.levelSlider.transform = CGAffineTransformScale(self.levelSlider.transform, 0.1, 0.1)
-        self.selectFilterTypeButton.alpha = 0
-        self.selectFilterTypeButton.transform = CGAffineTransformScale(self.selectFilterTypeButton.transform, 0.1, 0.1)
-        
-        
         
         let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -524,22 +608,21 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.newChallengeButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
             self.pendingChallengesButton.center = centerScreen
             self.pendingChallengesButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
-            
+            self.backButton.alpha = 1
             }, completion: { (value: Bool) in
                 
                 self.newChallengeButton.alpha = 0
                 self.pendingChallengesButton.alpha = 0
                 
-                self.dynamicPlayButton.alpha = 1
+                self.challengePlayButton.alpha = 1
                 self.levelSlider.alpha = 1
-                self.selectFilterTypeButton.alpha = 1
-                
+
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.dynamicPlayButton.transform = CGAffineTransformIdentity
+                    self.challengePlayButton.transform = CGAffineTransformIdentity
                     self.levelSlider.transform = CGAffineTransformIdentity
-                    self.selectFilterTypeButton.transform = CGAffineTransformIdentity
+ 
                     }, completion: { (value: Bool) in
-  
+                        
                 })
         })
     }
@@ -548,16 +631,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func practiceAction()
     {
-        dynamicPlayButton.setTitle("Practice", forState: UIControlState.Normal)
-        dynamicPlayButton.addTarget(self, action: "playPracticeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        self.dynamicPlayButton.alpha = 0
-        self.dynamicPlayButton.transform = CGAffineTransformScale(self.dynamicPlayButton.transform, 0.1, 0.1)
+        self.practicePlayButton.alpha = 0
+        self.practicePlayButton.transform = CGAffineTransformScale(self.practicePlayButton.transform, 0.1, 0.1)
         self.levelSlider.alpha = 0
         self.levelSlider.transform = CGAffineTransformScale(self.levelSlider.transform, 0.1, 0.1)
         self.selectFilterTypeButton.alpha = 0
         self.selectFilterTypeButton.transform = CGAffineTransformScale(self.selectFilterTypeButton.transform, 0.1, 0.1)
-        
-        
+
         
         let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -567,27 +647,27 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.adFreeButton.center = centerScreen
-            self.adFreeButton.transform = CGAffineTransformScale(self.adFreeButton.transform, 0.1, 0.1)
+            self.adFreeButton?.center = centerScreen
+            self.adFreeButton?.transform = CGAffineTransformScale(self.adFreeButton!.transform, 0.1, 0.1)
+            
+            self.backButton.alpha = 1
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
-                self.adFreeButton.alpha = 0
+                self.adFreeButton?.alpha = 0
                 
-                self.dynamicPlayButton.alpha = 1
+                self.practicePlayButton.alpha = 1
                 self.levelSlider.alpha = 1
                 self.selectFilterTypeButton.alpha = 1
                 
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.dynamicPlayButton.transform = CGAffineTransformIdentity
+                    self.practicePlayButton.transform = CGAffineTransformIdentity
                     self.levelSlider.transform = CGAffineTransformIdentity
                     self.selectFilterTypeButton.transform = CGAffineTransformIdentity
                     }, completion: { (value: Bool) in
-                        
-                        
                 })
         })
     }
@@ -647,6 +727,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
             self.adFreeButton.center = centerScreen
             self.adFreeButton.transform = CGAffineTransformScale(self.adFreeButton.transform, 0.1, 0.1)
+            self.backButton.alpha = 1
             
             }, completion: { (value: Bool) in
                 
@@ -776,8 +857,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func openFilterList()
     {
-        
-        
         let rightLocation = tagsScrollView.center
         tagsScrollView.transform = CGAffineTransformScale(tagsScrollView.transform, 0.1, 0.1)
         self.tagsScrollView.alpha = 1
@@ -793,6 +872,120 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 self.tagsScrollView.center = rightLocation
                 self.listClosed = false
         })
+    }
+    
+    func recieveNumberOfResultsNotDownloaded()
+    {
+        let currentbadge = NSUserDefaults.standardUserDefaults().integerForKey("resultsBadge")
+        if currentbadge == 0
+        {
+            if let token = NSUserDefaults.standardUserDefaults().stringForKey("deviceToken")
+            {
+                if token == ""
+                {
+                    return
+                }
+                let client = (UIApplication.sharedApplication().delegate as! AppDelegate).client
+                let jsonDictionaryHandle = ["token":token]
+                client!.invokeAPI("idleresults", data: nil, HTTPMethod: "GET", parameters: jsonDictionaryHandle as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+                    
+                    
+                    if error != nil
+                    {
+                        print("\(error)")
+                        let reportError = (UIApplication.sharedApplication().delegate as! AppDelegate).reportErrorHandler
+                        reportError?.reportError("\(error)")
+
+                    }
+                    if result != nil
+                    {
+                        var resultsBadge = NSString(data: result, encoding:NSUTF8StringEncoding) as! String
+                        resultsBadge = String(resultsBadge.characters.dropLast().dropFirst())
+                        print(resultsBadge)
+                        let resultsBadgeInt = Int(resultsBadge)
+
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.resultsButton.setbadge(resultsBadgeInt!)
+                        }
+                        
+                    }
+                    if response != nil
+                    {
+                        print("\(response)")
+                    }
+                    
+                    
+                })
+            }
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.resultsButton.setbadge(currentbadge)
+            }
+        }
+    }
+    
+    func recieveNumberOfPendingChallenges()
+    {
+        
+        let currentbadge = NSUserDefaults.standardUserDefaults().integerForKey("challengesBadge")
+        if currentbadge == 0
+        {
+            if let token = NSUserDefaults.standardUserDefaults().stringForKey("deviceToken")
+            {
+                if token == ""
+                {
+                    return
+                }
+                
+                let client = (UIApplication.sharedApplication().delegate as! AppDelegate).client
+                let jsonDictionaryHandle = ["token":token]
+                client!.invokeAPI("pendingchallenges", data: nil, HTTPMethod: "GET", parameters: jsonDictionaryHandle as [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+                    
+                    
+                    if error != nil
+                    {
+                        print("\(error)")
+                        
+                        let reportError = (UIApplication.sharedApplication().delegate as! AppDelegate).reportErrorHandler
+                        reportError?.reportError("\(error)")
+
+                    }
+                    if result != nil
+                    {
+                        
+                        /*
+                        var resultsBadgeInt: NSInteger = 0
+                        result.getBytes(&resultsBadgeInt, length: sizeof(NSInteger))
+                        NSUserDefaults.standardUserDefaults().setInteger(resultsBadgeInt, forKey: "challengesBadge")
+                        */
+                        var resultsBadge = NSString(data: result, encoding:NSUTF8StringEncoding) as! String
+                        resultsBadge = String(resultsBadge.characters.dropLast().dropFirst())
+                        
+                        let resultsBadgeInt = Int(resultsBadge)
+                        print(resultsBadgeInt)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.challengeUsersButton.setbadge(resultsBadgeInt!)
+                            self.pendingChallengesButton.setbadge(resultsBadgeInt!)
+                        }
+                    }
+                    if response != nil
+                    {
+                        print("\(response)")
+                    }
+                    
+                    
+                })
+            }
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.challengeUsersButton.setbadge(currentbadge)
+                self.pendingChallengesButton.setbadge(currentbadge)
+            }
+        }
         
     }
     
@@ -803,12 +996,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
     }
-    
-    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.LandscapeRight
 
-    }
-    
-    
 }
 

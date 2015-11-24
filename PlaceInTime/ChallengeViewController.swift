@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FBSDKLoginKit
+import FBSDKShareKit
 
 class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserViewProtocol {
     
@@ -65,7 +66,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         }
         
         let backButtonMargin:CGFloat = 15
-        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
         backButton.layer.borderColor = UIColor.grayColor().CGColor
         backButton.layer.borderWidth = 1
@@ -233,33 +234,56 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         
         
         
-        addRandomUserButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, playButton.frame.minY - margin - elementHeight, elementWidth , elementHeight))
-        self.addRandomUserButton.addTarget(self, action: "addRandomUserAction", forControlEvents: UIControlEvents.TouchUpInside)
-        self.addRandomUserButton.backgroundColor = UIColor.blueColor()
-        self.addRandomUserButton.layer.cornerRadius = 5
-        self.addRandomUserButton.layer.masksToBounds = true
-        self.addRandomUserButton.setTitle("Add random user", forState: UIControlState.Normal)
 
+
+        let content = FBSDKShareLinkContent()
+        content.contentURL = NSURL(string: "https://itunes.apple.com/no/app/timeline-feud/id1042085872?mt=8")
+        content.imageURL = NSURL(string: "https://scontent-arn2-1.xx.fbcdn.net/hphotos-xfp1/t39.2081-0/p128x128/12057066_543965822434535_846423925_n.png")
+        content.contentDescription = "Test this iOS history battle game and challenge me"
+        content.contentTitle = "Timeline feud"
         
-        let scrollViewHeight =  addRandomUserButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
-        let scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
-        self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:initialValues, itemsChecked:false)
+        let inviteFriendsButton = FBSDKSendButton()
+        inviteFriendsButton.frame = CGRectMake(titleLabel.frame.minX, playButton.frame.minY - margin - elementHeight, elementWidth , elementHeight)
+        inviteFriendsButton.shareContent = content
+        inviteFriendsButton.layer.cornerRadius = 5
+        inviteFriendsButton.layer.masksToBounds = true
+        inviteFriendsButton.setTitle("Invite friends", forState: UIControlState.Normal)
+        
+        let scrollViewHeight =  inviteFriendsButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
+        let scrollViewWidth = UIScreen.mainScreen().bounds.size.width * 0.9 - (margin * 2)
+        self.usersToChallengeScrollView = UserScrollView(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (scrollViewWidth / 2) , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight),initialValues:initialValues, itemsChecked:false)
         self.usersToChallengeScrollView.delegate = self
         self.usersToChallengeScrollView.alpha = 1
         
+        let addRandomUserButtonSide = GlobalConstants.smallButtonSide
+        addRandomUserButton = UIButton(frame:CGRectMake(usersToChallengeScrollView.frame.minX + margin, usersToChallengeScrollView.frame.minY, addRandomUserButtonSide * 2 , addRandomUserButtonSide))
+        self.addRandomUserButton.addTarget(self, action: "addRandomUserAction", forControlEvents: UIControlEvents.TouchUpInside)
+        self.addRandomUserButton.backgroundColor = UIColor.clearColor()
+        self.addRandomUserButton.layer.cornerRadius = 5
+        self.addRandomUserButton.layer.masksToBounds = true
+        self.addRandomUserButton.setTitle("+🃏", forState: UIControlState.Normal)
+        
         view.addSubview(titleLabel)
         view.addSubview(playButton)
-        //view.addSubview(backButton)
-        view.addSubview(addRandomUserButton)
+        view.addSubview(inviteFriendsButton)
         view.addSubview(usersToChallengeScrollView)
+        view.addSubview(addRandomUserButton)
         view.addSubview(activityLabel)
         
-        if friendObjects.count == 0
+        if friendObjects.count == 1
         {
             
             addRandomUser( { () in
-                self.activityLabel.alpha = 1
+                self.activityLabel.alpha = 0
                 self.activityLabel.text = "No facebook friends with this app😢"
+                
+                let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
+                pulseAnimation.duration = 0.3
+                pulseAnimation.toValue = NSNumber(float: 0.3)
+                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                pulseAnimation.autoreverses = true;
+                pulseAnimation.repeatCount = 5
+                self.addRandomUserButton.layer.addAnimation(pulseAnimation, forKey: "asd")
             })
         }
         else
@@ -477,9 +501,5 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
     }
-    
-    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.LandscapeRight
-        
-    }
+
 }

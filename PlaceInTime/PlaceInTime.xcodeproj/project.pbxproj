@@ -14,6 +14,10 @@
 		725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */; };
 		725249E01BA6564C002FE589 /* RadiobuttonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */; };
 		725249E21BA747DF002FE589 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249E11BA747DF002FE589 /* Challenge.swift */; };
+		727444C81C035F6E00E16F6C /* ChallengeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727444C71C035F6E00E16F6C /* ChallengeButton.swift */; };
+		727444CA1C03A57700E16F6C /* ReportErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727444C91C03A57700E16F6C /* ReportErrorHandler.swift */; };
+		727444CC1C03A94E00E16F6C /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727444CB1C03A94E00E16F6C /* WindowsAzureMessaging.framework */; };
+		727444CE1C03FE8B00E16F6C /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727444CD1C03FE8B00E16F6C /* FBSDKShareKit.framework */; };
 		728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */; };
 		728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */; };
 		728BAE791BAA2D3800BD4DB4 /* ResultItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */; };
@@ -100,6 +104,10 @@
 		725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeScrollView.swift; sourceTree = "<group>"; };
 		725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadiobuttonItemView.swift; sourceTree = "<group>"; };
 		725249E11BA747DF002FE589 /* Challenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		727444C71C035F6E00E16F6C /* ChallengeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeButton.swift; sourceTree = "<group>"; };
+		727444C91C03A57700E16F6C /* ReportErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportErrorHandler.swift; sourceTree = "<group>"; };
+		727444CB1C03A94E00E16F6C /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMessaging.framework; sourceTree = "<group>"; };
+		727444CD1C03FE8B00E16F6C /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsScrollView.swift; sourceTree = "<group>"; };
 		728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultItemView.swift; sourceTree = "<group>"; };
@@ -179,7 +187,9 @@
 			files = (
 				725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */,
 				72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */,
+				727444CE1C03FE8B00E16F6C /* FBSDKShareKit.framework in Frameworks */,
 				72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */,
+				727444CC1C03A94E00E16F6C /* WindowsAzureMessaging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +300,8 @@
 		72C789841B9A6AD2002A2BBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				727444CD1C03FE8B00E16F6C /* FBSDKShareKit.framework */,
+				727444CB1C03A94E00E16F6C /* WindowsAzureMessaging.framework */,
 				725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */,
 				72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */,
 				72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */,
@@ -351,6 +363,7 @@
 				72E8E7A81B7B7A050011FE47 /* GameStats.swift */,
 				725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */,
 				725249E11BA747DF002FE589 /* Challenge.swift */,
+				727444C91C03A57700E16F6C /* ReportErrorHandler.swift */,
 			);
 			path = PlaceInTime;
 			sourceTree = "<group>";
@@ -400,6 +413,7 @@
 			children = (
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
 				721D8A961C028E6300D488D8 /* MenuButton.swift */,
+				727444C71C035F6E00E16F6C /* ChallengeButton.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -560,6 +574,7 @@
 				725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */,
 				72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
+				727444CA1C03A57700E16F6C /* ReportErrorHandler.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				728BAE9D1BAE4B5100BD4DB4 /* HolderView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */,
@@ -576,6 +591,7 @@
 				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
 				728BAEA41BAE4C3B00BD4DB4 /* ArcLayer.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,
+				727444C81C035F6E00E16F6C /* ChallengeButton.swift in Sources */,
 				72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */,
 				728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */,
 				72D192911B9327BE0035CE11 /* RangeWindowsLayer.swift in Sources */,

@@ -9,21 +9,22 @@
 import Foundation
 import UIKit
 
-let rectangleWidth:CGFloat = 200.0
-let rectangleHeight:CGFloat = 50.0
+struct GlobalConstants {
+    static let rectangleWidth:CGFloat = 200.0
+    static let rectangleHeight:CGFloat = 50.0
 
-let lowPercentWindow = 0.1
-let highPercentWindow = 0.2
+    static let lowPercentWindow = 0.1
+    static let highPercentWindow = 0.2
 
-let minLevel:Int = 1
-let maxLevel:Int = 3
+    static let minLevel:Int = 1
+    static let maxLevel:Int = 3
 
-let minWayBack:Int32 = -570000000
-let maxWayBack:Int32 = -1000000
-let aMillion:Int32 = 1000000
+    static let minWayBack:Int32 = -570000000
+    static let maxWayBack:Int32 = -1000000
+    static let aMillion:Int32 = 1000000
 
-let smallButtonSide:CGFloat = 32
-
+    static let smallButtonSide:CGFloat = 40
+}
 enum eventType: Int
 {
     case singleYear = 0,periode

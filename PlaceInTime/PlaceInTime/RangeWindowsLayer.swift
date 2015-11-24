@@ -49,14 +49,14 @@ class RangeWindowsLayer: CALayer {
         // + - 20%
         CGContextSetFillColorWithColor(ctx, UIColor(red: 0.6, green: 0.95, blue: 0.0, alpha: 1.0).CGColor)
         //let rect20 = CGRect(x: valuePosition - bounds.width * CGFloat(0.1), y: 0.0, width: bounds.width * CGFloat(0.2) , height: bounds.height)
-        let rect20 = CGRect(x: valuePosition - bounds.width * CGFloat(highPercentWindow / 2), y: 0.0, width: bounds.width * CGFloat(highPercentWindow) , height: bounds.height)
+        let rect20 = CGRect(x: valuePosition - bounds.width * CGFloat(GlobalConstants.highPercentWindow / 2), y: 0.0, width: bounds.width * CGFloat(GlobalConstants.highPercentWindow) , height: bounds.height)
         CGContextFillRect(ctx, rect20)
         
         
         // + - 10 %
         CGContextSetFillColorWithColor(ctx, UIColor(red: 0.5, green: 1, blue: 0.0, alpha: 1.0).CGColor)
         //let rect10 = CGRect(x: valuePosition - bounds.width * CGFloat(0.05), y: 0.0, width: bounds.width * CGFloat(0.1) , height: bounds.height)
-        let rect10 = CGRect(x: valuePosition - bounds.width * CGFloat(lowPercentWindow / 2), y: 0.0, width: bounds.width * CGFloat(lowPercentWindow) , height: bounds.height)
+        let rect10 = CGRect(x: valuePosition - bounds.width * CGFloat(GlobalConstants.lowPercentWindow / 2), y: 0.0, width: bounds.width * CGFloat(GlobalConstants.lowPercentWindow) , height: bounds.height)
         CGContextFillRect(ctx, rect10)
         
         //on the spot

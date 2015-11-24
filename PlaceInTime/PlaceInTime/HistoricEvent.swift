@@ -69,7 +69,7 @@ class HistoricEvent: NSManagedObject {
         get{
             if self.toYear < -1000
             {
-                let value = (self.toYear / aMillion) * -1
+                let value = (self.toYear / GlobalConstants.aMillion) * -1
                 return "\(value) m.y.a"
             }
                 
@@ -85,7 +85,7 @@ class HistoricEvent: NSManagedObject {
         get{
             if self.fromYear < -1000
             {
-                let value = (self.fromYear / aMillion) * -1
+                let value = (self.fromYear / GlobalConstants.aMillion) * -1
                 return "\(value) m.y.a"
             }
             else

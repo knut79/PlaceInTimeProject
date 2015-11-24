@@ -45,7 +45,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
         
         let backButtonMargin:CGFloat = 15
-        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
+        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
         backButton.layer.borderColor = UIColor.grayColor().CGColor
         backButton.layer.borderWidth = 1
@@ -53,6 +53,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         backButton.layer.cornerRadius = 5
         backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
+        backButton.alpha = 0
         view.addSubview(backButton)
     }
     
@@ -263,11 +264,6 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight]
-    }
-    
-    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.LandscapeRight
-        
     }
     
 }
