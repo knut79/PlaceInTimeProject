@@ -18,8 +18,8 @@ class FinishedViewController:UIViewController {
     var userFbId:String!
     var correctAnswers:Int!
     var points:Int!
-    var gametype:gameType!
-    var challengeToBeat:Challenge!
+    var gametype:GameType!
+    var challenge:Challenge!
     var client: MSClient?
     
     var activityLabel:UILabel!
@@ -62,59 +62,82 @@ class FinishedViewController:UIViewController {
         self.view.addSubview(activityLabel)
         
         
-        if gametype == gameType.makingChallenge
+        if gametype == GameType.makingChallenge
         {
-            newChallenge()
+            //newChallenge()
             activityLabel.text = "Sending challenge\n\(challengeName)..."
+            
+            (UIApplication.sharedApplication().delegate as! AppDelegate).backgroundThread(background: {
+                self.finishMakingChallenge()
+                },
+                completion: {
+                    // A function to run in the foreground when the background thread is complete
+            })
+        }
+        else if gametype == GameType.takingChallenge
+        {
+            if let takingChallenge = challenge as? TakingChallenge
+            {
+                activityLabel.text = "Sending result of\n\(takingChallenge.title!)"
+                finishTakingChallenge(takingChallenge)
+                
+                let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
+                resultChallengeLabel.textAlignment = NSTextAlignment.Center
+                resultChallengeLabel.text = "Result of challenge \(self.challenge.title)"
+                resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
+                resultChallengeLabel.adjustsFontSizeToFitWidth = true
+                self.view.addSubview(resultChallengeLabel)
+                
+                resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
+                resultLabel.numberOfLines = 9
+                resultLabel.backgroundColor = UIColor.grayColor()
+                resultLabel.textAlignment = NSTextAlignment.Center
+                resultLabel.textColor = UIColor.whiteColor()
+                resultLabel.adjustsFontSizeToFitWidth = true
+                resultLabel.backgroundColor = UIColor.blueColor()
+                resultLabel.layer.borderColor = UIColor.whiteColor().CGColor
+                resultLabel.layer.cornerRadius = 8
+                resultLabel.layer.masksToBounds = true
+                resultLabel.layer.borderWidth = 5.0
+                self.view.addSubview(resultLabel)
+                
+                //sending result
+                
+                if correctAnswers > takingChallenge.correctAnswersToBeat
+                {
+                    youWonChallenge(takingChallenge)
+                }
+                else if correctAnswers == takingChallenge.correctAnswersToBeat && points > takingChallenge.pointsToBeat
+                {
+                    youWonChallenge(takingChallenge)
+                }
+                else if correctAnswers == takingChallenge.correctAnswersToBeat && points == takingChallenge.pointsToBeat
+                {
+                    youDrewChallenge(takingChallenge)
+                }
+                else
+                {
+                    youLostChallenge(takingChallenge)
+                }
+            }
+            self.view.addSubview(self.backToMenuButton)
+        }
+        else
+        {
+            print("invalid GameType")
+            self.view.addSubview(self.backToMenuButton)
         }
         
-        if gametype == gameType.takingChallenge
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if gametype == GameType.makingChallenge
         {
-            
-            activityLabel.text = "Sending result of\n\(challengeName)"
-            respondToChallenge()
-            
-            let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
-            resultChallengeLabel.textAlignment = NSTextAlignment.Center
-            resultChallengeLabel.text = "Result of challenge \(self.challengeToBeat.title)"
-            resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
-            resultChallengeLabel.adjustsFontSizeToFitWidth = true
-            self.view.addSubview(resultChallengeLabel)
-            
-            resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
-            resultLabel.numberOfLines = 9
-            resultLabel.backgroundColor = UIColor.grayColor()
-            resultLabel.textAlignment = NSTextAlignment.Center
-            resultLabel.textColor = UIColor.whiteColor()
-            resultLabel.adjustsFontSizeToFitWidth = true
-            resultLabel.backgroundColor = UIColor.blueColor()
-            resultLabel.layer.borderColor = UIColor.whiteColor().CGColor
-            resultLabel.layer.cornerRadius = 8
-            resultLabel.layer.masksToBounds = true
-            resultLabel.layer.borderWidth = 5.0
-            self.view.addSubview(resultLabel)
-            
-
-
-            
-            //sending result
-            
-            if correctAnswers > challengeToBeat.correctAnswersToBeat
-            {
-                youWonChallenge()
-            }
-            else if correctAnswers == challengeToBeat.correctAnswersToBeat && points > challengeToBeat.pointsToBeat
-            {
-                youWonChallenge()
-            }
-            else
-            {
-                youLostChallenge()
-            }
+            self.performSegueWithIdentifier("segueFromFinishedToMainMenu", sender: nil)
         }
     }
     
-    func youLostChallenge()
+    func youLostChallenge(takingChallenge:TakingChallenge)
     {
         let sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("lostChallenge", ofType: "mp3")!)
         do {
@@ -128,10 +151,10 @@ class FinishedViewController:UIViewController {
         resultLabel.text = "You lost 😖\n\n" +
             "\(correctAnswers) correct answers" + "\n\(points) points" +
             "\n\nagainst" +
-            "\n\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
+            "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
     }
     
-    func youWonChallenge()
+    func youWonChallenge(takingChallenge:TakingChallenge)
     {
         let sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("fanfare2", ofType: "wav")!)
         do {
@@ -145,9 +168,27 @@ class FinishedViewController:UIViewController {
         resultLabel.text = "You won 😆\n\n" +
         "\(correctAnswers) correct answers" + "\n\(points) points" +
         "\n\nagainst" +
-        "\n\n\(challengeToBeat.correctAnswersToBeat) correct answers" + "\n\(challengeToBeat.pointsToBeat) points"
+        "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
     }
     
+    func youDrewChallenge(takingChallenge:TakingChallenge)
+    {
+        let sound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("fanfare2", ofType: "wav")!)
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: sound)
+        } catch let error1 as NSError {
+            print(error1)
+        }
+        audioPlayer.numberOfLoops = 0
+        audioPlayer.prepareToPlay()
+        audioPlayer.play()
+        resultLabel.text = "Challenge ended as draw 😐\n\n" +
+            "\(correctAnswers) correct answers" + "\n\(points) points" +
+            "\n\nagainst" +
+            "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
+    }
+    
+    //OBSOLETE _?
     func newChallenge()
     {
         
@@ -180,15 +221,57 @@ class FinishedViewController:UIViewController {
         })
     }
     
-    func respondToChallenge()
+    func finishMakingChallenge()
     {
-        let jsonDictionary = ["userfbid":userFbId,"challengeid":challengeToBeat.id,"resultpoints":points,"resultcorrect":correctAnswers]
-        self.client!.invokeAPI("finishchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+        let makingChallenge = challenge as! MakingChallenge
+        let challengeIds = makingChallenge.challengeIds
+        
+        let jsonDictionary = ["chidspar":challengeIds!,"fromId":userFbId,"resultpoints":points,"resultcorrect":correctAnswers]
+        self.client!.invokeAPI("finishmakingchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+            
+            if error != nil
+            {
+                //_??? test this with LogErrorHandler
+                self.activityLabel.text = "Server error"
+                let reportError = (UIApplication.sharedApplication().delegate as! AppDelegate).reportErrorHandler
+                let alert = UIAlertView(title: "Server error", message: "Could not send challenge. Sorry for the annoyance.", delegate: nil, cancelButtonTitle: "OK")
+                reportError?.reportError("\(error)",alert: alert)
+            }
+            if result != nil
+            {
+                
+                print("\(result)")
+                let temp = NSString(data: result, encoding:NSUTF8StringEncoding) as! String
+                print("\(temp)")
+                let numUsersChallenged = makingChallenge.usersToChallenge.count
+                let alertText = numUsersChallenged > 1 ? "Challenge sendt to \(numUsersChallenged) users" : "Challenge sendt to \(numUsersChallenged) user"
+                let alert = UIAlertView(title: "Sending challenge", message: alertText, delegate: nil, cancelButtonTitle: "OK")
+                alert.show()
+                
+                //removed this block as we fire and forget
+                /*
+                self.backToMenuButton.alpha = 1
+                let numUsersChallenged = makingChallenge.usersToChallenge.count
+                self.activityLabel.text = numUsersChallenged > 1 ? "Challenge sendt to \(numUsersChallenged) users" : "Challenge sendt to \(numUsersChallenged) user"
+                */
+            }
+            if response != nil
+            {
+                print("\(response)")
+            }
+        })
+    }
+    
+    func finishTakingChallenge(takingChallenge:TakingChallenge)
+    {
+        let jsonDictionary = ["userfbid":userFbId,"challengeid":takingChallenge.id,"resultpoints":points,"resultcorrect":correctAnswers]
+        self.client!.invokeAPI("finishtakingchallenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {
                 self.backToMenuButton.alpha = 1
-                self.activityLabel.text = "\(error)"
+                let alert = UIAlertView(title: "Server error", message: "\(error)", delegate: nil, cancelButtonTitle: "OK")
+                alert.show()
             }
             if result != nil
             {
@@ -205,6 +288,7 @@ class FinishedViewController:UIViewController {
             
         })
     }
+
     
     func usersToCommaseparatedString() -> String
     {
@@ -217,6 +301,7 @@ class FinishedViewController:UIViewController {
         return String(returnString.characters.dropLast())
     }
     
+    //OBSOLETE _?
     func questionsToFormattedString() -> String
     {
         var returnString:String = ""

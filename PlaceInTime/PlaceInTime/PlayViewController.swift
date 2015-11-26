@@ -24,22 +24,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
     var originalDropZoneYCenter:CGFloat!
     var numberOfDropZones:Int = 3
-    var maxNumDropZones:Int = 6
-    var minNumDropZones:Int = 3
     
     var rightButton:UIButton!
     
     var cardToDrag:Card? = nil
     var newRevealedCard:Card? = nil
     let marginFromGamestats:CGFloat = 10
-    var levelHigh:Int = 1
-    var levelLow:Int = 1
-    var tags:[String] = []
-    var gametype:gameType!
+    var gametype:GameType!
     let backButton = UIButton()
     var usersIdsToChallenge:[String] = []
     var completedQuestionsIds:[[String]] = []
-    var numOfQuestionsForRound:Int!
     var myIdAndName:(String,String)!
     
     var challenge:Challenge!
@@ -55,14 +49,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var correctSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("yeah", ofType: "wav")!)
     var correctSequenceSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("yeah-short", ofType: "mp3")!)
     
+    var numberOfRoundsDone = 0
+    var questionsLeftFrame:CGRect!
     
     var bannerView:ADBannerView?
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        datactrl.fetchData(tags,fromLevel:levelLow,toLevel: levelHigh)
-        
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
@@ -77,12 +70,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         self.view.addSubview(gameStats)
         
         clock = ClockView(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width * 0.75, 10, gameStats.frame.height * 1.5, gameStats.frame.height * 1.5))
+        questionsLeftFrame = CGRectMake(clock.frame.maxX,clock.frame.minY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
         orgClockCenter = CGPointMake(UIScreen.mainScreen().bounds.size.width * 0.75 ,self.marginFromGamestats + (self.clock.frame.height / 2))
         clock.delegate = self
         
 
-        
-        addDropZone()
+        //_? test
+        //addDropZone()
 
         let rightButtonWidth = UIScreen.mainScreen().bounds.size.height * 0.25
         rightButton = UIButton(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width / 2 - (rightButtonWidth / 2), gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, rightButtonWidth))
@@ -97,7 +91,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         infoHelperView = InfoHelperView(frame: CGRectMake(10, gameStats.frame.maxY + marginFromGamestats, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height * 0.4))
         infoHelperView.alpha = 0
         view.addSubview(infoHelperView)
-        if self.gametype == gameType.training
+        if self.gametype == GameType.training
         {
             let backButtonMargin:CGFloat = 15
             backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
@@ -290,10 +284,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             item.removeFromSuperview()
         }
 
-        if gametype == gameType.takingChallenge
+        if gametype != GameType.training
         {
             randomHistoricEvents = datactrl.fetchHistoricEventOnIds(challenge.getNextQuestionBlock())!
-
+            numberOfDropZones = randomHistoricEvents.count
         }
         else
         {
@@ -308,7 +302,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         datactrl.save()
         
+        numberOfRoundsDone++
+        
         animateNewCardInCardStack(0)
+        addDropZone()
+        animateQuestionsLeft()
     }
     
     var randomHistoricEvents:[HistoricEvent] = []
@@ -638,12 +636,18 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
         if fails == 0
         {
-            numberOfDropZones = numberOfDropZones >= maxNumDropZones ? numberOfDropZones : numberOfDropZones + 1
+            if gametype == GameType.training
+            {
+                numberOfDropZones = numberOfDropZones >= GlobalConstants.maxNumDropZones ? numberOfDropZones : numberOfDropZones + 1
+            }
             self.animateCorrectSequence()
         }
         else
         {
-            numberOfDropZones = numberOfDropZones >= minNumDropZones ? numberOfDropZones : numberOfDropZones - 1
+            if gametype == GameType.training
+            {
+                numberOfDropZones = numberOfDropZones >= GlobalConstants.minNumDropZones ? numberOfDropZones : numberOfDropZones - 1
+            }
             self.nextRound()
         }
         
@@ -748,14 +752,15 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
             self.completedQuestionsIds.append(roundQuestionIds)
             
-            if (self.gametype != gameType.training) && (self.completedQuestionsIds.count >= self.numOfQuestionsForRound)
+            if (self.gametype != GameType.training) && (self.completedQuestionsIds.count >= GlobalConstants.numOfQuestionsForRound)
             {
                 self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
             }
             else
             {
                 self.dropZones = [:]
-                self.addDropZone()
+                //_?
+                //self.addDropZone()
                 self.setCardStack()
                 //self.revealNextCard()
                 self.rightButton.userInteractionEnabled = true
@@ -870,7 +875,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     
     func animatePoints(centerPoint:CGPoint)
     {
-        let points = 10 * (numberOfDropZones - (minNumDropZones - 1))
+        let points = 10 * (numberOfDropZones - (GlobalConstants.minNumDropZones - 1))
         let label = UILabel(frame: dropZones[0]!.frame)
         label.textAlignment = NSTextAlignment.Center
         label.font = UIFont.boldSystemFontOfSize(20)
@@ -921,7 +926,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         let key = dropZones.count
         originalDropZoneYCenter = UIScreen.mainScreen().bounds.size.height - (dropZoneHeight / 2)
         
-        let dropZone = DropZone(frame: CGRectMake(xOffset,UIScreen.mainScreen().bounds.size.height - dropZoneHeight , dropZoneWidth, dropZoneHeight),key:key)
+        let dropZone = DropZone(frame: CGRectMake(xOffset,UIScreen.mainScreen().bounds.size.height - dropZoneHeight - margin , dropZoneWidth, dropZoneHeight),key:key)
 
         dropZone.delegate = self
         
@@ -1166,6 +1171,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                                 self.clock.center = self.orgClockCenter
                                 self.clock.transform = CGAffineTransformIdentity
                                 self.clock.alpha = 1
+                                
+                                //self.animateQuestionsLeft()
                             }
                             
                             if self.newRevealedCard == nil
@@ -1188,6 +1195,34 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
         })
 
+    }
+    
+    func animateQuestionsLeft()
+    {
+        if gametype != GameType.training
+        {
+            let questionsLeftLabel = UILabel(frame: questionsLeftFrame)
+            questionsLeftLabel.numberOfLines = 2
+            questionsLeftLabel.textAlignment = NSTextAlignment.Center
+            questionsLeftLabel.adjustsFontSizeToFitWidth = true
+            questionsLeftLabel.textColor = UIColor.blueColor()
+            questionsLeftLabel.font = UIFont.boldSystemFontOfSize(24)
+            let questionsLeft = GlobalConstants.numOfQuestionsForRound - numberOfRoundsDone + 1
+            questionsLeftLabel.text = questionsLeft == 1 ? "Last\nquestion" : "Questions left\n       \(questionsLeft)"
+            questionsLeftLabel.alpha = 1
+            
+            self.view.addSubview(questionsLeftLabel)
+            
+            //questionsLeftLabel.transform = CGAffineTransformScale(questionsLeftLabel.transform, 3, 3)
+            UIView.animateWithDuration(4.0, animations: { () -> Void in
+                //card.transform = CGAffineTransformScale(card.transform, 0.75,  0.75)
+                
+                questionsLeftLabel.alpha = 0
+                }, completion: { (value: Bool) in
+                    //questionsLeftLabel.removeFromSuperview()
+                    
+            })
+        }
     }
 
     
@@ -1343,30 +1378,12 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             svc.correctAnswers = gameStats.lovePoints
             svc.points = gameStats.okPoints
             svc.gametype = gametype
-            if gametype == gameType.takingChallenge
-            {
-                svc.challengeToBeat = challenge
-            }
-            else if gametype == gameType.makingChallenge
-            {
-                svc.challengeName = "\(self.myIdAndName.1) \(self.levelLow)-\(self.levelHigh) \(self.tagsAsString())"
-            }
+
+            svc.challenge = challenge
+
         }
     }
-    
-    func tagsAsString() -> String
-    {
-        var result = ""
-        for item in tags
-        {
-            result += item
-        }
-        if result == ""
-        {
-            result = "All categories"
-        }
-        return result
-    }
+
     
     override func prefersStatusBarHidden() -> Bool {
         return true

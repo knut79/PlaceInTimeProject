@@ -24,13 +24,19 @@ struct GlobalConstants {
     static let aMillion:Int32 = 1000000
 
     static let smallButtonSide:CGFloat = 40
+    
+    static let maxNumDropZones:Int = 6
+    static let minNumDropZones:Int = 3
+    
+    //_? CHANGE TO 7 FOR RELEASE
+    static let numOfQuestionsForRound:Int = 3
 }
-enum eventType: Int
+enum EventType: Int
 {
     case singleYear = 0,periode
 }
 
-enum gameType: Int
+enum GameType: Int
 {
     case training = 0, makingChallenge = 1, takingChallenge = 2
 }

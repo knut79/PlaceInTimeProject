@@ -894,6 +894,17 @@ class DataHandler
         }
     }
     
+    func getXNumberOfQuestionIds(numQuestions:Int) -> [String]
+    {
+        var questionIds:[String] = []
+        for var i = 0 ; i < numQuestions ; i++
+        {
+            questionIds.append(String(historicEventItems[i].idForUpdate))
+            //questionItems[i].
+        }
+        return questionIds
+    }
+    
     func fetchData(tags:[String] = [],fromLevel:Int,toLevel:Int) {
         
         // Create a new fetch request using the LogItem entity
@@ -945,7 +956,7 @@ class DataHandler
     }
     
     
-    func fetchHistoricEventOnIds(ids:[Int]) -> [HistoricEvent]?
+    func fetchHistoricEventOnIds(ids:[String]) -> [HistoricEvent]?
     {
         
         let fetchEvents = NSFetchRequest(entityName: "HistoricEvent")
@@ -976,6 +987,38 @@ class DataHandler
         {
             return nil
         }
+    }
+    
+    func fetchQuestoinsForChallenge() -> [[String]]
+    {
+        var blocks:[[String]] = []
+        var roundQuestionIds:[String] = []
+        for var block = 1; block <= GlobalConstants.numOfQuestionsForRound ; block++
+        {
+            var numberOfCardsInBlock = GlobalConstants.minNumDropZones
+            if block > 2
+            {
+                numberOfCardsInBlock++
+            }
+            if block > 4
+            {
+                numberOfCardsInBlock++
+            }
+            if block > 6
+            {
+                numberOfCardsInBlock = GlobalConstants.maxNumDropZones
+            }
+            
+            let randomHistoricEvents = getRandomHistoricEventsWithPrecision(25, numEvents:numberOfCardsInBlock)
+            for item in randomHistoricEvents
+            {
+                roundQuestionIds.append("\(item.idForUpdate)")
+            }
+            blocks.append(roundQuestionIds)
+            roundQuestionIds = []
+        }
+
+        return blocks
     }
     
     let DataPopulatedKey = "DataPopulated"

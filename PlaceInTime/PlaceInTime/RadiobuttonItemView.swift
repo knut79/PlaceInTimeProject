@@ -47,6 +47,13 @@ class RadiobuttonItemView: UIView
         self.title = title
         self.value = value
         titleLabel = UILabel(frame: CGRectMake(radiobutton.frame.maxX, 0, frame.width * 0.66, frame.height))
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.userInteractionEnabled = true
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: "toggleSelect:")
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.enabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        titleLabel.addGestureRecognizer(singleTapGestureRecognizer)
         titleLabel.text = title
         self.addSubview(titleLabel)
         

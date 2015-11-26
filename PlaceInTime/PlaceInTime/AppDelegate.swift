@@ -121,9 +121,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("Registered for notifications")
             }
         })
-        
-
-        
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        NSUserDefaults.standardUserDefaults().setValue("", forKey: "deviceToken")
     }
 
     func applicationWillResignActive(application: UIApplication) {

@@ -33,7 +33,7 @@ class HistoricEvent: NSManagedObject {
         let newitem = NSEntityDescription.insertNewObjectForEntityForName("HistoricEvent", inManagedObjectContext: moc) as! HistoricEvent
         newitem.fromYear = Int32(from)
         newitem.toYear = Int32(to)
-        newitem.type = Int16(eventType.periode.rawValue)
+        newitem.type = Int16(EventType.periode.rawValue)
         newitem.text = text
         newitem.title = title
         newitem.tags = tags
@@ -50,7 +50,7 @@ class HistoricEvent: NSManagedObject {
         let newitem = NSEntityDescription.insertNewObjectForEntityForName("HistoricEvent", inManagedObjectContext: moc) as! HistoricEvent
         newitem.fromYear = Int32(year)
         newitem.toYear = Int32(year)
-        newitem.type = Int16(eventType.singleYear.rawValue)
+        newitem.type = Int16(EventType.singleYear.rawValue)
         newitem.text = text
         newitem.title = title
         newitem.tags = tags
@@ -102,7 +102,7 @@ class HistoricEvent: NSManagedObject {
             //let unaryToYear = self.toYear * -1
             let fyear = self.formattedFromYear
             let tyear = self.formattedToYear
-            return type == Int16(eventType.singleYear.rawValue) ? "\(fyear)" : "\(fyear) - \(tyear)"
+            return type == Int16(EventType.singleYear.rawValue) ? "\(fyear)" : "\(fyear) - \(tyear)"
         }
     }
 

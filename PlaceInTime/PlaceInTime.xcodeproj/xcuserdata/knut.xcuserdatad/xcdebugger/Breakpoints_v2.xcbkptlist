@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/PlayViewController.swift"
-            timestampString = "469979287.468093"
+            filePath = "PlaceInTime/AppDelegate.swift"
+            timestampString = "470232173.120281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "617"
-            endingLineNumber = "617"
-            landmarkName = "animateCleanupAndStartNewRound()"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "application(_:didRegisterForRemoteNotificationsWithDeviceToken:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlaceInTime/AppDelegate.swift"
-            timestampString = "470004813.569172"
+            timestampString = "470232441.862655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "application(_:didReceiveRemoteNotification:)"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "application(_:didFailToRegisterForRemoteNotificationsWithError:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/MainMenuController.swift"
-            timestampString = "470023330.280656"
+            filePath = "PlaceInTime/FinishedViewController.swift"
+            timestampString = "470233273.260146"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "896"
-            endingLineNumber = "896"
-            landmarkName = "recieveNumberOfResultsNotDownloaded()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlaceInTime/MainMenuController.swift"
-            timestampString = "470023330.280656"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "951"
-            endingLineNumber = "951"
-            landmarkName = "recieveNumberOfPendingChallenges()"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
+            landmarkName = "finishMakingChallenge()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,60 +58,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChallengeViewController.swift"
-            timestampString = "470025306.976311"
+            timestampString = "470233732.298466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
-            landmarkName = "initForNewChallenge(_:)"
+            startingLineNumber = "420"
+            endingLineNumber = "420"
+            landmarkName = "updateUser(_:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaceInTime.ChallengeViewController.updateUser (PlaceInTime.ChallengeViewController)(() -&gt; ()) -&gt; ()"
+                  moduleName = "PlaceInTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/ChallengeViewController.swift"
+                  timestampString = "470233832.214348"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "420"
+                  endingLineNumber = "420"
+                  offsetFromSymbolStart = "932">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaceInTime.ChallengeViewController.(updateUser (PlaceInTime.ChallengeViewController) -&gt; (() -&gt; ()) -&gt; ()).(closure #1)"
+                  moduleName = "PlaceInTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/knut/Documents/repositories/PlaceInTimeProject/PlaceInTime/ChallengeViewController.swift"
+                  timestampString = "470233832.214675"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "422"
+                  endingLineNumber = "422"
+                  offsetFromSymbolStart = "31">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ChallengeViewController.swift"
-            timestampString = "470025306.976311"
+            filePath = "PlaceInTime/FinishedViewController.swift"
+            timestampString = "470239101.231731"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
-            landmarkName = "initForNewChallenge(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChallengeViewController.swift"
-            timestampString = "470025306.976311"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "initForNewChallenge(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChallengeViewController.swift"
-            timestampString = "470027832.427734"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
-            landmarkName = "initForNewChallenge(_:)"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "finishMakingChallenge()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

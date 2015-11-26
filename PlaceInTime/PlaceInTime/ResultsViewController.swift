@@ -173,7 +173,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         //FB LOGIN
         let jsonDictionary = ["fbid":self.userId]
         
-        self.client!.invokeAPI("collectchallenges", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+        self.client!.invokeAPI("collectchallengesv2", data: nil, HTTPMethod: "GET", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
             
             if error != nil
             {

@@ -10,41 +10,70 @@ import Foundation
 
 class Challenge {
 
+
+    var questionBlocks:[[String]] = []
+    var challengeIds:String!
+    var title:String!
+    
+    init()
+    {
+        questionBlocks = []
+
+    }
+    func getNextQuestionBlock() -> [String]
+    {
+        return questionBlocks.removeLast()
+    }
+}
+
+class TakingChallenge: Challenge {
+    
     var id:String!
     var fbIdToBeat:String!
-    //var questions:[[HistoricEvent]]!
-    var questionBlocks:[[Int]] = []
-    var pointsToBeat:Int
-    var correctAnswersToBeat:Int
-    var title:String
+    var pointsToBeat:Int!
+    var usingBorders:Int!
+    var correctAnswersToBeat:Int!
+    
+    
     let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
     
     init(values:NSDictionary)
     {
+        super.init()
+        
         title = values["title"] as! String
         id = values["challengeId"] as! String
         fbIdToBeat = values["fbIdToBeat"] as! String
-        pointsToBeat = values["pointsToBeat"] as! Int
         correctAnswersToBeat = values["correctAnswersToBeat"] as! Int
+        pointsToBeat = values["pointsToBeat"] as! Int
         let questionsStringFormat = values["questionsStringFormat"] as! String
         
         let questionBlocksStringFormat = questionsStringFormat.componentsSeparatedByString(";")
         for item in questionBlocksStringFormat
         {
             let questionIds = item.componentsSeparatedByString(",")
-            var idsArray:[Int] = []
+            var idsArray:[String] = []
             for id in questionIds
             {
-                let idAsNumber = NSNumberFormatter().numberFromString(id)
-                idsArray.append(idAsNumber!.integerValue)
+                idsArray.append(id)
             }
             questionBlocks.append(idsArray)
         }
     }
     
-    func getNextQuestionBlock() -> [Int]
+
+}
+
+class MakingChallenge: Challenge {
+    
+    var usersToChallenge:[String] = []
+    init(challengesName:String,users:[String], questionBlocks:[[String]], challengeIds:String)
     {
-        return questionBlocks.removeLast()
+        super.init()
+        self.title = challengesName
+        self.questionBlocks = questionBlocks
+        self.challengeIds = challengeIds
+        self.usersToChallenge = users
     }
 }
 

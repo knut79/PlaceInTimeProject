@@ -27,6 +27,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     var newChallengeButton:ChallengeButton!
     var pendingChallengesButton:ChallengeButton!
+    var orgNewChallengeButtonCenter:CGPoint!
+    var orgPendingChallengesButtonCenter:CGPoint!
+    
     var adFreeButton:UIButton!
     var selectFilterTypeButton:UIButton!
 
@@ -48,12 +51,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var updateGlobalGameStats:Bool = false
     var newGameStatsValues:(Int,Int,Int)!
     let levelSlider = RangeSlider(frame: CGRectZero)
-    var gametype:gameType!
+    var gametype:GameType!
     
     var tags:[String] = []
     var holderView = HolderView(frame: CGRectZero)
     
-    var numOfQuestionsForRound:Int = 8
     var backButton:UIButton!
     
     var bannerView:ADBannerView?
@@ -128,7 +130,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         pendingChallengesButton.addTarget(self, action: "pendingChallengesAction", forControlEvents: UIControlEvents.TouchUpInside)
         pendingChallengesButton.setbadge(challengeBadge)
         pendingChallengesButton.alpha = 0
-
+        
+        orgNewChallengeButtonCenter = newChallengeButton.center
+        orgPendingChallengesButtonCenter = pendingChallengesButton.center
         
         practicePlayButton = UIButton(frame:CGRectZero)
         practicePlayButton.setTitle("Practice", forState: UIControlState.Normal)
@@ -138,7 +142,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         practicePlayButton.layer.masksToBounds = true
         
         challengePlayButton = UIButton(frame:CGRectZero)
-        challengePlayButton.setTitle("New challenge\n\(numOfQuestionsForRound) questions", forState: UIControlState.Normal)
+        challengePlayButton.setTitle("New challenge\n\(GlobalConstants.numOfQuestionsForRound) questions", forState: UIControlState.Normal)
         challengePlayButton.titleLabel!.numberOfLines = 2
         challengePlayButton.addTarget(self, action: "playNewChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
         challengePlayButton.backgroundColor = UIColor.blueColor()
@@ -587,6 +591,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.selectFilterTypeButton.alpha = 0
             self.newChallengeButton.alpha = 0
             self.pendingChallengesButton.alpha = 0
+            self.newChallengeButton.center = self.orgNewChallengeButtonCenter
+            self.pendingChallengesButton.center = self.orgPendingChallengesButtonCenter
             
             self.challengePlayButton.alpha = 0
             }, completion: { (value: Bool) in
@@ -676,19 +682,23 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func playPracticeAction()
     {
-        gametype = gameType.training
+        datactrl.fetchData(tags,fromLevel:Int(levelSlider.lowerValue),toLevel: Int(levelSlider.upperValue))
+        
+        gametype = GameType.training
         self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
     }
     
     func playNewChallengeAction()
     {
-        gametype = gameType.makingChallenge
+        datactrl.fetchData(tags,fromLevel:Int(levelSlider.lowerValue),toLevel: Int(levelSlider.upperValue))
+        
+        gametype = GameType.makingChallenge
         self.performSegueWithIdentifier("segueFromMainMenuToChallenge", sender: nil)
     }
     
     func pendingChallengesAction()
     {
-        gametype = gameType.takingChallenge
+        gametype = GameType.takingChallenge
         self.performSegueWithIdentifier("segueFromMainMenuToChallenge", sender: nil)
     }
     
@@ -752,9 +762,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func prepareForSegue(segue: (UIStoryboardSegue!), sender: AnyObject!) {
         if (segue.identifier == "segueFromMainMenuToPlay") {
             let svc = segue!.destinationViewController as! PlayViewController
-            svc.levelLow = Int(levelSlider.lowerValue)
-            svc.levelHigh = Int(levelSlider.upperValue)
-            svc.tags = self.tags
             svc.gametype = gametype
         }
         
@@ -763,7 +770,6 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             svc.passingLevelLow = Int(levelSlider.lowerValue)
             svc.passingLevelHigh = Int(levelSlider.upperValue)
             svc.passingTags = self.tags
-            svc.numOfQuestionsForRound = self.numOfQuestionsForRound
             svc.gametype = self.gametype
         }
     }
