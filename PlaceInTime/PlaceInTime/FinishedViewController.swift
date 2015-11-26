@@ -13,7 +13,6 @@ class FinishedViewController:UIViewController {
     
     var usersIdsToChallenge:[String] = []
     var completedQuestionsIds:[[String]] = []
-    var challengeName:String!
     
     var userFbId:String!
     var correctAnswers:Int!
@@ -64,8 +63,7 @@ class FinishedViewController:UIViewController {
         
         if gametype == GameType.makingChallenge
         {
-            //newChallenge()
-            activityLabel.text = "Sending challenge\n\(challengeName)..."
+            activityLabel.text = "Sending challenge"
             
             (UIApplication.sharedApplication().delegate as! AppDelegate).backgroundThread(background: {
                 self.finishMakingChallenge()
@@ -81,14 +79,14 @@ class FinishedViewController:UIViewController {
                 activityLabel.text = "Sending result of\n\(takingChallenge.title!)"
                 finishTakingChallenge(takingChallenge)
                 
-                let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 25, 400, 50))
+                let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 10, 400, 50))
                 resultChallengeLabel.textAlignment = NSTextAlignment.Center
                 resultChallengeLabel.text = "Result of challenge \(self.challenge.title)"
                 resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
                 resultChallengeLabel.adjustsFontSizeToFitWidth = true
                 self.view.addSubview(resultChallengeLabel)
                 
-                resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.height - (margin * 2)))
+                resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.maxY - (margin * 2) - backToMenuButton.frame.height))
                 resultLabel.numberOfLines = 9
                 resultLabel.backgroundColor = UIColor.grayColor()
                 resultLabel.textAlignment = NSTextAlignment.Center
@@ -188,38 +186,6 @@ class FinishedViewController:UIViewController {
             "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
     }
     
-    //OBSOLETE _?
-    func newChallenge()
-    {
-        
-        let questionIds:String = questionsToFormattedString()
-        //var jsonDictionary = ["title":"heihei","fromId":"123","fromResultPoints":"333","fromResultCorrect":"3","toIds":toIdsArray,"questions":questionsArray]
-        let toIds:String = usersToCommaseparatedString()
-        //var dataPass = .dataWithJSONObject(toIdsArray, options: NSJSONWritingOptions.allZeros, error: nil)
-        //var dataTest = NSJSONSerialization.dataWithJSONObject(
-        let jsonDictionary = ["title":challengeName,"fromId":userFbId,"fromResultPoints":points,"fromResultCorrect":correctAnswers,"toIdsPar":toIds,"questionsPar":questionIds]
-        self.client!.invokeAPI("challenge", data: nil, HTTPMethod: "POST", parameters: jsonDictionary as! [NSObject : AnyObject], headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
-            
-            if error != nil
-            {
-                self.backToMenuButton.alpha = 1
-                self.activityLabel.text = "\(error)"
-            }
-            if result != nil
-            {
-                print("\(result)")
-                
-                self.backToMenuButton.alpha = 1
-                //self.activityLabel.alpha = 0
-                
-                self.activityLabel.text = self.usersIdsToChallenge.count > 1 ? "Challenge sendt to \(self.usersIdsToChallenge.count) users" : "Challenge sendt to \(self.usersIdsToChallenge.count) user"
-            }
-            if response != nil
-            {
-                print("\(response)")
-            }
-        })
-    }
     
     func finishMakingChallenge()
     {

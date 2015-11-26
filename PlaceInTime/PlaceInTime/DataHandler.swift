@@ -993,7 +993,7 @@ class DataHandler
     {
         var blocks:[[String]] = []
         var roundQuestionIds:[String] = []
-        for var block = 1; block <= GlobalConstants.numOfQuestionsForRound ; block++
+        for var block = GlobalConstants.numOfQuestionsForRound; block >= 1 ; block--
         {
             var numberOfCardsInBlock = GlobalConstants.minNumDropZones
             if block > 2

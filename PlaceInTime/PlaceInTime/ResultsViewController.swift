@@ -53,7 +53,6 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         backButton.layer.cornerRadius = 5
         backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
-        backButton.alpha = 0
         view.addSubview(backButton)
     }
     
@@ -169,7 +168,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func collectNewResults()
     {
-        
+        let oldNumerbOfRecords = datactrl.gameResultsValues.count
         //FB LOGIN
         let jsonDictionary = ["fbid":self.userId]
         
@@ -192,7 +191,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
                     print(error)
                 }
                 self.activityLabel.alpha = 0
-                self.collectStoredResults()
+                self.collectStoredResults(oldNumerbOfRecords)
                 
             }
             if response != nil
@@ -202,33 +201,40 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         })
     }
     
-    func collectStoredResults()
+    func collectStoredResults(oldNumerbOfRecords:Int)
     {
+        var distinctUsers:[String] = []
         var noValues = true
         datactrl.loadGameData()
+        var index = 0
         for record in datactrl.gameResultsValues
         {
             let arrayOfValues = record.componentsSeparatedByString(",")
             if arrayOfValues.count == 5
             {
-                for item in arrayOfValues
-                {
-                    print("\(item)")
-                }
-                for var i = 0 ; i < 5 ; i++
-                {
-                    print("\(arrayOfValues[i])")
-                }
+                let newRecord = oldNumerbOfRecords <= index
+                index++
+                
                 let myCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[0] )
                 let myPoints = NSNumberFormatter().numberFromString(arrayOfValues[1] )
                 let name = arrayOfValues[2] 
+                if !distinctUsers.contains(name)
+                {
+                    distinctUsers.append(name)
+                }
                 let opponentCorrectAnswers = NSNumberFormatter().numberFromString(arrayOfValues[3] )
                 let opponentPoints = NSNumberFormatter().numberFromString(arrayOfValues[4] )
-                resultsScrollView.addItem(myCorrectAnswers!.integerValue, myPoints: myPoints!.integerValue, opponentName: name, opponentCS: opponentCorrectAnswers!.integerValue, opponentPoints: opponentPoints!.integerValue)
+                let title = arrayOfValues.count > 5 ? arrayOfValues[5] : "-"
+                let date = arrayOfValues.count > 6 ? arrayOfValues[6] : "-"
+                let opponentId = arrayOfValues.count > 7 ? arrayOfValues[7] : ""
+                
+                resultsScrollView.addItem(myCorrectAnswers!.integerValue, myPoints: myPoints!.integerValue, opponentName: name, opponentId: opponentId, opponentCS: opponentCorrectAnswers!.integerValue, opponentPoints: opponentPoints!.integerValue, title:title, date:date, newRecord: newRecord)
                 
                 noValues = false
             }
         }
+        
+        resultsScrollView.setFilter(distinctUsers)
         if noValues
         {
             self.activityLabel.alpha = 1

@@ -307,13 +307,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 self.activityLabel.alpha = 0
                 self.activityLabel.text = "No facebook friends with this app😢"
                 
-                let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
-                pulseAnimation.duration = 0.3
-                pulseAnimation.toValue = NSNumber(float: 0.3)
-                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                pulseAnimation.autoreverses = true;
-                pulseAnimation.repeatCount = 5
-                self.addRandomUserButton.layer.addAnimation(pulseAnimation, forKey: "asd")
+   
             })
         }
         else
@@ -449,6 +443,14 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     func addRandomUserAction()
     {
         addRandomUser(nil)
+        
+        let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity");
+        pulseAnimation.duration = 0.3
+        pulseAnimation.toValue = NSNumber(float: 0.3)
+        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        pulseAnimation.autoreverses = true;
+        pulseAnimation.repeatCount = 5
+        self.addRandomUserButton.layer.addAnimation(pulseAnimation, forKey: "asd")
     }
     
     func addRandomUser(completionClosure: (() -> Void)? )

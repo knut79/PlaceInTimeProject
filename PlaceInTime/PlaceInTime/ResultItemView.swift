@@ -14,36 +14,57 @@ class ResultItemView: UIView
     var title:String!
     var stateWin:Int = 0
     var stateLoss:Int = 0
+    var newRecord:Bool = false
+    var opponentFullName:String!
+    var opponentFirstName:String!
+    var opponentId:String!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    init(frame: CGRect, myCS:Int,myPoints:Int,opponentName:String,opponentCS:Int,opponentPoints:Int) {
+    init(frame: CGRect, myCS:Int,myPoints:Int,opponentName:String,opponentId:String,opponentCS:Int,opponentPoints:Int, title:String, date:String, newRecord:Bool = false) {
         super.init(frame: frame)
         
         let margin:CGFloat = 0
         let secondLevelTitleWidth:CGFloat = (self.bounds.width - ( margin * 2)) / 6
         let titleElementHeight:CGFloat = 40
         
-        var state = "Victory"
+        opponentFullName = opponentName
+        opponentFirstName = opponentName
+        if opponentFullName.componentsSeparatedByString(" ").count > 1
+        {
+            opponentFirstName = opponentFullName.componentsSeparatedByString(" ").first!
+        }
+        
         stateWin = 1
         if myCS < opponentCS
         {
             stateWin = 0
             stateLoss = 1
-            state = "Loss"
         }
         else if myCS == opponentCS && myPoints < opponentPoints
         {
             stateWin = 0
             stateLoss = 1
-            state = "Loss"
         }
         else if myCS == opponentCS && myPoints == opponentPoints
         {
             stateWin = 0
-            state = "Draw"
+        }
+        
+        var state = "✅"
+        if stateWin == 0 && stateLoss == 1
+        {
+            state = "❌"
+        }
+        else if stateWin == 0
+        {
+            state = "➖"
+        }
+        if newRecord
+        {
+            state = "\(state)🆕"
         }
         
         let myStateLabel = UILabel(frame: CGRectMake(margin , 0, secondLevelTitleWidth, titleElementHeight))
@@ -69,7 +90,7 @@ class ResultItemView: UIView
         
         let opponentNameLabel = UILabel(frame: CGRectMake(myScorePointsLabel.frame.maxX , 0, secondLevelTitleWidth, titleElementHeight))
         opponentNameLabel.textAlignment = NSTextAlignment.Center
-        opponentNameLabel.text = "\(opponentName)"
+        opponentNameLabel.text = "\(opponentFirstName)"
         opponentNameLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentNameLabel)
         

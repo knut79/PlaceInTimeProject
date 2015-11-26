@@ -18,6 +18,7 @@
 		727444CA1C03A57700E16F6C /* ReportErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727444C91C03A57700E16F6C /* ReportErrorHandler.swift */; };
 		727444CC1C03A94E00E16F6C /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727444CB1C03A94E00E16F6C /* WindowsAzureMessaging.framework */; };
 		727444CE1C03FE8B00E16F6C /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727444CD1C03FE8B00E16F6C /* FBSDKShareKit.framework */; };
+		727444D01C07897D00E16F6C /* UserFilterScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727444CF1C07897D00E16F6C /* UserFilterScrollView.swift */; };
 		728BAE751BAA28E900BD4DB4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */; };
 		728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */; };
 		728BAE791BAA2D3800BD4DB4 /* ResultItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */; };
@@ -108,6 +109,7 @@
 		727444C91C03A57700E16F6C /* ReportErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportErrorHandler.swift; sourceTree = "<group>"; };
 		727444CB1C03A94E00E16F6C /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMessaging.framework; sourceTree = "<group>"; };
 		727444CD1C03FE8B00E16F6C /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		727444CF1C07897D00E16F6C /* UserFilterScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFilterScrollView.swift; sourceTree = "<group>"; };
 		728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsScrollView.swift; sourceTree = "<group>"; };
 		728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultItemView.swift; sourceTree = "<group>"; };
@@ -211,9 +213,6 @@
 				725249DB1BA63315002FE589 /* UserScrollView.swift */,
 				725249DD1BA654D2002FE589 /* ChallengeScrollView.swift */,
 				725249DF1BA6564C002FE589 /* RadiobuttonItemView.swift */,
-				728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */,
-				728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */,
-				728BAE7D1BAACEF600BD4DB4 /* ResultTitleLabel.swift */,
 			);
 			name = ListViews;
 			sourceTree = "<group>";
@@ -229,7 +228,11 @@
 		728BAE7B1BAA371300BD4DB4 /* Results */ = {
 			isa = PBXGroup;
 			children = (
+				728BAE761BAA2CC700BD4DB4 /* ResultsScrollView.swift */,
+				728BAE781BAA2D3800BD4DB4 /* ResultItemView.swift */,
+				728BAE7D1BAACEF600BD4DB4 /* ResultTitleLabel.swift */,
 				728BAE741BAA28E900BD4DB4 /* ResultsViewController.swift */,
+				727444CF1C07897D00E16F6C /* UserFilterScrollView.swift */,
 			);
 			name = Results;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
 				725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */,
 				72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */,
+				727444D01C07897D00E16F6C /* UserFilterScrollView.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
 				727444CA1C03A57700E16F6C /* ReportErrorHandler.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
