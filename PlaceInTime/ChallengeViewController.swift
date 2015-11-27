@@ -230,7 +230,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             initialValues.updateValue(friendObject.valueForKey("id") as! String, forKey: friendObject.valueForKey("name") as! String )
         }
         
-        let minNumberOfItemsOnGamerecordRow = 6
+        let minNumberOfItemsOnGamerecordRow = 8
         let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
         datactrl.loadGameData()
         for record in datactrl.gameResultsValues
@@ -238,8 +238,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             let arrayOfValues = record.componentsSeparatedByString(",")
             if arrayOfValues.count == minNumberOfItemsOnGamerecordRow
             {
-                let name = arrayOfValues[1]
-                let opponentId = arrayOfValues[5]
+                let name = arrayOfValues[GlobalConstants.indexOfOpponentNameInGamerecordRow]
+                let opponentId = arrayOfValues[GlobalConstants.indexOfOpponentIdInGamerecordRow]
                 
                 var found = false
                 for item in initialValues
@@ -333,7 +333,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
 
         let scrollViewHeight =  playButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
         let scrollViewWidth = UIScreen.mainScreen().bounds.size.width - (margin * 2)
-        self.challengeScrollView = ChallengeScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight), itemsChecked:false)
+        self.challengeScrollView = ChallengeScrollView(frame: CGRectMake(margin , titleLabel.frame.maxY + margin, scrollViewWidth, scrollViewHeight))
         //self.challengeScrollView.delegate = self
         self.challengeScrollView.alpha = 1
         
@@ -380,7 +380,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                             print("item : \(item)")
                             if let jsonDictionary = item as? NSDictionary {
                                 let title = jsonDictionary["title"] as! String
-                                self.challengeScrollView.addItem(title,value: jsonDictionary)
+                                let date = jsonDictionary["date"] as! String
+                                self.challengeScrollView.addItem("\(title) \(date)",value: jsonDictionary)
                                 
                                 self.activityLabel.alpha = 0
                                 self.playButton.alpha = 1
@@ -388,6 +389,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                         }
                         if jsonArray?.count == 0
                         {
+                            self.view.bringSubviewToFront(self.activityLabel)
                             self.activityLabel.text = "No pending challenges from other users😒"
                         }
                     }

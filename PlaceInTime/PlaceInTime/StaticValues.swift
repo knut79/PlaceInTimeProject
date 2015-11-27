@@ -28,8 +28,13 @@ struct GlobalConstants {
     static let maxNumDropZones:Int = 6
     static let minNumDropZones:Int = 3
     
-    //_? CHANGE TO 7 FOR RELEASE
+    //_? change to 7 for release
     static let numOfQuestionsForRound:Int = 3
+    
+    static let baileValue = -1
+    
+    static let indexOfOpponentNameInGamerecordRow = 2
+    static let indexOfOpponentIdInGamerecordRow = 7
 }
 enum EventType: Int
 {

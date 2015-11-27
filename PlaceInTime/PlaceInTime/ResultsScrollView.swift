@@ -194,7 +194,7 @@ class ResultsScrollView: UIView , UIScrollViewDelegate, UserFilterViewProtocol{
         filteredUsers = distinctUsers
         let margin:CGFloat = 10
         let scrollViewWidth = self.bounds.size.width - (margin * 2)
-        userFilterScrollView = UserFilterScrollView(frame: CGRectMake((self.bounds.size.width / 2) - (scrollViewWidth / 2) , self.bounds.size.height / 4, scrollViewWidth, self.bounds.size.height / 2),initialValues:distinctUsers)
+        userFilterScrollView = UserFilterScrollView(frame: CGRectMake((self.bounds.size.width / 2) - (scrollViewWidth / 2) , self.bounds.size.height * 0.2, scrollViewWidth, self.bounds.size.height / 1.3),initialValues:distinctUsers)
         userFilterScrollView.delegate = self
         
         userFilterScrollView.alpha = 0

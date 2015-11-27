@@ -75,9 +75,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         clock.delegate = self
         
 
-        //_? test
-        //addDropZone()
-
         let rightButtonWidth = UIScreen.mainScreen().bounds.size.height * 0.25
         rightButton = UIButton(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width / 2 - (rightButtonWidth / 2), gameStats.frame.maxY + marginFromGamestats, rightButtonWidth, rightButtonWidth))
         rightButton.setTitle("OK 👍", forState: UIControlState.Normal)
@@ -247,7 +244,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 label.font = UIFont.boldSystemFontOfSize(20)
                 label.adjustsFontSizeToFitWidth = true
                 label.backgroundColor = UIColor.clearColor()
-                label.text = "Time is up"
+                label.numberOfLines = 2
+                label.text = "Time is up\n😳"
                 label.alpha = 1
                 label.center = self.clock.center
                 label.transform = CGAffineTransformScale(label.transform, 0.1, 0.1)
@@ -270,6 +268,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                                 label.removeFromSuperview()
                                 
                                 self.fails = self.numberOfDropZones
+                                self.corrects = 0
                                 self.animateCleanupAndStartNewRound()
                         })
                 })
@@ -413,6 +412,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var tempViews:[UIView] = []
     var tempYearLabel:[UILabel] = []
     var fails:Int = 0
+    var corrects:Int = 0
     func okAction()
     {
         disableUserInteraction()
@@ -439,7 +439,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     }, completion: { (value: Bool) in
                         self.animateYears(0, completion: {() -> Void in
                             self.fails = 0
-                            
+                            self.corrects = 0
                             
                             self.animateResult(0)
                         })
@@ -505,6 +505,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 wrongAnswer = true
                 thisYear = lastYear
             }
+            else
+            {
+                corrects++
+            }
         }
 
             UIView.animateWithDuration(0.5, animations: { () -> Void in
@@ -521,7 +525,9 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                             self.correctSoundAudioPlayerPool[index].play()
                             
                             label.textColor = UIColor.greenColor()
+                            label.text = "\(label.text!)\(self.getCorrectsEmoji(self.corrects))"
                             
+                            /*
                             let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
                             pulseAnimation.duration = 0.3
                             pulseAnimation.toValue = NSNumber(float: 0.3)
@@ -530,7 +536,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                             pulseAnimation.repeatCount = 5
                             pulseAnimation.delegate = self
                             label.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
-
+                            */
                             //animate right points
                             self.animatePoints(label.center)
                         }
@@ -594,6 +600,36 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         else
         {
             return "😲"
+        }
+    }
+    
+    func getCorrectsEmoji(corrects:Int) -> String
+    {
+        //time up 😳
+        //😉😊😃😗😎😏
+        if corrects < 2
+        {
+            return "😉"
+        }
+        else if corrects < 3
+        {
+            return "😊"
+        }
+        else if corrects < 4
+        {
+            return "😃"
+        }
+        else if corrects < 5
+        {
+            return "😗"
+        }
+        else if corrects < 6
+        {
+            return "😎"
+        }
+        else
+        {
+            return "😏"
         }
     }
     
@@ -752,15 +788,13 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
             self.completedQuestionsIds.append(roundQuestionIds)
             
-            if (self.gametype != GameType.training) && (self.completedQuestionsIds.count >= GlobalConstants.numOfQuestionsForRound)
+            if (self.gametype != GameType.training) && (self.challenge.questionsLeft() <= 0)
             {
                 self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
             }
             else
             {
                 self.dropZones = [:]
-                //_?
-                //self.addDropZone()
                 self.setCardStack()
                 //self.revealNextCard()
                 self.rightButton.userInteractionEnabled = true
@@ -1207,7 +1241,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             questionsLeftLabel.adjustsFontSizeToFitWidth = true
             questionsLeftLabel.textColor = UIColor.blueColor()
             questionsLeftLabel.font = UIFont.boldSystemFontOfSize(24)
-            let questionsLeft = GlobalConstants.numOfQuestionsForRound - numberOfRoundsDone + 1
+            //let questionsLeft = GlobalConstants.numOfQuestionsForRound - numberOfRoundsDone + 1
+            let questionsLeft = challenge.questionsLeft() + 1
             questionsLeftLabel.text = questionsLeft == 1 ? "Last\nquestion" : "Questions left\n       \(questionsLeft)"
             questionsLeftLabel.alpha = 1
             
@@ -1295,7 +1330,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             let hookedUpCardToPass = drop.getHookedUpCard()
             drop.setHookedUpCard(newCardToHookup)
-            //_?drop.hookedUpCard!.center = drop.center
             if let cardToPass = hookedUpCardToPass
             {
                 passCardBackwardAndHookupNew(dropZones[drop.key! - 1]!,newCardToHookup: cardToPass)
@@ -1309,7 +1343,6 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             let hookedUpCardToPass = drop.getHookedUpCard()
             drop.setHookedUpCard(newCardToHookup)
-            //_?drop.hookedUpCard!.center = drop.center
             if let cardToPass = hookedUpCardToPass
             {
                 passCardForwardAndHookupNew(dropZones[drop.key! + 1]!,newCardToHookup: cardToPass)

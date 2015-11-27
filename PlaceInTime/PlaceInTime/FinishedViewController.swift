@@ -148,8 +148,8 @@ class FinishedViewController:UIViewController {
         audioPlayer.play()
         resultLabel.text = "You lost 😖\n\n" +
             "\(correctAnswers) correct answers" + "\n\(points) points" +
-            "\n\nagainst" +
-            "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
+            "\nvs." +
+            "\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
     }
     
     func youWonChallenge(takingChallenge:TakingChallenge)
@@ -197,7 +197,6 @@ class FinishedViewController:UIViewController {
             
             if error != nil
             {
-                //_??? test this with LogErrorHandler
                 self.activityLabel.text = "Server error"
                 let reportError = (UIApplication.sharedApplication().delegate as! AppDelegate).reportErrorHandler
                 let alert = UIAlertView(title: "Server error", message: "Could not send challenge. Sorry for the annoyance.", delegate: nil, cancelButtonTitle: "OK")
@@ -213,13 +212,6 @@ class FinishedViewController:UIViewController {
                 let alertText = numUsersChallenged > 1 ? "Challenge sendt to \(numUsersChallenged) users" : "Challenge sendt to \(numUsersChallenged) user"
                 let alert = UIAlertView(title: "Sending challenge", message: alertText, delegate: nil, cancelButtonTitle: "OK")
                 alert.show()
-                
-                //removed this block as we fire and forget
-                /*
-                self.backToMenuButton.alpha = 1
-                let numUsersChallenged = makingChallenge.usersToChallenge.count
-                self.activityLabel.text = numUsersChallenged > 1 ? "Challenge sendt to \(numUsersChallenged) users" : "Challenge sendt to \(numUsersChallenged) user"
-                */
             }
             if response != nil
             {

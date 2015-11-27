@@ -316,15 +316,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func updateBadges()
     {
-        /*
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-        // do some task
-        dispatch_async(dispatch_get_main_queue()) {
-        // update some UI
-        }
-        }
-        */
+
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
             self.recieveNumberOfResultsNotDownloaded()
@@ -479,6 +471,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         requestProductData()
         populateDataIfNeeded()
+        
+        /*
+        datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
+        datactrl.addRecordToGameResults("2,22,Elizabethhhh,1,1000,1-3 from Elizabethhhh,,4321")
+        
+        datactrl.saveGameData()
+        datactrl.loadGameData()
+        */
     }
     
     func populateDataIfNeeded()
@@ -563,13 +563,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             challengePlayButtonExstraLabel.text = text
         }
     }
-    
-    func playAction()
-    {
-        //self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
 
-        
-    }
     
     func backAction()
     {

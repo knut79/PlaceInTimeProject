@@ -75,14 +75,14 @@ class ResultItemView: UIView
         
         let myScoreCorrectSequenceLabel = UILabel(frame: CGRectMake(myStateLabel.frame.maxX , 0, secondLevelTitleWidth, titleElementHeight))
         myScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
-        myScoreCorrectSequenceLabel.text = "\(myCS)"
+        myScoreCorrectSequenceLabel.text = myCS == GlobalConstants.baileValue ? "0" : "\(myCS)"
         myScoreCorrectSequenceLabel.numberOfLines = 2
         myScoreCorrectSequenceLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(myScoreCorrectSequenceLabel)
         
         let myScorePointsLabel = UILabel(frame: CGRectMake(myScoreCorrectSequenceLabel.frame.maxX , 0, secondLevelTitleWidth, titleElementHeight))
         myScorePointsLabel.textAlignment = NSTextAlignment.Center
-        myScorePointsLabel.text = "\(myPoints)"
+        myScorePointsLabel.text = myPoints ==  GlobalConstants.baileValue ? "Bailed❗" : "\(myPoints)"
         myScorePointsLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(myScorePointsLabel)
         
@@ -96,14 +96,14 @@ class ResultItemView: UIView
         
         let opponentScoreCorrectSequenceLabel = UILabel(frame: CGRectMake(opponentNameLabel.frame.maxX , 0, secondLevelTitleWidth, titleElementHeight))
         opponentScoreCorrectSequenceLabel.textAlignment = NSTextAlignment.Center
-        opponentScoreCorrectSequenceLabel.text = "\(opponentCS)"
+        opponentScoreCorrectSequenceLabel.text = opponentCS == GlobalConstants.baileValue ? "0" : "\(opponentCS)"
         opponentScoreCorrectSequenceLabel.numberOfLines = 2
         opponentScoreCorrectSequenceLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentScoreCorrectSequenceLabel)
         
         let opponentScorePointsLabel = UILabel(frame: CGRectMake(opponentScoreCorrectSequenceLabel.frame.maxX , 0, secondLevelTitleWidth, titleElementHeight))
         opponentScorePointsLabel.textAlignment = NSTextAlignment.Center
-        opponentScorePointsLabel.text = "\(opponentPoints)"
+        opponentScorePointsLabel.text = opponentPoints ==  GlobalConstants.baileValue ? "Bailed❗" : "\(opponentPoints)"
         opponentScorePointsLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(opponentScorePointsLabel)
     }

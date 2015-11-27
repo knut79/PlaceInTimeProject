@@ -206,11 +206,12 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         var distinctUsers:[String] = []
         var noValues = true
         datactrl.loadGameData()
+        let minNumberOfItemsOnGamerecordRow = 5
         var index = 0
         for record in datactrl.gameResultsValues
         {
             let arrayOfValues = record.componentsSeparatedByString(",")
-            if arrayOfValues.count == 5
+            if arrayOfValues.count >= minNumberOfItemsOnGamerecordRow
             {
                 let newRecord = oldNumerbOfRecords <= index
                 index++
@@ -253,7 +254,10 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             let name = item["opponentname"] as! String
             let opponentCorrectAnswers = item["opponentcorrectanswers"] as! Int
             let opponentPoints = item["opponentpoints"] as! Int
-            let valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints)"
+            let title = item["title"] as! String
+            let date = item["date"] as! String
+            let opponentId = item["opponentid"] as! String
+            let valuesStringFormat:String = "\(myCorrectAnswers),\(myPoints),\(name),\(opponentCorrectAnswers),\(opponentPoints),\(title),\(date),\(opponentId)"
             datactrl.addRecordToGameResults(valuesStringFormat)
         }
         datactrl.saveGameData()

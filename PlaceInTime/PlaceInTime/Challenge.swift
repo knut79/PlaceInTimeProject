@@ -20,6 +20,11 @@ class Challenge {
         questionBlocks = []
 
     }
+    func questionsLeft() -> Int
+    {
+        return questionBlocks.count
+    }
+    
     func getNextQuestionBlock() -> [String]
     {
         return questionBlocks.removeLast()
