@@ -27,9 +27,8 @@ struct GlobalConstants {
     
     static let maxNumDropZones:Int = 6
     static let minNumDropZones:Int = 3
-    
-    //_? change to 7 for release
-    static let numOfQuestionsForRound:Int = 3
+
+    static let numOfQuestionsForRound:Int = 7
     
     static let baileValue = -1
     

@@ -62,8 +62,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        //let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+        //UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
         let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("firstlaunch")
         
@@ -990,7 +990,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     }
     
     override func shouldAutorotate() -> Bool {
-        return false
+        return true
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {

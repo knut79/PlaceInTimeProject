@@ -1449,7 +1449,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     }
     
     override func shouldAutorotate() -> Bool {
-        return false
+        return true
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
