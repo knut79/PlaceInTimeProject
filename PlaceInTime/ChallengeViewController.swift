@@ -620,6 +620,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     
     func playAction()
     {
+        self.playButton.userInteractionEnabled = false
         if self.gametype == GameType.makingChallenge
         {
             usersToChallenge = self.usersToChallengeScrollView.getCheckedItemsValueAsArray()
@@ -628,6 +629,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 let alert = UIAlertView(title: "Pick 1", message: "Select at least 1 user", delegate: nil, cancelButtonTitle: "OK")
                 alert.show()
+                self.playButton.userInteractionEnabled = true
             }
             else
             {
@@ -645,7 +647,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 let alert = UIAlertView(title: "Pick 1", message: "Select a challenge", delegate: nil, cancelButtonTitle: "OK")
                 alert.show()
-                
+                self.playButton.userInteractionEnabled = true
             }
             else
             {

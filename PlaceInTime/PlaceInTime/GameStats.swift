@@ -73,7 +73,7 @@ class GameStats:UIView {
         lovePointsLabel.textColor = UIColor.blackColor()
         //lovePointsLabel.backgroundColor = UIColor.greenColor()
         lovePointsLabel.adjustsFontSizeToFitWidth = true
-        lovePointsLabel.text = "\(self.lovePoints) 😍"
+        lovePointsLabel.text = "\(self.lovePoints) 😎"
         lovePointsView.addSubview(lovePointsLabel)
         self.addSubview(lovePointsView)
         
@@ -231,7 +231,7 @@ class GameStats:UIView {
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         self.okPointsLabel.text = "\(self.okPoints!) 😌"
-        self.lovePointsLabel.text = "\(self.lovePoints!) 😍"
+        self.lovePointsLabel.text = "\(self.lovePoints!) 😎"
     }
     
 }

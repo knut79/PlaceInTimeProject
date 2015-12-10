@@ -1052,7 +1052,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         if let card = cardToDrag
         {
-            
+            //!! Seems like this code never is runned as new cards are autoreveald
             //reset focus
             for item in dropZones
             {
@@ -1060,7 +1060,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
 
 
-            let isInnView = CGRectContainsPoint(cardToDrag!.frame,touchLocation)
+            let isInnView = CGRectContainsPoint(card.frame,touchLocation)
             if(isInnView)
             {
 
@@ -1086,6 +1086,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         }
         else if newRevealedCard != nil && CGRectContainsPoint(newRevealedCard!.frame,touchLocation)
         {
+            //reset focus
+            for item in dropZones
+            {
+                item.1.removeFocus()
+            }
             cardToDrag = newRevealedCard
             self.newRevealedCard = nil
         }
@@ -1177,6 +1182,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         {
             return
         }
+
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
 
@@ -1187,11 +1193,14 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 let touch = touches.first//touches.anyObject()
                 let touchLocation = touch!.locationInView(self.view)
                 
-                //self.directionLabel.alpha = 0
+                
+                //print("\ntouchpoint \(touchLocation.x) \(touchLocation.y) ")
+                //print("cardtodrag rect \(card.frame.minX) \(card.frame.minY) \(card.frame.width) \(card.frame.height)")
+                
                 
                 if let dropzone = self.getFocusDropZone()
                 {
-                    let isInnView = CGRectContainsPoint(self.cardToDrag!.frame,touchLocation)
+                    let isInnView = CGRectContainsPoint(card.frame,touchLocation)
                     if(isInnView)
                     {
                         self.dropCardInZone(card, dropzone: dropzone, touchLocation: touchLocation)
