@@ -18,12 +18,16 @@ class Card: UIView
     var dragging:Bool = false
     var event:HistoricEvent!
     
+    
+    var testHint:UILabel!
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     init(frame:CGRect, event:HistoricEvent){
         super.init(frame: frame)
+
 
         self.event = event
         
@@ -34,6 +38,24 @@ class Card: UIView
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1
         
+        self.contentMode = UIViewContentMode.ScaleToFill
+        self.clipsToBounds = false
+        
+        let hintHeight = self.frame.height * 0.17
+        let hintWidth = self.frame.width * 0.35
+        testHint = UILabel(frame: CGRectMake(self.frame.width / 2, self.frame.height,hintWidth,hintHeight))
+        testHint.clipsToBounds = false
+        testHint.textAlignment = NSTextAlignment.Center
+        testHint.layer.cornerRadius = 3
+        testHint.backgroundColor = UIColor.blackColor()
+        testHint.layer.borderColor = UIColor.blackColor().CGColor
+        testHint.layer.borderWidth = 1
+        testHint.textColor = UIColor.whiteColor()
+        testHint.text = "\(event.toYear)"
+        testHint.alpha = 0
+        testHint.transform = CGAffineTransformScale(testHint.transform, 0.1, 0.1)
+        self.addSubview(testHint)
+
         
         /*
         yearTitle = UILabel(frame: CGRectMake(0, 0, frame.width, frame.height * 0.2))
@@ -79,6 +101,21 @@ class Card: UIView
         })
     }
 */
+    
+    func setHint()
+    {
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+
+            self.testHint.transform = CGAffineTransformIdentity
+            self.testHint.alpha = 1
+            //self.testHint.alpha = 0
+            //self.testHint.transform = CGAffineTransformScale(self.testHint.transform, 0.1, 0.1)
+            }, completion: { (value: Bool) in
+
+        })
+    }
+    
+
     
     func tap()
     {

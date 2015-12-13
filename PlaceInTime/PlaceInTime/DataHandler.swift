@@ -462,7 +462,7 @@ class DataHandler
         newEvent(id++,title:"Richard Henry Lee elected President of the US", year:1785,tags:"#headOfState")
         newEvent(id++,title:"Nathan Gorman elected President of the US", year:1786,tags:"#headOfState")
         newEvent(id++,title:"Arthur St. Clair elected as President of the US", year:1787,tags:"#headOfState")
-        newEvent(id++,title:"Cyrus Griffin elected President of the US", year:1788,tags:"#headOfState")
+        newEvent(id++,title:"Cyrus Griffin elected President of the US Congress", year:1788,tags:"#headOfState")
         newEvent(id++,title:"George Washington elected US President", year:1789,level:1,tags:"#headOfState")
         newEvent(id++,title:"Paul I becomes Tsar of Russia", year:1792,tags:"#headOfState")
         newEvent(id++,title:"Napoleon Bonaparte declares himself dictator of France", year:1799,level:2,tags:"#headOfState")
@@ -733,6 +733,10 @@ class DataHandler
         
         dataPopulatedValue = 1
         saveGameData()
+        
+        
+        
+        NSUserDefaults.standardUserDefaults().setInteger(GlobalConstants.numberOfHintsAtStart, forKey: "hintsLeftOnAccount")
         
         completePopulating?()
     }

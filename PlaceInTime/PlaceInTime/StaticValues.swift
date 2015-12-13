@@ -34,6 +34,9 @@ struct GlobalConstants {
     
     static let indexOfOpponentNameInGamerecordRow = 2
     static let indexOfOpponentIdInGamerecordRow = 7
+    
+    static let numberOfHintsAtStart = 3
+    static let numberOfHintsPrBuy = 10
 }
 enum EventType: Int
 {

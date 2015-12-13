@@ -50,12 +50,17 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     var correctSequenceSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("yeah-short", ofType: "mp3")!)
     
     var numberOfRoundsDone = 0
-    var questionsLeftFrame:CGRect!
+    var questionsLeftFrame:CGRect?
     
     var bannerView:ADBannerView?
+    
+    var useHintButton:UseHintButton?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+        
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
@@ -70,9 +75,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         self.view.addSubview(gameStats)
         
         clock = ClockView(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width * 0.75, 10, gameStats.frame.height * 1.5, gameStats.frame.height * 1.5))
-        questionsLeftFrame = CGRectMake(clock.frame.maxX,clock.frame.minY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
+
         orgClockCenter = CGPointMake(UIScreen.mainScreen().bounds.size.width * 0.75 ,self.marginFromGamestats + (self.clock.frame.height / 2))
         clock.delegate = self
+        
         
 
         let rightButtonWidth = UIScreen.mainScreen().bounds.size.height * 0.25
@@ -101,9 +107,26 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
             view.addSubview(backButton)
         }
+        else
+        {
+            let backButtonMargin:CGFloat = 15
+            let userHintButtonSide = GlobalConstants.smallButtonSide * 1.2
+            useHintButton = UseHintButton(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width - userHintButtonSide  - backButtonMargin, backButtonMargin, userHintButtonSide, userHintButtonSide))
+            useHintButton!.addTarget(self, action: "useHintAction", forControlEvents: UIControlEvents.TouchUpInside)
+            useHintButton!.backgroundColor = UIColor.blueColor()
+            view.addSubview(useHintButton!)
+
+            //questionsLeftFrame = CGRectMake(clock.frame.maxX,clock.frame.minY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
+            questionsLeftFrame = CGRectMake(clock.frame.maxX,useHintButton!.frame.maxY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
+        }
+
+       
+        
+        
         self.view.addSubview(clock)
         
         self.setupAudioPlayers()
+        
         
 
     }
@@ -324,6 +347,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         //let frame = CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (cardWidth / 2) + xOffset,gameStats.frame.maxY + marginFromGamestats + yOffset, cardWidth, cardHeight)
         let card = Card(frame:CGRectMake(-100, gameStats.frame.maxY + marginFromGamestats, cardWidth, cardHeight),event:randomHistoricEvents[i])
+
         
         cardsStack.append(card)
         self.view.addSubview(card)
@@ -351,6 +375,11 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     self.revealNextCard()
                     self.view.bringSubviewToFront(self.infoHelperView)
                     self.view.bringSubviewToFront(self.clock)
+                    
+                    if let hintButton = self.useHintButton
+                    {
+                        hintButton.showButton()
+                    }
                 }
         })
     }
@@ -445,6 +474,42 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                         })
                 })
         })
+    }
+    
+    func useHintAction()
+    {
+        if let card = self.newRevealedCard
+        {
+            useHintAnimation(card)
+        }
+        else if let card = self.cardToDrag
+        {
+            useHintAnimation(card)
+        }
+        else if let card = self.lastCardMoved
+        {
+            useHintAnimation(card)
+        }
+        else
+        {
+            let dz = self.dropZones[self.numberOfDropZones - 1]
+            if let card = dz!.getHookedUpCard()
+            {
+                useHintAnimation(card)
+            }
+            
+        }
+    }
+    
+    func useHintAnimation(card:Card)
+    {
+        if let button = useHintButton
+        {
+            button.deductHints()
+            button.hideButton()
+
+            card.setHint()
+        }
     }
     
     func animateYears(var i:Int,completion: (() -> (Void)))
@@ -799,6 +864,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 //self.revealNextCard()
                 self.rightButton.userInteractionEnabled = true
                 self.tapOverride = false
+                
+
             }
         
         })
@@ -1040,18 +1107,20 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     private var xOffset: CGFloat = 0.0
     private var yOffset: CGFloat = 0.0
 
+    var lastCardMoved:Card?
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         if tapOverride || touchOverride
         {
             return
         }
-        self.rightButton.alpha = 0
+        //self.rightButton.alpha = 0
         let touch = touches.first
         let touchLocation = touch!.locationInView(self.view)
         
         if let card = cardToDrag
         {
+            
             //!! Seems like this code never is runned as new cards are autoreveald
             //reset focus
             for item in dropZones
@@ -1066,6 +1135,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
 
                 if card.dragging == false
                 {
+                    self.rightButton.alpha = 0
                     card.dragging = true
                     card.center = touchLocation
                     UIView.animateWithDuration(0.25, animations: { () -> Void in
@@ -1092,6 +1162,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 item.1.removeFocus()
             }
             cardToDrag = newRevealedCard
+            self.rightButton.alpha = 0
             self.newRevealedCard = nil
         }
         else
@@ -1103,6 +1174,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                     if CGRectContainsPoint(card.frame,touchLocation)
                     {
                         cardToDrag = card
+                        lastCardMoved = card
+                        self.rightButton.alpha = 0
                         dropZones[i]?.setHookedUpCard(nil)
                         view.bringSubviewToFront(cardToDrag!)
                         CGRectContainsPoint(cardToDrag!.frame,touchLocation)
@@ -1126,6 +1199,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         
         if let card = cardToDrag
         {
+            
             let touch = touches.first //touches.anyObject()
             let touchLocation = touch!.locationInView(self.view)
             let isInnView = CGRectContainsPoint(card.frame,touchLocation)
@@ -1244,7 +1318,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
     {
         if gametype != GameType.training
         {
-            let questionsLeftLabel = UILabel(frame: questionsLeftFrame)
+            let questionsLeftLabel = UILabel(frame: questionsLeftFrame!)
             questionsLeftLabel.numberOfLines = 2
             questionsLeftLabel.textAlignment = NSTextAlignment.Center
             questionsLeftLabel.adjustsFontSizeToFitWidth = true

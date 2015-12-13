@@ -18,7 +18,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     //payment
     var product: SKProduct?
-    var productID = "TimelineFeudAddFree1234"
+    var productList:[SKProduct] = []
+    let productIdAdFree = "TimelineFeudAddFree1234"
+    let productIdAddHints = "TimelineFeudAddHints"
+    var productIDs:NSSet = NSSet(objects: "TimelineFeudAddFree1234","TimelineFeudAddHints")
     
     //buttons
     var challengeUsersButton:MenuButton!
@@ -30,7 +33,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var orgNewChallengeButtonCenter:CGPoint!
     var orgPendingChallengesButtonCenter:CGPoint!
     
-    var adFreeButton:UIButton!
+    var adFreeButton:BuyAdFreeButton?
+    var buyHintsButton:BuyHintsButton!
     var selectFilterTypeButton:UIButton!
 
     var practicePlayButtonExstraLabel:UILabel!
@@ -92,23 +96,18 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         resultsButton.setbadge(resultsBadge)
         resultsButton.alpha = 0
         
-        adFreeButton = UIButton(frame:CGRectMake(resultsButton.frame.maxX + marginButtons, resultsButton.frame.minY, buttonWidth / 3, buttonHeight))
-        adFreeButton.addTarget(self, action: "buyProductAction", forControlEvents: UIControlEvents.TouchUpInside)
-        adFreeButton.backgroundColor = UIColor.grayColor()
-        adFreeButton.userInteractionEnabled = false
-        adFreeButton.layer.cornerRadius = 5
-        adFreeButton.layer.masksToBounds = true
-        adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        adFreeButton.titleLabel?.numberOfLines = 2
-        adFreeButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        adFreeButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        adFreeButton.alpha = 0
+        
+        buyHintsButton = BuyHintsButton(frame:CGRectMake( marginButtons, challengeUsersButton.frame.minY, GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
+        buyHintsButton.addTarget(self, action: "requestBuyHints", forControlEvents: UIControlEvents.TouchUpInside)
+
+        
+
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
-            adFreeButton.backgroundColor = UIColor.blueColor()
-            adFreeButton.userInteractionEnabled = true
-            adFreeButton.setTitle("Remove\n ads☂ ", forState: UIControlState.Normal)
+            adFreeButton = BuyAdFreeButton(frame:CGRectMake(marginButtons, practiceButton.frame.minY,GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
+            adFreeButton!.addTarget(self, action: "requestBuyAdFree", forControlEvents: UIControlEvents.TouchUpInside)
+            
             self.canDisplayBannerAds = true
             //bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
@@ -185,7 +184,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.view.addSubview(challengeUsersButton)
         self.view.addSubview(practiceButton)
         self.view.addSubview(resultsButton)
-        self.view.addSubview(adFreeButton)
+        if let button = adFreeButton
+        {
+            self.view.addSubview(button)
+        }
+        self.view.addSubview(buyHintsButton)
         
         self.view.addSubview(newChallengeButton)
         self.view.addSubview(pendingChallengesButton)
@@ -229,7 +232,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.challengeUsersButton.alpha = 1
             self.practiceButton.alpha = 1
             self.resultsButton.alpha = 1
-            self.adFreeButton.alpha = 1
+            self.adFreeButton?.alpha = 1
             requestProductData()
             //setupAfterPopulateData()
         }
@@ -329,13 +332,15 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func requestProductData()
     {
+        /*
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if adFree
         {
-            return
+        return
         }
+        */
         if SKPaymentQueue.canMakePayments() {
-            let request = SKProductsRequest(productIdentifiers:  NSSet(objects: self.productID) as! Set<String>)
+            let request = SKProductsRequest(productIdentifiers:  self.productIDs as! Set<String>)
             request.delegate = self
             request.start()
         } else {
@@ -362,16 +367,17 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         var products = response.products
         
         if (products.count != 0) {
-            product = products[0]
-            //buyButton.enabled = true
-            //productTitle.text = product!.localizedTitle
-            //productDescription.text = product!.localizedDescription
             
-            adFreeButton.backgroundColor = UIColor.blueColor()
-            adFreeButton.userInteractionEnabled = true
+            
+            product = products[0]
             
         } else {
             //productTitle.text = "Product not found"
+        }
+        
+        for product in products
+        {
+            productList.append(product)
         }
         
         let invalidProducts = response.invalidProductIdentifiers
@@ -382,37 +388,101 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
     }
     
-    func buyProductAction() {
-        
-        let numberPrompt = UIAlertController(title: "Remove ads",
+    func addHints()
+    {
+        buyHintsButton.addHints()
+    }
+
+    
+    func requestBuyAdFree()
+    {
+        let adFreePrompt = UIAlertController(title: "Remove ads",
             message: "",
             preferredStyle: .Alert)
         
         
-        numberPrompt.addAction(UIAlertAction(title: "Buy",
+        adFreePrompt.addAction(UIAlertAction(title: "Buy",
             style: .Default,
             handler: { (action) -> Void in
-                self.addProductPayment()
+                self.buyAdFree()
         }))
-        numberPrompt.addAction(UIAlertAction(title: "Restore purchase",
+        adFreePrompt.addAction(UIAlertAction(title: "Restore purchase",
             style: .Default,
             handler: { (action) -> Void in
                 
-                self.addProductPayment()
-                
+                self.buyAdFree()
+        }))
+        adFreePrompt.addAction(UIAlertAction(title: "Cancel",
+            style: .Default,
+            handler: { (action) -> Void in
         }))
         
-        self.presentViewController(numberPrompt,
+        self.presentViewController(adFreePrompt,
             animated: true,
             completion: nil)
     }
     
-    func addProductPayment()
+    func requestBuyHints()
     {
+        let adFreePrompt = UIAlertController(title: "Buy hints",
+            message: "Buy \(GlobalConstants.numberOfHintsPrBuy) hints. Use them to reveal time durring a challenge",
+            preferredStyle: .Alert)
+        
+        
+        adFreePrompt.addAction(UIAlertAction(title: "Buy",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.buyHints()
+        }))
+        adFreePrompt.addAction(UIAlertAction(title: "Cancel",
+            style: .Default,
+            handler: { (action) -> Void in
+        }))
+        
+        self.presentViewController(adFreePrompt,
+            animated: true,
+            completion: nil)
+    }
+    
+    func buyAdFree()
+    {
+        
+        for p in productList
+        {
+            let productId = p.productIdentifier
+            if productId == productIdAdFree
+            {
+                product = p
+                buyProductAction()
+                break
+            }
+        }
+    }
+    
+    func buyHints()
+    {
+        for p in productList
+        {
+
+            let productId = p.productIdentifier
+            
+            print("hmm \(productId) ...\(productIdAddHints)")
+            if productId == productIdAddHints
+            {
+                product = p
+                buyProductAction()
+                break
+            }
+        }
+        
+    }
+    
+    func buyProductAction() {
+        
         let payment = SKPayment(product: product!)
         SKPaymentQueue.defaultQueue().addPayment(payment)
     }
-    
+
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
         
         for transaction in transactions as! [SKPaymentTransaction] {
@@ -420,11 +490,25 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             switch transaction.transactionState {
                 
             case SKPaymentTransactionState.Purchased:
-                self.removeAds()
+                
+                let prodID = product?.productIdentifier
+                if prodID == productIdAdFree
+                {
+                    self.removeAds()
+                }
+                else if prodID == productIdAddHints
+                {
+                    self.addHints()
+                }
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             case SKPaymentTransactionState.Restored:
-                self.removeAds()
-                SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
+                let prodID = product?.productIdentifier
+                if prodID == productIdAdFree
+                {
+                    self.removeAds()
+                }
+                
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             case SKPaymentTransactionState.Failed:
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
             default:
@@ -432,6 +516,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             }
         }
     }
+
     
     func removeAds() {
         
@@ -442,9 +527,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.bannerView?.hidden = true
         self.bannerView?.frame.offsetInPlace(dx: 0, dy: self.bannerView!.frame.height)
         
-        adFreeButton.backgroundColor = UIColor.grayColor()
-        adFreeButton.userInteractionEnabled = false
-        adFreeButton.setTitle(" ", forState: UIControlState.Normal)
+        adFreeButton?.userInteractionEnabled = false
+        adFreeButton?.alpha = 0
+        
     }
     
     func loadScreenFinished() {
@@ -454,17 +539,17 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
-        adFreeButton.transform = CGAffineTransformScale(adFreeButton.transform, 0.1, 0.1)
+        adFreeButton?.transform = CGAffineTransformScale(adFreeButton!.transform, 0.1, 0.1)
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.challengeUsersButton.alpha = 1
             self.practiceButton.alpha = 1
             self.resultsButton.alpha = 1
-            self.adFreeButton.alpha = 1
+            self.adFreeButton?.alpha = 1
             self.challengeUsersButton.transform = CGAffineTransformIdentity
             self.practiceButton.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
-            self.adFreeButton.transform = CGAffineTransformIdentity
+            self.adFreeButton?.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
                 self.bannerView!.center = CGPoint(x: self.bannerView!.center.x, y: self.view.bounds.size.height - self.bannerView!.frame.size.height / 2)
         })
@@ -579,6 +664,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.resultsButton.center = self.resultsButton.orgCenter
             self.resultsButton.alpha = 1
             self.resultsButton.transform = CGAffineTransformIdentity
+            self.adFreeButton?.alpha = 1
             
             self.practicePlayButton.alpha = 0
             self.levelSlider.alpha = 0
@@ -647,8 +733,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.adFreeButton?.center = centerScreen
-            self.adFreeButton?.transform = CGAffineTransformScale(self.adFreeButton!.transform, 0.1, 0.1)
+            self.adFreeButton?.alpha = 0
             
             self.backButton.alpha = 1
             
@@ -729,8 +814,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
             self.resultsButton.center = centerScreen
             self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.adFreeButton.center = centerScreen
-            self.adFreeButton.transform = CGAffineTransformScale(self.adFreeButton.transform, 0.1, 0.1)
+            self.adFreeButton?.alpha = 0
             self.backButton.alpha = 1
             
             }, completion: { (value: Bool) in
@@ -738,7 +822,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
                 self.resultsButton.alpha = 0
-                self.adFreeButton.alpha = 0
+                self.adFreeButton?.alpha = 0
                 
                 self.newChallengeButton.alpha = 1
                 self.pendingChallengesButton.alpha = 1

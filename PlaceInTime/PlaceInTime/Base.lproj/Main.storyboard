@@ -121,7 +121,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="Tp5-as-Bfd"/>
         <segue reference="63O-fR-NDE"/>
-        <segue reference="aLd-4E-9zH"/>
     </inferredMetricsTieBreakers>
 </document>

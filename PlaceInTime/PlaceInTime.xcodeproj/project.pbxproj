@@ -57,6 +57,9 @@
 		728BAEDB1BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAED81BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav */; };
 		728BAEDC1BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAED91BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav */; };
 		728BAEDD1BB0C53400BD4DB4 /* yeah.wav in Resources */ = {isa = PBXBuildFile; fileRef = 728BAEDA1BB0C53400BD4DB4 /* yeah.wav */; };
+		72BF5F461C1B36D2009CB2B3 /* UseHintButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BF5F451C1B36D2009CB2B3 /* UseHintButton.swift */; };
+		72BF5F481C1C7982009CB2B3 /* BuyHintsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BF5F471C1C7982009CB2B3 /* BuyHintsButton.swift */; };
+		72BF5F4A1C1C8185009CB2B3 /* BuyAdFreeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BF5F491C1C8185009CB2B3 /* BuyAdFreeButton.swift */; };
 		72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */; };
 		72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */; };
 		72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */; };
@@ -149,6 +152,9 @@
 		728BAED81BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "54008__domingus__yeah-2.wav"; sourceTree = "<group>"; };
 		728BAED91BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 189068__donnieozone__yeah1.wav; sourceTree = "<group>"; };
 		728BAEDA1BB0C53400BD4DB4 /* yeah.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yeah.wav; sourceTree = "<group>"; };
+		72BF5F451C1B36D2009CB2B3 /* UseHintButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseHintButton.swift; sourceTree = "<group>"; };
+		72BF5F471C1C7982009CB2B3 /* BuyHintsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyHintsButton.swift; sourceTree = "<group>"; };
+		72BF5F491C1C8185009CB2B3 /* BuyAdFreeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyAdFreeButton.swift; sourceTree = "<group>"; };
 		72C789851B9A6AF8002A2BBA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		72C789871B9CA76D002A2BBA /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		72C789891B9CA8B5002A2BBA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -253,6 +259,7 @@
 				72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */,
 				72D192891B8FF9F70035CE11 /* InfoHelperView.swift */,
 				72D192941B9728980035CE11 /* ClockView.swift */,
+				72BF5F451C1B36D2009CB2B3 /* UseHintButton.swift */,
 			);
 			name = Play;
 			sourceTree = "<group>";
@@ -417,6 +424,8 @@
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
 				721D8A961C028E6300D488D8 /* MenuButton.swift */,
 				727444C71C035F6E00E16F6C /* ChallengeButton.swift */,
+				72BF5F471C1C7982009CB2B3 /* BuyHintsButton.swift */,
+				72BF5F491C1C8185009CB2B3 /* BuyAdFreeButton.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -567,7 +576,9 @@
 				728BAE7E1BAACEF600BD4DB4 /* ResultTitleLabel.swift in Sources */,
 				728BAEA31BAE4C3B00BD4DB4 /* RectangleLayer.swift in Sources */,
 				725249E21BA747DF002FE589 /* Challenge.swift in Sources */,
+				72BF5F4A1C1C8185009CB2B3 /* BuyAdFreeButton.swift in Sources */,
 				725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */,
+				72BF5F461C1B36D2009CB2B3 /* UseHintButton.swift in Sources */,
 				72E8E77F1B7B70720011FE47 /* MainMenuController.swift in Sources */,
 				728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */,
 				728BAEA01BAE4C2300BD4DB4 /* Colors.swift in Sources */,
@@ -594,6 +605,7 @@
 				72E8E7A21B7B73D90011FE47 /* DataHandler.swift in Sources */,
 				72D192931B9327BE0035CE11 /* RangeSliderTrackLayer.swift in Sources */,
 				728BAEA41BAE4C3B00BD4DB4 /* ArcLayer.swift in Sources */,
+				72BF5F481C1C7982009CB2B3 /* BuyHintsButton.swift in Sources */,
 				72E8E77D1B7B70720011FE47 /* PlaceInTime.xcdatamodeld in Sources */,
 				727444C81C035F6E00E16F6C /* ChallengeButton.swift in Sources */,
 				72D192901B9327BE0035CE11 /* RangeSlider.swift in Sources */,

@@ -51,7 +51,7 @@ class MenuButton:UIButton {
         //let hints = NSUserDefaults.standardUserDefaults().integerForKey("hintsLeftOnAccount")
         let badgeLabelSide = label.frame.height * 0.6
         badgeLabel = UILabel(frame: CGRectMake(frame.width - badgeLabelSide, frame.height - badgeLabelSide ,badgeLabelSide, badgeLabelSide))
-        badgeLabel.text = "3"
+        badgeLabel.text = " "
         badgeLabel.adjustsFontSizeToFitWidth = true
         badgeLabel.textAlignment = NSTextAlignment.Center
         //label.layer.borderColor = UIColor.lightGrayColor().CGColor

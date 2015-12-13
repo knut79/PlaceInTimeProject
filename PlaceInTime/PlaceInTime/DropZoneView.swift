@@ -73,14 +73,7 @@ class DropZone: UIView {
     {
         if focus == false
         {
-
-            //delegate?.gettingFocus(self)
-
-            
-            
-            //focusDisplayView.frame.offset(dx: 0, dy: focusDisplayView.frame.height * -1)
             self.alpha = 0.0
-            //self.transform = CGAffineTransformScale(self.transform, 1.1, 1.1)
             focus = true
         }
     }
@@ -89,10 +82,7 @@ class DropZone: UIView {
     {
         if focus
         {
-            //delegate?.loosingFocus(self)
-            //focusDisplayView.frame = self.frame
             self.alpha = 1.0
-            //self.transform = CGAffineTransformIdentity
             focus = false
         }
     }
