@@ -193,15 +193,21 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                 self.userId = userId2
                 
                 result
-                self.updateUser({() -> Void in
-                    
-                    self.activityLabel.alpha = 0
-                    self.activityIndicator.stopAnimating()
-                    
-                    
-                    
-                    completion()
+                
+                
+                
+                (UIApplication.sharedApplication().delegate as! AppDelegate).backgroundThread(background: {
+                    self.updateUser({() -> Void in
+                        
+                        //self.activityLabel.alpha = 0
+                        //self.activityIndicator.stopAnimating()
+                        //completion()
+                        })
+                        
                 })
+                self.activityLabel.alpha = 0
+                self.activityIndicator.stopAnimating()
+                completion()
             }
         })
     }

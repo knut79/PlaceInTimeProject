@@ -76,6 +76,12 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
                 print("UserId2 is: \(userId2)")
                 self.userId = userId2
                 
+                (UIApplication.sharedApplication().delegate as! AppDelegate).backgroundThread(background: {
+                    self.updateUser({() -> Void in
+                    })
+                    
+                })
+                self
                 
                 self.initAndCollect()
                 
@@ -102,12 +108,12 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
         else {
             
-            initUserData()
+            
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             if result.grantedPermissions.contains("user_friends")
             {
-                
+                initUserData()
             }
             else
             {
@@ -137,7 +143,7 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         let manager = FBSDKLoginManager()
         manager.logOut()
         
-        self.performSegueWithIdentifier("segueFromChallengeToMainMenu", sender: nil)
+        self.performSegueWithIdentifier("segueFromResultsToMainMenu", sender: nil)
     }
     
     
@@ -170,19 +176,38 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         activityLabel.textAlignment = NSTextAlignment.Center
         activityLabel.text = "Collecting new results..."
         self.view.addSubview(activityLabel)
-        
-        /*
-        let backButtonMargin:CGFloat = 15
-        backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - smallButtonSide - backButtonMargin, backButtonMargin, smallButtonSide, smallButtonSide)
-        backButton.backgroundColor = UIColor.whiteColor()
-        backButton.layer.borderColor = UIColor.grayColor().CGColor
-        backButton.layer.borderWidth = 1
-        backButton.layer.borderWidth = 1
-        backButton.layer.cornerRadius = 5
-        backButton.setTitle("🔙", forState: UIControlState.Normal)
-        backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(backButton)*/
 
+    }
+    
+    
+    func updateUser(completionClosure: (() -> Void) )
+    {
+        
+        let deviceToken = NSUserDefaults.standardUserDefaults().stringForKey("deviceToken")
+        let jsonDictionary = ["fbid":userId,"name":userName,"token":deviceToken]
+        
+        self.client!.invokeAPI("updateuser", data: nil, HTTPMethod: "POST", parameters: jsonDictionary, headers: nil, completion: {(result:NSData!, response: NSHTTPURLResponse!,error: NSError!) -> Void in
+            
+            if error != nil
+            {
+                print("\(error)")
+                
+                let reportError = (UIApplication.sharedApplication().delegate as! AppDelegate).reportErrorHandler
+                let alertController = reportError?.alertController("\(error)")
+                self.presentViewController(alertController!,
+                    animated: true,
+                    completion: nil)
+            }
+            /*
+            //NO result
+            */
+            if response != nil
+            {
+                print("\(response)")
+            }
+            
+            completionClosure()
+        })
     }
     
     func collectNewResults()
