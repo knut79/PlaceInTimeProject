@@ -91,10 +91,14 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
         {
             print("Error: \(error)")
             // Process error
+            let alert = UIAlertView(title: "Facebook login error", message: "Something went wrong at login. Try again later", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+            logOut()
         }
         else if result.isCancelled {
             print("FB login cancelled")
             // Handle cancellations
+            logOut()
         }
         else {
             
@@ -107,6 +111,10 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
             }
             else
             {
+                let alert = UIAlertView(title: "Friendslist", message: "Friendslist must be premitted to play against friends", delegate: nil, cancelButtonTitle: "OK")
+                alert.show()
+                
+                logOut()
                 //TODO show logout button and message telling that friends list must be premitted to continue
             }
             
@@ -121,10 +129,21 @@ class ResultsViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     
+    func logOut()
+    {
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKProfile.setCurrentProfile(nil)
+        
+        let manager = FBSDKLoginManager()
+        manager.logOut()
+        
+        self.performSegueWithIdentifier("segueFromChallengeToMainMenu", sender: nil)
+    }
+    
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         
-        
+        self.logOut()
     }
     
     func initElements()

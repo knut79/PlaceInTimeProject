@@ -109,9 +109,14 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         if ((error) != nil)
         {
             // Process error
+            let alert = UIAlertView(title: "Facebook login error", message: "Something went wrong at login. Try again later", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+            logOut()
+            
         }
         else if result.isCancelled {
             // Handle cancellations
+            logOut()
         }
         else {
             activityLabel.alpha = 1
@@ -123,6 +128,9 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             {
                 // Do work
                 initUserData({() -> Void in
+                    
+                    //sleep(4)
+                    
                     if self.gametype == GameType.makingChallenge
                     {
                         self.initUserFriends()
@@ -135,6 +143,10 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
             }
             else
             {
+                let alert = UIAlertView(title: "Friendslist", message: "Friendslist must be premitted to play against friends", delegate: nil, cancelButtonTitle: "OK")
+                alert.show()
+                
+                logOut()
                 //TODO show logout button and message telling that friends list must be premitted to continue
             }
             
@@ -142,11 +154,21 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         }
     }
     
+    func logOut()
+    {
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKProfile.setCurrentProfile(nil)
+        
+        let manager = FBSDKLoginManager()
+        manager.logOut()
+        
+        self.performSegueWithIdentifier("segueFromChallengeToMainMenu", sender: nil)
+    }
     
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        
-        
+
+        self.logOut()
     }
     
     func initUserData(completion: (() -> (Void)))
@@ -175,6 +197,8 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
                     
                     self.activityLabel.alpha = 0
                     self.activityIndicator.stopAnimating()
+                    
+                    
                     
                     completion()
                 })
