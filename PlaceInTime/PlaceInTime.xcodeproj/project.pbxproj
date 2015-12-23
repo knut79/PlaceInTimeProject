@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		720A8C801C2A4A6000A53B87 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720A8C7F1C2A4A6000A53B87 /* StoreKit.framework */; };
 		721D8A971C028E6300D488D8 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A961C028E6300D488D8 /* MenuButton.swift */; };
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
@@ -100,6 +101,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		720A8C7E1C2A4A5A00A53B87 /* PlaceInTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlaceInTime.entitlements; sourceTree = "<group>"; };
+		720A8C7F1C2A4A6000A53B87 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		721D8A961C028E6300D488D8 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
@@ -196,6 +199,7 @@
 				725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */,
 				72C7898A1B9CA8B5002A2BBA /* FBSDKLoginKit.framework in Frameworks */,
 				727444CE1C03FE8B00E16F6C /* FBSDKShareKit.framework in Frameworks */,
+				720A8C801C2A4A6000A53B87 /* StoreKit.framework in Frameworks */,
 				72C789861B9A6AF8002A2BBA /* FBSDKCoreKit.framework in Frameworks */,
 				727444CC1C03A94E00E16F6C /* WindowsAzureMessaging.framework in Frameworks */,
 			);
@@ -333,6 +337,7 @@
 		72E8E76B1B7B70720011FE47 = {
 			isa = PBXGroup;
 			children = (
+				720A8C7F1C2A4A6000A53B87 /* StoreKit.framework */,
 				72E8E7761B7B70720011FE47 /* PlaceInTime */,
 				72E8E78F1B7B70720011FE47 /* PlaceInTimeTests */,
 				72E8E7751B7B70720011FE47 /* Products */,
@@ -351,6 +356,7 @@
 		72E8E7761B7B70720011FE47 /* PlaceInTime */ = {
 			isa = PBXGroup;
 			children = (
+				720A8C7E1C2A4A5A00A53B87 /* PlaceInTime.entitlements */,
 				728BAEA51BAEEF8400BD4DB4 /* Sounds */,
 				728BAE9B1BAE4ADE00BD4DB4 /* LoadScreen */,
 				728BAE7F1BAB133D00BD4DB4 /* Play */,
@@ -490,6 +496,17 @@
 					72E8E7731B7B70720011FE47 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = A887G5EA37;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.OMC = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					72E8E78B1B7B70720011FE47 = {
 						CreatedOnToolsVersion = 6.4;
@@ -744,6 +761,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PlaceInTime/PlaceInTime.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -765,6 +783,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PlaceInTime/PlaceInTime.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

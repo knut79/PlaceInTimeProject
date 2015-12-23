@@ -12,7 +12,7 @@ import QuartzCore
 import iAd
 import StoreKit
 
-class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate{
+class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver{
 
     var backgroundView:UIView!
     
@@ -142,8 +142,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         challengePlayButton = UIButton(frame:CGRectZero)
         challengePlayButton.setTitle("New challenge\n\(GlobalConstants.numOfQuestionsForRound) questions", forState: UIControlState.Normal)
+        challengePlayButton.titleLabel?.textAlignment = NSTextAlignment.Center
         challengePlayButton.titleLabel!.numberOfLines = 2
         challengePlayButton.addTarget(self, action: "playNewChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
+        challengePlayButton.clipsToBounds  = true
         challengePlayButton.backgroundColor = UIColor.blueColor()
         challengePlayButton.layer.cornerRadius = 5
         challengePlayButton.layer.masksToBounds = true
@@ -153,6 +155,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         challengePlayButtonExstraLabel.textColor = UIColor.whiteColor()
         challengePlayButtonExstraLabel.font = UIFont.systemFontOfSize(12)
         challengePlayButtonExstraLabel.textAlignment = NSTextAlignment.Center
+        challengePlayButtonExstraLabel.clipsToBounds  = true
         challengePlayButton.addSubview(challengePlayButtonExstraLabel)
 
         practicePlayButtonExstraLabel = UILabel(frame:CGRectZero)
@@ -244,8 +247,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
         backButton.backgroundColor = UIColor.whiteColor()
         backButton.layer.borderColor = UIColor.grayColor().CGColor
-        backButton.layer.borderWidth = 1
-        backButton.layer.cornerRadius = 5
+        backButton.layer.borderWidth = 2
+        backButton.layer.cornerRadius = backButton.frame.width / 2
         backButton.layer.masksToBounds = true
         backButton.setTitle("🔙", forState: UIControlState.Normal)
         backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
@@ -480,12 +483,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     func buyProductAction() {
         
         let payment = SKPayment(product: product!)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
         SKPaymentQueue.defaultQueue().addPayment(payment)
     }
-
-    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+    
+    
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         
-        for transaction in transactions as! [SKPaymentTransaction] {
+        for transaction in transactions {
             
             switch transaction.transactionState {
                 

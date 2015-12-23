@@ -100,8 +100,8 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             backButton.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - GlobalConstants.smallButtonSide - backButtonMargin, backButtonMargin, GlobalConstants.smallButtonSide, GlobalConstants.smallButtonSide)
             backButton.backgroundColor = UIColor.whiteColor()
             backButton.layer.borderColor = UIColor.grayColor().CGColor
-            backButton.layer.borderWidth = 1
-            backButton.layer.cornerRadius = 5
+            backButton.layer.borderWidth = 2
+            backButton.layer.cornerRadius = backButton.frame.width / 2
             backButton.layer.masksToBounds = true
             backButton.setTitle("🔚", forState: UIControlState.Normal)
             backButton.addTarget(self, action: "backAction", forControlEvents: UIControlEvents.TouchUpInside)
