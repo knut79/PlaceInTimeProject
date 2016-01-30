@@ -24,7 +24,13 @@ class FinishedViewController:UIViewController {
     var activityLabel:UILabel!
     var backToMenuButton:UIButton!
     var resultLabel:UILabel!
+    var resultHeader:UILabel!
     var audioPlayer = AVAudioPlayer()
+    var resultBackground:UIView!
+    
+    let margin:CGFloat = 20
+    let elementWidth:CGFloat = 200
+    let elementHeight:CGFloat = 40
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,9 +44,6 @@ class FinishedViewController:UIViewController {
             applicationKey:"EPexqUWpxpiDBffWuGuiNUgjgTzeMz22"
         )
         */
-        let margin:CGFloat = 20
-        let elementWidth:CGFloat = 200
-        let elementHeight:CGFloat = 40
         backToMenuButton = UIButton(frame:CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
         backToMenuButton.addTarget(self, action: "backToMenuAction", forControlEvents: UIControlEvents.TouchUpInside)
         backToMenuButton.backgroundColor = UIColor.blueColor()
@@ -79,25 +82,9 @@ class FinishedViewController:UIViewController {
                 activityLabel.text = "Sending result of\n\(takingChallenge.title!)"
                 finishTakingChallenge(takingChallenge)
                 
-                let resultChallengeLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - 200, 10, 400, 50))
-                resultChallengeLabel.textAlignment = NSTextAlignment.Center
-                resultChallengeLabel.text = "Result of challenge \(self.challenge.title)"
-                resultChallengeLabel.font = UIFont.boldSystemFontOfSize(20)
-                resultChallengeLabel.adjustsFontSizeToFitWidth = true
-                self.view.addSubview(resultChallengeLabel)
-                
-                resultLabel = UILabel(frame: CGRectMake(margin, resultChallengeLabel.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2), UIScreen.mainScreen().bounds.size.height - resultChallengeLabel.frame.maxY - (margin * 2) - backToMenuButton.frame.height))
-                resultLabel.numberOfLines = 9
-                resultLabel.backgroundColor = UIColor.grayColor()
-                resultLabel.textAlignment = NSTextAlignment.Center
-                resultLabel.textColor = UIColor.whiteColor()
-                resultLabel.adjustsFontSizeToFitWidth = true
-                resultLabel.backgroundColor = UIColor.blueColor()
-                resultLabel.layer.borderColor = UIColor.whiteColor().CGColor
-                resultLabel.layer.cornerRadius = 8
-                resultLabel.layer.masksToBounds = true
-                resultLabel.layer.borderWidth = 5.0
-                self.view.addSubview(resultLabel)
+                setupResultHeader("Result of challenge \(takingChallenge.title!)")
+                setupResultBackground()
+                setupResultLabel()
                 
                 //sending result
                 
@@ -120,6 +107,23 @@ class FinishedViewController:UIViewController {
             }
             self.view.addSubview(self.backToMenuButton)
         }
+        else if gametype == GameType.badgeChallenge
+        {
+            if let badgeChallenge = challenge as? BadgeChallenge
+            {
+                if badgeChallenge.won!
+                {
+                    badgeChallenge.setComplete()
+                    setupResultHeader("New badge and \(badgeChallenge.hints) hints aquired 😀")
+                }
+                else
+                {
+                    setupResultHeader("You failed 😣")
+                }
+                setupResultBackground()
+            }
+            self.view.addSubview(self.backToMenuButton)
+        }
         else
         {
             print("invalid GameType")
@@ -133,6 +137,56 @@ class FinishedViewController:UIViewController {
         {
             self.performSegueWithIdentifier("segueFromFinishedToMainMenu", sender: nil)
         }
+        
+        if gametype == GameType.badgeChallenge
+        {
+            if let badgeChallenge = challenge as? BadgeChallenge
+            {
+                if badgeChallenge.won!
+                {
+                    animateAquiredBadge()
+                }
+                else
+                {
+                    animateFailedBadge()
+                }
+            }
+        }
+    }
+    
+    func setupResultHeader(text:String)
+    {
+        let resultLabelMarigin = UIScreen.mainScreen().bounds.size.width * 0.1
+        resultHeader = UILabel(frame: CGRectMake(resultLabelMarigin, 25, UIScreen.mainScreen().bounds.size.width - (resultLabelMarigin * 2) , 50))
+        resultHeader.textAlignment = NSTextAlignment.Center
+        resultHeader.font = UIFont.boldSystemFontOfSize(20)
+        resultHeader.adjustsFontSizeToFitWidth = true
+        resultHeader.text = text
+        self.view.addSubview(resultHeader)
+        
+    }
+    
+    func setupResultBackground()
+    {
+        resultBackground = UIView(frame: CGRectMake(margin, resultHeader.frame.maxY , UIScreen.mainScreen().bounds.size.width - (margin * 2),  backToMenuButton.frame.minY - resultHeader.frame.maxY))
+        resultBackground.backgroundColor = UIColor.whiteColor()
+        resultBackground.layer.borderColor = UIColor.blueColor().CGColor
+        resultBackground.layer.cornerRadius = 8
+        resultBackground.layer.masksToBounds = true
+        resultBackground.layer.borderWidth = 5.0
+        self.view.addSubview(resultBackground)
+    }
+    
+    func setupResultLabel()
+    {
+        let marginForLabel:CGFloat = 5
+        resultLabel = UILabel(frame: CGRectMake(marginForLabel, marginForLabel, resultBackground.frame.width - (marginForLabel * 2),  resultBackground.frame.height - (marginForLabel * 2)))
+        resultLabel.numberOfLines = 9
+        resultLabel.textAlignment = NSTextAlignment.Center
+        resultLabel.textColor = UIColor.blackColor()
+        resultLabel.adjustsFontSizeToFitWidth = true
+        resultLabel.backgroundColor = UIColor.whiteColor()
+        resultBackground.addSubview(resultLabel)
     }
     
     func youLostChallenge(takingChallenge:TakingChallenge)
@@ -186,6 +240,73 @@ class FinishedViewController:UIViewController {
             "\n\n\(takingChallenge.correctAnswersToBeat) correct answers" + "\n\(takingChallenge.pointsToBeat) points"
     }
     
+    func animateAquiredBadge()
+    {
+        if let badgeChallenge = challenge as? BadgeChallenge
+        {
+            let orgHeigth:CGFloat = 429
+            let orgWidth:CGFloat = 370
+            
+            let badgeHeight = resultBackground.frame.height * 0.6
+            let heightToWidthRatio = orgHeigth / badgeHeight
+            let badgeWidth = orgWidth / heightToWidthRatio
+            
+            let badge = UIImageView(frame: CGRectMake((resultBackground.frame.width / 2) - (badgeWidth / 2), resultBackground.frame.height * 0.1 ,badgeWidth, badgeHeight))
+            badge.image = badgeChallenge.image
+            
+            let badgeTitle = UILabel(frame: CGRectMake(10,badge.frame.maxY + 10,resultBackground.frame.width - 20,30 ))
+            badgeTitle.adjustsFontSizeToFitWidth = true
+            badgeTitle.font = UIFont.boldSystemFontOfSize(24)
+            badgeTitle.text = badgeChallenge.title
+            badge.transform = CGAffineTransformScale(badge.transform, 0.1, 0.1)
+            badgeTitle.transform = CGAffineTransformScale(badgeTitle.transform, 0.1, 0.1)
+            badgeTitle.textAlignment = NSTextAlignment.Center
+            resultBackground.addSubview(badge)
+            resultBackground.addSubview(badgeTitle)
+            
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                badge.alpha = 1
+                badge.transform = CGAffineTransformIdentity
+                badgeTitle.transform = CGAffineTransformIdentity
+                //badge.center = self.resultBackground.center
+                }, completion: { (value: Bool) in
+                    self.backToMenuButton.alpha = 1
+                    self.addHints()
+            })
+        }
+    }
+    
+    func addHints()
+    {
+        if let badgeChallenge = challenge as? BadgeChallenge
+        {
+            var hintsLeftOnAccount = NSUserDefaults.standardUserDefaults().integerForKey("hintsLeftOnAccount")
+            hintsLeftOnAccount = hintsLeftOnAccount + badgeChallenge.hints
+            NSUserDefaults.standardUserDefaults().setInteger(hintsLeftOnAccount, forKey: "hintsLeftOnAccount")
+        }
+    }
+    
+    func animateFailedBadge()
+    {
+        
+        let badgeResultLabel = UILabel(frame: CGRectMake(0,0,resultBackground.frame.width, resultBackground.frame.height))
+        badgeResultLabel.backgroundColor = UIColor.clearColor()
+        badgeResultLabel.textColor = UIColor.blackColor()
+        badgeResultLabel.numberOfLines = 3
+        badgeResultLabel.textAlignment = NSTextAlignment.Center
+        badgeResultLabel.alpha = 0
+        badgeResultLabel.text = "Better luck next time\n\n😑"
+        badgeResultLabel.transform = CGAffineTransformScale(badgeResultLabel.transform, 0.1, 0.1)
+        resultBackground.addSubview(badgeResultLabel)
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            badgeResultLabel.alpha = 1
+            badgeResultLabel.transform = CGAffineTransformIdentity
+            
+            }, completion: { (value: Bool) in
+                self.backToMenuButton.alpha = 1
+        })
+    }
     
     func finishMakingChallenge()
     {

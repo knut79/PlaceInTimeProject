@@ -801,7 +801,7 @@ class DataHandler
     func getRandomHistoricEventsWithPrecision(var precisionYears:Int, numEvents:Int) -> [HistoricEvent]
     {
         //this value is used to ensure events used less than others have a better chance of being used
-        var getValuesFromIndexCount = UInt32(Double(historicEventItems.count) * 0.75)
+        var getValuesFromIndexCount = UInt32(Double(historicEventItems.count) * 0.5)
         let failSafePercision:Int = 10
         var failSafeIndexCount:UInt32 = UInt32(historicEventItems.count)
         
@@ -810,55 +810,68 @@ class DataHandler
         //var event = historicEventItems![randomNum] as HistoricEvent
         //historicEventsWithPrecision.append(event)
 
-        var roundsBeforeFailSafe = 10
+        let roundsBeforeFailSafe = 10
+        var roundsBeforeFailSafeCountdown = roundsBeforeFailSafe
         var notAcceptableValues = false
+        
+        //if to big distance between low used an high usage
+        //force using the least used events
+        /*
+        let leastUsed = historicEventItems.first?.used
+        let mostUsed = historicEventItems.last?.used
+        if (mostUsed! - leastUsed!) > 3
+        {
+            for var i = 0 ; i < numEvents ; i++
+            {
+                    print("temp count before : \(historicEventItems.count)")
+                    let event = historicEventItems.first
+                    print("temp count before : \(historicEventItems.count)")
+                    print("get event used \(event?.used) times")
+                    historicEventsWithPrecision.append(event!)
+
+                
+            }
+        }
+        */
+        //_? checking top and bottom usage
+        for var i = 0 ; i < historicEventItems.count ; i++
+        {
+            print("usage for index \(i): \(historicEventItems[i].used)")
+        }
         repeat{
             historicEventsWithPrecision = []
             for var i = 0 ; i < numEvents ; i++
             {
-                //randomNum = Int(arc4random()) % historicEventItems.count
+                //at first, try using the values at top. Those with the lowest usage count
+                /*
+                if roundsBeforeFailSafeCountdown == roundsBeforeFailSafe
+                {
+                     print("temp count before : \(historicEventItems.count)")
+                    let event = historicEventItems.first
+                    print("temp count before : \(historicEventItems.count)")
+                    print("get event used \(event?.used) times")
+                    historicEventsWithPrecision.append(event!)
+                }
+                else
+                {
+                    let randomNum = Int(arc4random_uniform(UInt32(getValuesFromIndexCount)))
+                    let event = historicEventItems![randomNum] as HistoricEvent
+                    historicEventsWithPrecision.append(event)
+                }
+                */
+
+                
                 let randomNum = Int(arc4random_uniform(UInt32(getValuesFromIndexCount)))
                 let event = historicEventItems![randomNum] as HistoricEvent
                 historicEventsWithPrecision.append(event)
                 
             }
-            notAcceptableValues = false
             
-            for var i = 0 ; i < numEvents ; i++
-            {
-                var foundMySelfOnce = false
-                let value = historicEventsWithPrecision[i].fromYear
-                for item in historicEventsWithPrecision
-                {
-                    if item == historicEventsWithPrecision[i]
-                    {
-                        if foundMySelfOnce
-                        {
-                            notAcceptableValues = true
-                            break
-                        }
-                        else
-                        {
-                            foundMySelfOnce = true
-                            continue
-                        }
-                    }
-                    if (item.fromYear - precisionYears) > value || item.fromYear + precisionYears < value
-                    {
-                        //println("test : value \(item.fromYear)")
-                        continue
-
-                    }
-                    else
-                    {
-                        notAcceptableValues = true
-                        break
-                    }
-        
-                }
-            }
+            notAcceptableValues = checkIfEventsInsideExeptablePrecision(historicEventsWithPrecision,precisionYears: precisionYears)
             
-            if roundsBeforeFailSafe <= 0
+            
+            
+            if roundsBeforeFailSafeCountdown <= 0
             {
                 getValuesFromIndexCount = failSafeIndexCount
                 precisionYears = failSafePercision
@@ -866,11 +879,51 @@ class DataHandler
             }
             else
             {
-                roundsBeforeFailSafe--
+                roundsBeforeFailSafeCountdown--
             }
         
         }while(notAcceptableValues)
         return historicEventsWithPrecision
+    }
+    
+    func checkIfEventsInsideExeptablePrecision(listToCheck:[HistoricEvent],precisionYears:Int) -> Bool
+    {
+        var notAcceptableValues = false
+        for var i = 0 ; i < listToCheck.count ; i++
+        {
+            var foundMySelfOnce = false
+            let value = listToCheck[i].fromYear
+            for item in listToCheck
+            {
+                if item == listToCheck[i]
+                {
+                    if foundMySelfOnce
+                    {
+                        notAcceptableValues = true
+                        break
+                    }
+                    else
+                    {
+                        foundMySelfOnce = true
+                        continue
+                    }
+                }
+                if (item.fromYear - precisionYears) > value || item.fromYear + precisionYears < value
+                {
+                    //println("test : value \(item.fromYear)")
+                    continue
+                    
+                }
+                else
+                {
+                    notAcceptableValues = true
+                    break
+                }
+                
+            }
+        }
+        return notAcceptableValues
+
     }
     
     func shuffleEvents()
@@ -993,7 +1046,7 @@ class DataHandler
         }
     }
     
-    func fetchQuestoinsForChallenge() -> [[String]]
+    func fetchQuestionsForChallenge() -> [[String]]
     {
         var blocks:[[String]] = []
         var roundQuestionIds:[String] = []
@@ -1008,12 +1061,13 @@ class DataHandler
             {
                 numberOfCardsInBlock++
             }
-            if block > 6
+            //_? will not accure with 5 questions for round
+            if block > 5
             {
                 numberOfCardsInBlock = GlobalConstants.maxNumDropZones
             }
             
-            let randomHistoricEvents = getRandomHistoricEventsWithPrecision(25, numEvents:numberOfCardsInBlock)
+            let randomHistoricEvents = getRandomHistoricEventsWithPrecision(GlobalConstants.yearPrecisionForChallenge, numEvents:numberOfCardsInBlock)
             for item in randomHistoricEvents
             {
                 roundQuestionIds.append("\(item.idForUpdate)")
@@ -1022,6 +1076,25 @@ class DataHandler
             roundQuestionIds = []
         }
 
+        return blocks
+    }
+    
+    func fetchQuestionsForBadgeChallenge(numblocks:Int, numCardsInBlock:Int, filter:[String], fromLevel:Int,toLevel:Int) -> [[String]]
+    {
+        self.fetchData(filter,fromLevel:fromLevel,toLevel:toLevel)
+        var blocks:[[String]] = []
+        var roundQuestionIds:[String] = []
+        for var block = numblocks; block >= 1 ; block--
+        {
+            let randomHistoricEvents = getRandomHistoricEventsWithPrecision(GlobalConstants.yearPrecisionForChallenge, numEvents:numCardsInBlock)
+            for item in randomHistoricEvents
+            {
+                roundQuestionIds.append("\(item.idForUpdate)")
+            }
+            blocks.append(roundQuestionIds)
+            roundQuestionIds = []
+        }
+        
         return blocks
     }
     

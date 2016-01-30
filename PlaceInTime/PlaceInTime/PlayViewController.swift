@@ -113,29 +113,24 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             let userHintButtonSide = GlobalConstants.smallButtonSide * 1.2
             useHintButton = UseHintButton(frame: CGRectMake(UIScreen.mainScreen().bounds.size.width - userHintButtonSide  - backButtonMargin, backButtonMargin, userHintButtonSide, userHintButtonSide))
             useHintButton!.addTarget(self, action: "useHintAction", forControlEvents: UIControlEvents.TouchUpInside)
-            useHintButton!.backgroundColor = UIColor.blueColor()
+            //useHintButton!.backgroundColor = UIColor.blueColor()
             view.addSubview(useHintButton!)
 
             //questionsLeftFrame = CGRectMake(clock.frame.maxX,clock.frame.minY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
             questionsLeftFrame = CGRectMake(clock.frame.maxX,useHintButton!.frame.maxY + 4,UIScreen.mainScreen().bounds.width - clock.frame.maxX - 4,clock.frame.height)
         }
-
-       
-        
-        
         self.view.addSubview(clock)
         
         self.setupAudioPlayers()
-        
-        
-
     }
 
     
     override func viewDidAppear(animated: Bool) {
-        
-        bannerView?.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
-        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+        if let banner = bannerView
+        {
+            banner.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
+            banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
+        }
         
         setCardStack()
     }
@@ -306,16 +301,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             item.removeFromSuperview()
         }
 
-        if gametype != GameType.training
-        {
-            randomHistoricEvents = datactrl.fetchHistoricEventOnIds(challenge.getNextQuestionBlock())!
-            numberOfDropZones = randomHistoricEvents.count
-        }
-        else
+        if gametype == GameType.training
         {
             //DONT shuffle, if will mess up the used sorting
             //datactrl.shuffleEvents()
-            randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(25, numEvents:numberOfDropZones)
+            randomHistoricEvents = datactrl.getRandomHistoricEventsWithPrecision(GlobalConstants.yearPrecisionForPractice, numEvents:numberOfDropZones)
+        }
+        else
+        {
+            randomHistoricEvents = datactrl.fetchHistoricEventOnIds(challenge.getNextQuestionBlock())!
+            numberOfDropZones = randomHistoricEvents.count
         }
         
         for historicEvent in randomHistoricEvents
@@ -590,8 +585,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                             self.correctSoundAudioPlayerPool[index].play()
                             
                             label.textColor = UIColor.greenColor()
-                            label.text = "\(label.text!)\(self.getCorrectsEmoji(self.corrects))"
-                            
+                            if let text = label.text
+                            {
+                                label.text = "\(text)\(self.getCorrectsEmoji(self.corrects))"
+                            }
                             /*
                             let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
                             pulseAnimation.duration = 0.3
@@ -774,7 +771,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
         label.font = UIFont.boldSystemFontOfSize(24)
         label.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0)
         label.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
-        label.text = "Totally correct \(points)😍"
+        label.text = "Totally correct \(points)😅"
         label.alpha = 0
         view.addSubview(label)
         
@@ -791,7 +788,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
                 pulseAnimation.toValue = NSNumber(float: 0.3)
                 pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                 pulseAnimation.autoreverses = true
-                pulseAnimation.repeatCount = 5
+                pulseAnimation.repeatCount = 3
                 pulseAnimation.delegate = self
                 card.layer.addAnimation(pulseAnimation, forKey: "key\(index)")
             }
@@ -799,7 +796,7 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             
         }
         
-        UIView.animateWithDuration(1, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
             //label.center = self.gameStats.lovePoints.center
             label.transform = CGAffineTransformScale(label.transform, 2, 2)
             label.alpha = 1
@@ -853,11 +850,16 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             }
             self.completedQuestionsIds.append(roundQuestionIds)
             
-            if (self.gametype != GameType.training) && (self.challenge.questionsLeft() <= 0)
+            if (self.gametype == GameType.badgeChallenge) && (self.fails > 0)
+            {
+                (self.challenge as! BadgeChallenge).won = false
+                self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
+            }
+            else if (self.gametype != GameType.training) && (self.challenge.questionsLeft() <= 0)
             {
                 self.performSegueWithIdentifier("segueFromPlayToFinished", sender: nil)
             }
-            else
+            else //trainingmode. Goes on forever
             {
                 self.dropZones = [:]
                 self.setCardStack()
@@ -1490,7 +1492,10 @@ class PlayViewController:UIViewController,  DropZoneProtocol, ClockProtocol, ADB
             let svc = segue!.destinationViewController as! FinishedViewController
             svc.completedQuestionsIds = completedQuestionsIds
             svc.usersIdsToChallenge = usersIdsToChallenge
-            svc.userFbId = myIdAndName.0
+            if gametype == GameType.makingChallenge || gametype == GameType.takingChallenge
+            {
+                svc.userFbId = myIdAndName.0
+            }
             svc.correctAnswers = gameStats.lovePoints
             svc.points = gameStats.okPoints
             svc.gametype = gametype

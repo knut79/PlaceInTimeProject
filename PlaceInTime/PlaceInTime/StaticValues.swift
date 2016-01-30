@@ -28,7 +28,7 @@ struct GlobalConstants {
     static let maxNumDropZones:Int = 6
     static let minNumDropZones:Int = 3
 
-    static let numOfQuestionsForRound:Int = 7
+    static let numOfQuestionsForRound:Int = 5
     
     static let baileValue = -1
     
@@ -37,6 +37,11 @@ struct GlobalConstants {
     
     static let numberOfHintsAtStart = 3
     static let numberOfHintsPrBuy = 10
+    
+    static let yearPrecisionForChallenge = 15
+    static let yearPrecisionForPractice = 15
+    
+    static let friendHintBonus:Int = 15
 }
 enum EventType: Int
 {
@@ -45,5 +50,5 @@ enum EventType: Int
 
 enum GameType: Int
 {
-    case training = 0, makingChallenge = 1, takingChallenge = 2
+    case training = 0, makingChallenge = 1, takingChallenge = 2, badgeChallenge = 3
 }

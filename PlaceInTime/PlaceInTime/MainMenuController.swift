@@ -12,7 +12,7 @@ import QuartzCore
 import iAd
 import StoreKit
 
-class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver{
+class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerViewDelegate, HolderViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver, BadgeCollectionProtocol{
 
     var backgroundView:UIView!
     
@@ -26,14 +26,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     //buttons
     var challengeUsersButton:MenuButton!
     var practiceButton:MenuButton!
-    var resultsButton:MenuButton!
+    //var resultsButton:MenuButton!
     
     var newChallengeButton:ChallengeButton!
     var pendingChallengesButton:ChallengeButton!
     var orgNewChallengeButtonCenter:CGPoint!
     var orgPendingChallengesButtonCenter:CGPoint!
     
-    var adFreeButton:BuyAdFreeButton?
+    var resultsButton:ResultButton!
     var buyHintsButton:BuyHintsButton!
     var selectFilterTypeButton:UIButton!
 
@@ -63,9 +63,17 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     var backButton:UIButton!
     
     var bannerView:ADBannerView?
+    
+    let marginButtons:CGFloat = 10
+    
+    var badgeCollectionView:BadgeCollectionView!
+    var orgBadgeCollectionViewCenter:CGPoint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //_? remove for release
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey:"adFree")
         //let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         //UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
@@ -74,7 +82,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
 
         
-        let marginButtons:CGFloat = 10
+        
         let buttonWidth = UIScreen.mainScreen().bounds.size.width * 0.5
         var buttonHeight = UIScreen.mainScreen().bounds.size.height * 0.2 //UIScreen.mainScreen().bounds.size.height * 0.34
 
@@ -90,24 +98,37 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         practiceButton.addTarget(self, action: "practiceAction", forControlEvents: UIControlEvents.TouchUpInside)
         practiceButton.alpha = 0
         
+        
+        let badgeViewHeight:CGFloat = practiceButton.frame.height * 1.5
+        badgeCollectionView = BadgeCollectionView(frame: CGRectMake(0, practiceButton.frame.maxY, UIScreen.mainScreen().bounds.width, badgeViewHeight))
+        badgeCollectionView.delegate = self
+        self.view.addSubview(badgeCollectionView)
+        orgBadgeCollectionViewCenter = badgeCollectionView.center
+        
+        /*
         resultsButton = MenuButton(frame:CGRectMake(challengeUsersButton.frame.minX, practiceButton.frame.maxY + marginButtons, buttonWidth, buttonHeight),title:"Results")
         resultsButton.addTarget(self, action: "resultAction", forControlEvents: UIControlEvents.TouchUpInside)
         let resultsBadge = NSUserDefaults.standardUserDefaults().integerForKey("resultsBadge")
         resultsButton.setbadge(resultsBadge)
         resultsButton.alpha = 0
+        */
         
         
         buyHintsButton = BuyHintsButton(frame:CGRectMake( marginButtons, challengeUsersButton.frame.minY, GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
         buyHintsButton.addTarget(self, action: "requestBuyHints", forControlEvents: UIControlEvents.TouchUpInside)
 
         
+        resultsButton = ResultButton(frame:CGRectMake(marginButtons, practiceButton.frame.minY,GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
+        resultsButton!.addTarget(self, action: "resultAction", forControlEvents: UIControlEvents.TouchUpInside)
 
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         if !adFree
         {
+            practiceButton.setDisabled()
+            /*
             adFreeButton = BuyAdFreeButton(frame:CGRectMake(marginButtons, practiceButton.frame.minY,GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
             adFreeButton!.addTarget(self, action: "requestBuyAdFree", forControlEvents: UIControlEvents.TouchUpInside)
-            
+            */
             self.canDisplayBannerAds = true
             //bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
@@ -125,7 +146,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         newChallengeButton.addTarget(self, action: "newChallengeAction", forControlEvents: UIControlEvents.TouchUpInside)
         newChallengeButton.alpha = 0
         
-        pendingChallengesButton = ChallengeButton(frame:CGRectMake(self.resultsButton.frame.minX, self.newChallengeButton.frame.maxY + (marginButtons * 2) , buttonWidth, buttonHeight),title: "Take pending")
+        pendingChallengesButton = ChallengeButton(frame:CGRectMake(self.newChallengeButton.frame.minX, self.newChallengeButton.frame.maxY + (marginButtons * 2) , buttonWidth, buttonHeight),title: "Take pending")
         pendingChallengesButton.addTarget(self, action: "pendingChallengesAction", forControlEvents: UIControlEvents.TouchUpInside)
         pendingChallengesButton.setbadge(challengeBadge)
         pendingChallengesButton.alpha = 0
@@ -186,11 +207,9 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         self.view.addSubview(challengeUsersButton)
         self.view.addSubview(practiceButton)
+        //self.view.addSubview(resultsButton)
+
         self.view.addSubview(resultsButton)
-        if let button = adFreeButton
-        {
-            self.view.addSubview(button)
-        }
         self.view.addSubview(buyHintsButton)
         
         self.view.addSubview(newChallengeButton)
@@ -206,7 +225,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         setupCheckboxView()
         setupFirstLevelMenu()
-        setupDynamicPlayButton()
+        setupPlayButton()
 
         if firstLaunch
         {
@@ -234,8 +253,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
             self.challengeUsersButton.alpha = 1
             self.practiceButton.alpha = 1
+            self.badgeCollectionView.alpha = 1
             self.resultsButton.alpha = 1
-            self.adFreeButton?.alpha = 1
             requestProductData()
             //setupAfterPopulateData()
         }
@@ -285,9 +304,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 
             })
         }
-        
-        bannerView?.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
-        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
+        if let banner = bannerView
+        {
+            banner.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
+            banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
+        }
         
     }
 
@@ -304,15 +325,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLayoutSubviews() {
         
         loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
-        bannerView!.center = CGPoint(x: bannerView!.center.x, y: self.view.bounds.size.height - bannerView!.frame.size.height / 2)
-        
-        
-        
-        //setupFirstLevelMenu()
-        
-        //setupChallengeTypeButtons()
-        
-        //setupDynamicPlayButton()
+        if let banner = bannerView
+        {
+            banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
+        }
+
     }
     
     func enterForground()
@@ -525,6 +542,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func removeAds() {
         
+        practiceButton.setEnabled()
+        
         datactrl.adFreeValue = 1
         datactrl.saveGameData()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
@@ -532,9 +551,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         self.bannerView?.hidden = true
         self.bannerView?.frame.offsetInPlace(dx: 0, dy: self.bannerView!.frame.height)
         
-        adFreeButton?.userInteractionEnabled = false
-        adFreeButton?.alpha = 0
-        
+        //adFreeButton?.userInteractionEnabled = false
+        //adFreeButton?.alpha = 0
     }
     
     func loadScreenFinished() {
@@ -543,20 +561,23 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         holderView.alpha = 0
         challengeUsersButton.transform = CGAffineTransformScale(challengeUsersButton.transform, 0.1, 0.1)
         practiceButton.transform = CGAffineTransformScale(practiceButton.transform, 0.1, 0.1)
+        badgeCollectionView.transform = CGAffineTransformScale(badgeCollectionView.transform, 0.1, 0.1)
         resultsButton.transform = CGAffineTransformScale(resultsButton.transform, 0.1, 0.1)
-        adFreeButton?.transform = CGAffineTransformScale(adFreeButton!.transform, 0.1, 0.1)
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.challengeUsersButton.alpha = 1
             self.practiceButton.alpha = 1
+            self.badgeCollectionView.alpha = 1
             self.resultsButton.alpha = 1
-            self.adFreeButton?.alpha = 1
             self.challengeUsersButton.transform = CGAffineTransformIdentity
             self.practiceButton.transform = CGAffineTransformIdentity
+            self.badgeCollectionView.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
-            self.adFreeButton?.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
-                self.bannerView!.center = CGPoint(x: self.bannerView!.center.x, y: self.view.bounds.size.height - self.bannerView!.frame.size.height / 2)
+                if let banner = self.bannerView
+                {
+                    banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
+                }
         })
         
         requestProductData()
@@ -595,16 +616,16 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     {
         challengeUsersButton.orgCenter = challengeUsersButton.center
         practiceButton.orgCenter = practiceButton.center
-        resultsButton.orgCenter = resultsButton.center
+        //resultsButton.orgCenter = resultsButton.center
     }
     
-    func setupDynamicPlayButton()
+    func setupPlayButton()
     {
         let margin: CGFloat = 20.0
         let sliderAndFilterbuttonHeight:CGFloat = 31.0
 
         let playbuttonWidth = self.practiceButton.frame.maxX - self.challengeUsersButton.frame.minX
-        let playbuttonHeight = self.resultsButton.frame.maxY - self.challengeUsersButton.frame.minY - sliderAndFilterbuttonHeight - margin
+        let playbuttonHeight = practiceButton.frame.height * 2
 
         
         practicePlayButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.challengeUsersButton.frame.minY,playbuttonWidth, playbuttonHeight)
@@ -666,10 +687,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.practiceButton.center = self.practiceButton.orgCenter
             self.practiceButton.alpha = 1
             self.practiceButton.transform = CGAffineTransformIdentity
-            self.resultsButton.center = self.resultsButton.orgCenter
+            self.badgeCollectionView.center = self.orgBadgeCollectionViewCenter
+            self.badgeCollectionView.alpha = 1
+            self.badgeCollectionView.transform = CGAffineTransformIdentity
             self.resultsButton.alpha = 1
-            self.resultsButton.transform = CGAffineTransformIdentity
-            self.adFreeButton?.alpha = 1
             
             self.practicePlayButton.alpha = 0
             self.levelSlider.alpha = 0
@@ -718,48 +739,60 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         })
     }
     
-    
+    func playBadgeChallengeAction()
+    {
+        gametype = GameType.badgeChallenge
+        self.performSegueWithIdentifier("segueFromMainMenuToPlay", sender: nil)
+    }
     
     func practiceAction()
     {
-        self.practicePlayButton.alpha = 0
-        self.practicePlayButton.transform = CGAffineTransformScale(self.practicePlayButton.transform, 0.1, 0.1)
-        self.levelSlider.alpha = 0
-        self.levelSlider.transform = CGAffineTransformScale(self.levelSlider.transform, 0.1, 0.1)
-        self.selectFilterTypeButton.alpha = 0
-        self.selectFilterTypeButton.transform = CGAffineTransformScale(self.selectFilterTypeButton.transform, 0.1, 0.1)
+        let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
+        if !adFree
+        {
+            requestBuyAdFree()
+        }
+        else
+        {
+            self.practicePlayButton.alpha = 0
+            self.practicePlayButton.transform = CGAffineTransformScale(self.practicePlayButton.transform, 0.1, 0.1)
+            self.levelSlider.alpha = 0
+            self.levelSlider.transform = CGAffineTransformScale(self.levelSlider.transform, 0.1, 0.1)
+            self.selectFilterTypeButton.alpha = 0
+            self.selectFilterTypeButton.transform = CGAffineTransformScale(self.selectFilterTypeButton.transform, 0.1, 0.1)
 
-        
-        let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.challengeUsersButton.center = centerScreen
-            self.challengeUsersButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
-            self.practiceButton.center = centerScreen
-            self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
-            self.resultsButton.center = centerScreen
-            self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.adFreeButton?.alpha = 0
             
-            self.backButton.alpha = 1
-            
-            }, completion: { (value: Bool) in
-                
-                self.challengeUsersButton.alpha = 0
-                self.practiceButton.alpha = 0
+            let centerScreen = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2)
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.challengeUsersButton.center = centerScreen
+                self.challengeUsersButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
+                self.practiceButton.center = centerScreen
+                self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
+                self.badgeCollectionView.center = centerScreen
+                self.badgeCollectionView.transform = CGAffineTransformScale(self.badgeCollectionView.transform, 0.1, 0.1)
                 self.resultsButton.alpha = 0
-                self.adFreeButton?.alpha = 0
                 
-                self.practicePlayButton.alpha = 1
-                self.levelSlider.alpha = 1
-                self.selectFilterTypeButton.alpha = 1
+                self.backButton.alpha = 1
                 
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.practicePlayButton.transform = CGAffineTransformIdentity
-                    self.levelSlider.transform = CGAffineTransformIdentity
-                    self.selectFilterTypeButton.transform = CGAffineTransformIdentity
-                    }, completion: { (value: Bool) in
-                })
-        })
+                }, completion: { (value: Bool) in
+                    
+                    self.challengeUsersButton.alpha = 0
+                    self.practiceButton.alpha = 0
+                    self.badgeCollectionView.alpha = 0
+                    self.resultsButton.alpha = 0
+                    
+                    self.practicePlayButton.alpha = 1
+                    self.levelSlider.alpha = 1
+                    self.selectFilterTypeButton.alpha = 1
+                    
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.practicePlayButton.transform = CGAffineTransformIdentity
+                        self.levelSlider.transform = CGAffineTransformIdentity
+                        self.selectFilterTypeButton.transform = CGAffineTransformIdentity
+                        }, completion: { (value: Bool) in
+                    })
+            })
+        }
     }
 
     
@@ -796,7 +829,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let buttonHeight = practiceButton.frame.height
         
         newChallengeButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, UIScreen.mainScreen().bounds.size.height * 0.15, buttonWidth, buttonHeight)
-        pendingChallengesButton.frame = CGRectMake(self.resultsButton.frame.minX, self.resultsButton.frame.minY , buttonWidth, buttonHeight)
+        pendingChallengesButton.frame = CGRectMake(self.challengeUsersButton.frame.minX, self.newChallengeButton.frame.maxY + marginButtons , buttonWidth, buttonHeight)
 
     }
     
@@ -817,17 +850,17 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.challengeUsersButton.transform = CGAffineTransformScale(self.challengeUsersButton.transform, 0.1, 0.1)
             self.practiceButton.center = centerScreen
             self.practiceButton.transform = CGAffineTransformScale(self.practiceButton.transform, 0.1, 0.1)
-            self.resultsButton.center = centerScreen
-            self.resultsButton.transform = CGAffineTransformScale(self.resultsButton.transform, 0.1, 0.1)
-            self.adFreeButton?.alpha = 0
+            self.badgeCollectionView.center = centerScreen
+            self.badgeCollectionView.transform = CGAffineTransformScale(self.badgeCollectionView.transform, 0.1, 0.1)
+            self.resultsButton.alpha = 0
             self.backButton.alpha = 1
             
             }, completion: { (value: Bool) in
                 
                 self.challengeUsersButton.alpha = 0
                 self.practiceButton.alpha = 0
+                self.badgeCollectionView.alpha = 0
                 self.resultsButton.alpha = 0
-                self.adFreeButton?.alpha = 0
                 
                 self.newChallengeButton.alpha = 1
                 self.pendingChallengesButton.alpha = 1
@@ -846,6 +879,10 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         if (segue.identifier == "segueFromMainMenuToPlay") {
             let svc = segue!.destinationViewController as! PlayViewController
             svc.gametype = gametype
+            if gametype == GameType.badgeChallenge
+            {
+                svc.challenge = badgeCollectionView.currentBadgeChallenge
+            }
         }
         
         if (segue.identifier == "segueFromMainMenuToChallenge") {

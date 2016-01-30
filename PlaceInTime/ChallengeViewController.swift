@@ -289,7 +289,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
 
 
         let margin:CGFloat = 10
-        let elementWidth:CGFloat = 200
+        let elementWidth:CGFloat = 180
         let elementHeight:CGFloat = 40
 
         self.initCommonElements(margin,elementWidth: elementWidth,elementHeight: elementHeight)
@@ -308,6 +308,9 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         inviteFriendsButton.layer.cornerRadius = 5
         inviteFriendsButton.layer.masksToBounds = true
         inviteFriendsButton.setTitle("Invite friends", forState: UIControlState.Normal)
+        
+        
+        setFriendsLeftToBonusLabel(friendObjects.count, xPos: inviteFriendsButton.frame.maxX + margin, yPos: inviteFriendsButton.frame.minY, width: UIScreen.mainScreen().bounds.size.width - inviteFriendsButton.frame.maxX - (margin * 2), height: elementHeight )
         
         let scrollViewHeight =  inviteFriendsButton.frame.minY - titleLabel.frame.maxY - ( margin * 2 )
         let scrollViewWidth = UIScreen.mainScreen().bounds.size.width * 0.9 - (margin * 2)
@@ -344,10 +347,59 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         {
             activityLabel.alpha = 0
         }
-        
+
+    }
+    
+    func setFriendsLeftToBonusLabel(facebookFriends:Int,xPos:CGFloat,yPos:CGFloat, width:CGFloat, height:CGFloat)
+    {
+        let friendsLeftToBonusLabel = UILabel(frame: CGRectMake(xPos, yPos, width , height))
+        friendsLeftToBonusLabel.textColor = UIColor.grayColor()
+        friendsLeftToBonusLabel.font = UIFont.boldSystemFontOfSize(20)
+        friendsLeftToBonusLabel.textAlignment = NSTextAlignment.Center
+        friendsLeftToBonusLabel.adjustsFontSizeToFitWidth = true
+        //first load of frieds
+        let notFirstTime = NSUserDefaults.standardUserDefaults().boolForKey("loadFacebookFriendsFirstTime")
+        if notFirstTime
+        {
+            
+            let friendsNow = facebookFriends
+            let numberOfFriendsAtBeginning = NSUserDefaults.standardUserDefaults().integerForKey("facebookFriendsBeforBonus")
+            
+            let friendsLeftToBonus = 2 - (friendsNow - numberOfFriendsAtBeginning)
+            if friendsLeftToBonus <= 0
+            {
+                //give bonus
+                //reset
+                NSUserDefaults.standardUserDefaults().setInteger(facebookFriends, forKey: "facebookFriendsBeforBonus")
+                friendsLeftToBonusLabel.text = "\(GlobalConstants.friendHintBonus) hints given as a bonus😊"
+                self.addHints()
+            }
+            else
+            {
+                let multiple:String = friendsLeftToBonus > 1 ? "s" : ""
+                let singlePostfix:String = friendsLeftToBonus == 1 ? "❗️" : ""
+                friendsLeftToBonusLabel.text = "\(friendsLeftToBonus) friend\(multiple) left to bonus\(singlePostfix)"
+            }
+            
+        }
+        else
+        {
+            //first time load
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey:"loadFacebookFriendsFirstTime")
+            NSUserDefaults.standardUserDefaults().setInteger(facebookFriends, forKey: "facebookFriendsBeforBonus")
+            friendsLeftToBonusLabel.text = "2 friends left to bonus❗️"
+        }
+        self.view.addSubview(friendsLeftToBonusLabel)
         
     }
     
+    func addHints()
+    {
+        var hints = NSUserDefaults.standardUserDefaults().integerForKey("hintsLeftOnAccount")
+        hints = hints + GlobalConstants.friendHintBonus
+        NSUserDefaults.standardUserDefaults().setInteger(hints, forKey: "hintsLeftOnAccount")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
 
     func initChallenges()
     {
@@ -631,7 +683,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
     {
         let datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
 
-        challengeQuestionBlocksIds = datactrl.fetchQuestoinsForChallenge()
+        challengeQuestionBlocksIds = datactrl.fetchQuestionsForChallenge()
 
         var returnString:String = ""
         for questionBlock in challengeQuestionBlocksIds

@@ -31,6 +31,30 @@ class Challenge {
     }
 }
 
+class BadgeChallenge: Challenge {
+    
+    var image:UIImage!
+    var usingBorders:Int!
+    var distancePixelsWindow:CGFloat!
+    var won:Bool!
+    var hints:Int!
+    
+    init(title:String,image:String, hints:Int = 2)
+    {
+        super.init()
+        
+        self.title = title
+        self.image = UIImage(named: image)
+        self.hints = hints
+        won = true
+    }
+    
+    func setComplete()
+    {
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: title)
+    }
+}
+
 class TakingChallenge: Challenge {
     
     var id:String!

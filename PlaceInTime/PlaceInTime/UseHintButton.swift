@@ -28,20 +28,22 @@ class UseHintButton:UIButton {
         
         
         innerView = UILabel(frame: CGRectMake(0 ,0, self.bounds.width * 0.8,self.bounds.width * 0.8))
+        innerView.backgroundColor = UIColor.clearColor()
         let hintsLeftOnAccount = NSUserDefaults.standardUserDefaults().integerForKey("hintsLeftOnAccount")
         if hintsLeftOnAccount <= 0
         {
             innerView.text = "Buy\nHints"
+            self.backgroundColor = UIColor.lightGrayColor()
             self.userInteractionEnabled = false
             self.layer.borderColor = UIColor.grayColor().CGColor
         }
         else
         {
             innerView.text = "Hint\n❕"
+            self.backgroundColor = UIColor.blueColor()
             self.layer.borderColor = UIColor.blueColor().CGColor
             self.userInteractionEnabled = true
         }
-        innerView.backgroundColor = UIColor.clearColor()
         innerView.textColor = UIColor.whiteColor()
         innerView.adjustsFontSizeToFitWidth = true
         innerView.numberOfLines = 2
@@ -58,6 +60,7 @@ class UseHintButton:UIButton {
         if hintsLeftOnAccount <= 0
         {
             innerView.text = "Buy\nHints"
+            self.backgroundColor = UIColor.lightGrayColor()
             self.userInteractionEnabled = false
             self.layer.borderColor = UIColor.grayColor().CGColor
             UIView.animateWithDuration(1, animations: { () -> Void in
@@ -76,6 +79,7 @@ class UseHintButton:UIButton {
         else
         {
             innerView.text = "Hint\n❕"
+            self.backgroundColor = UIColor.blueColor()
             self.layer.borderColor = UIColor.blueColor().CGColor
             self.userInteractionEnabled = true
             

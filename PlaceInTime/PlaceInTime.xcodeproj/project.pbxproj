@@ -9,6 +9,20 @@
 /* Begin PBXBuildFile section */
 		720A8C801C2A4A6000A53B87 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720A8C7F1C2A4A6000A53B87 /* StoreKit.framework */; };
 		721D8A971C028E6300D488D8 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A961C028E6300D488D8 /* MenuButton.swift */; };
+		723CF2C11C5D593400916C8A /* leadersBadge1.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B41C5D593400916C8A /* leadersBadge1.png */; };
+		723CF2C21C5D593400916C8A /* leadersBadge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B51C5D593400916C8A /* leadersBadge2.png */; };
+		723CF2C31C5D593400916C8A /* leadersBadge3.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B61C5D593400916C8A /* leadersBadge3.png */; };
+		723CF2C41C5D593400916C8A /* scienceBadge1.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B71C5D593400916C8A /* scienceBadge1.png */; };
+		723CF2C51C5D593400916C8A /* scienceBadge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B81C5D593400916C8A /* scienceBadge2.png */; };
+		723CF2C61C5D593400916C8A /* scienceBadge3.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2B91C5D593400916C8A /* scienceBadge3.png */; };
+		723CF2C71C5D593400916C8A /* scienceBadge4.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BA1C5D593400916C8A /* scienceBadge4.png */; };
+		723CF2C81C5D593400916C8A /* sportsBadge1.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BB1C5D593400916C8A /* sportsBadge1.png */; };
+		723CF2C91C5D593400916C8A /* sportsBadge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BC1C5D593400916C8A /* sportsBadge2.png */; };
+		723CF2CA1C5D593400916C8A /* sportsBadge3.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BD1C5D593400916C8A /* sportsBadge3.png */; };
+		723CF2CB1C5D593400916C8A /* warBadge1.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BE1C5D593400916C8A /* warBadge1.png */; };
+		723CF2CC1C5D593400916C8A /* warBadge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BF1C5D593400916C8A /* warBadge2.png */; };
+		723CF2CD1C5D593400916C8A /* warBadge3.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2C01C5D593400916C8A /* warBadge3.png */; };
+		723CF2CF1C5D606F00916C8A /* overmapBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2CE1C5D606F00916C8A /* overmapBadge.png */; };
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
 		725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DB1BA63315002FE589 /* UserScrollView.swift */; };
@@ -88,6 +102,9 @@
 		72E8E7AF1B7E03AA0011FE47 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E8E7AE1B7E03AA0011FE47 /* back.png */; };
 		72E8E7B11B7E6A220011FE47 /* GameData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72E8E7B01B7E6A220011FE47 /* GameData.plist */; };
 		72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */; };
+		72FD12791C56CD820055F713 /* BadgeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FD12781C56CD820055F713 /* BadgeCollectionView.swift */; };
+		72FD127B1C56CD8B0055F713 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FD127A1C56CD8B0055F713 /* BadgeView.swift */; };
+		72FD127E1C5711CC0055F713 /* ResultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FD127D1C5711CC0055F713 /* ResultButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +121,20 @@
 		720A8C7E1C2A4A5A00A53B87 /* PlaceInTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlaceInTime.entitlements; sourceTree = "<group>"; };
 		720A8C7F1C2A4A6000A53B87 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		721D8A961C028E6300D488D8 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		723CF2B41C5D593400916C8A /* leadersBadge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leadersBadge1.png; sourceTree = "<group>"; };
+		723CF2B51C5D593400916C8A /* leadersBadge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leadersBadge2.png; sourceTree = "<group>"; };
+		723CF2B61C5D593400916C8A /* leadersBadge3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leadersBadge3.png; sourceTree = "<group>"; };
+		723CF2B71C5D593400916C8A /* scienceBadge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scienceBadge1.png; sourceTree = "<group>"; };
+		723CF2B81C5D593400916C8A /* scienceBadge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scienceBadge2.png; sourceTree = "<group>"; };
+		723CF2B91C5D593400916C8A /* scienceBadge3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scienceBadge3.png; sourceTree = "<group>"; };
+		723CF2BA1C5D593400916C8A /* scienceBadge4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scienceBadge4.png; sourceTree = "<group>"; };
+		723CF2BB1C5D593400916C8A /* sportsBadge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sportsBadge1.png; sourceTree = "<group>"; };
+		723CF2BC1C5D593400916C8A /* sportsBadge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sportsBadge2.png; sourceTree = "<group>"; };
+		723CF2BD1C5D593400916C8A /* sportsBadge3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sportsBadge3.png; sourceTree = "<group>"; };
+		723CF2BE1C5D593400916C8A /* warBadge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warBadge1.png; sourceTree = "<group>"; };
+		723CF2BF1C5D593400916C8A /* warBadge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warBadge2.png; sourceTree = "<group>"; };
+		723CF2C01C5D593400916C8A /* warBadge3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warBadge3.png; sourceTree = "<group>"; };
+		723CF2CE1C5D606F00916C8A /* overmapBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overmapBadge.png; sourceTree = "<group>"; };
 		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -189,6 +220,9 @@
 		72E8E7AE1B7E03AA0011FE47 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		72E8E7B01B7E6A220011FE47 /* GameData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GameData.plist; sourceTree = "<group>"; };
 		72E8E7B21B8170FC0011FE47 /* DropZoneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropZoneView.swift; sourceTree = "<group>"; };
+		72FD12781C56CD820055F713 /* BadgeCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCollectionView.swift; sourceTree = "<group>"; };
+		72FD127A1C56CD8B0055F713 /* BadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		72FD127D1C5711CC0055F713 /* ResultButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +421,7 @@
 		72E8E7771B7B70720011FE47 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				72FD127C1C56D1A60055F713 /* Badges */,
 				728BAE801BAD8BDA00BD4DB4 /* Icon-76.png */,
 				728BAE811BAD8BDA00BD4DB4 /* Icon-Small.png */,
 				728BAE821BAD8BDA00BD4DB4 /* Icon-40.png */,
@@ -427,11 +462,14 @@
 		72E8E79C1B7B73230011FE47 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				72FD127A1C56CD8B0055F713 /* BadgeView.swift */,
+				72FD12781C56CD820055F713 /* BadgeCollectionView.swift */,
 				72E8E77E1B7B70720011FE47 /* MainMenuController.swift */,
 				721D8A961C028E6300D488D8 /* MenuButton.swift */,
 				727444C71C035F6E00E16F6C /* ChallengeButton.swift */,
 				72BF5F471C1C7982009CB2B3 /* BuyHintsButton.swift */,
 				72BF5F491C1C8185009CB2B3 /* BuyAdFreeButton.swift */,
+				72FD127D1C5711CC0055F713 /* ResultButton.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -442,6 +480,27 @@
 				72E8E7A41B7B75FF0011FE47 /* HistoricEvent.swift */,
 			);
 			name = DataClasses;
+			sourceTree = "<group>";
+		};
+		72FD127C1C56D1A60055F713 /* Badges */ = {
+			isa = PBXGroup;
+			children = (
+				723CF2CE1C5D606F00916C8A /* overmapBadge.png */,
+				723CF2B41C5D593400916C8A /* leadersBadge1.png */,
+				723CF2B51C5D593400916C8A /* leadersBadge2.png */,
+				723CF2B61C5D593400916C8A /* leadersBadge3.png */,
+				723CF2B71C5D593400916C8A /* scienceBadge1.png */,
+				723CF2B81C5D593400916C8A /* scienceBadge2.png */,
+				723CF2B91C5D593400916C8A /* scienceBadge3.png */,
+				723CF2BA1C5D593400916C8A /* scienceBadge4.png */,
+				723CF2BB1C5D593400916C8A /* sportsBadge1.png */,
+				723CF2BC1C5D593400916C8A /* sportsBadge2.png */,
+				723CF2BD1C5D593400916C8A /* sportsBadge3.png */,
+				723CF2BE1C5D593400916C8A /* warBadge1.png */,
+				723CF2BF1C5D593400916C8A /* warBadge2.png */,
+				723CF2C01C5D593400916C8A /* warBadge3.png */,
+			);
+			name = Badges;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -538,30 +597,43 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				723CF2CD1C5D593400916C8A /* warBadge3.png in Resources */,
 				728BAEDC1BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav in Resources */,
+				723CF2CC1C5D593400916C8A /* warBadge2.png in Resources */,
 				728BAEB81BAEEF9D00BD4DB4 /* clockNorm.mp3 in Resources */,
 				728BAE951BAD8BDA00BD4DB4 /* Icon-120.png in Resources */,
 				728BAE981BAD8BDA00BD4DB4 /* iTunesArtwork.png in Resources */,
 				728BAE921BAD8BDA00BD4DB4 /* Icon-Small@3x.png in Resources */,
 				728BAE961BAD8BDA00BD4DB4 /* Icon-72@2x.png in Resources */,
 				728BAECF1BAF036B00BD4DB4 /* yeah-long-and-laugh.mp3 in Resources */,
+				723CF2C41C5D593400916C8A /* scienceBadge1.png in Resources */,
 				728BAE8F1BAD8BDA00BD4DB4 /* Icon-40.png in Resources */,
 				728BAE941BAD8BDA00BD4DB4 /* Icon-60@2x.png in Resources */,
 				72E8E7AF1B7E03AA0011FE47 /* back.png in Resources */,
 				728BAED21BAF036B00BD4DB4 /* dealingCard.wav in Resources */,
 				728BAE8E1BAD8BDA00BD4DB4 /* Icon-Small.png in Resources */,
+				723CF2CA1C5D593400916C8A /* sportsBadge3.png in Resources */,
+				723CF2CF1C5D606F00916C8A /* overmapBadge.png in Resources */,
+				723CF2C71C5D593400916C8A /* scienceBadge4.png in Resources */,
 				728BAE901BAD8BDA00BD4DB4 /* Icon-Small@2x.png in Resources */,
 				728BAECE1BAF036B00BD4DB4 /* wrong.wav in Resources */,
 				728BAEB71BAEEF9D00BD4DB4 /* clockFast.mp3 in Resources */,
 				728BAE971BAD8BDA00BD4DB4 /* Icon-60@3x.png in Resources */,
 				728BAED11BAF036B00BD4DB4 /* correct.wav in Resources */,
+				723CF2C91C5D593400916C8A /* sportsBadge2.png in Resources */,
+				723CF2C61C5D593400916C8A /* scienceBadge3.png in Resources */,
 				728BAEB61BAEEF9D00BD4DB4 /* clock-ticking-2.mp3 in Resources */,
+				723CF2C51C5D593400916C8A /* scienceBadge2.png in Resources */,
+				723CF2C21C5D593400916C8A /* leadersBadge2.png in Resources */,
 				72E8E7B11B7E6A220011FE47 /* GameData.plist in Resources */,
 				728BAED01BAF036B00BD4DB4 /* yeah-short.mp3 in Resources */,
 				72E8E7821B7B70720011FE47 /* Main.storyboard in Resources */,
+				723CF2CB1C5D593400916C8A /* warBadge1.png in Resources */,
+				723CF2C31C5D593400916C8A /* leadersBadge3.png in Resources */,
 				72E8E7871B7B70720011FE47 /* LaunchScreen.xib in Resources */,
 				728BAEDD1BB0C53400BD4DB4 /* yeah.wav in Resources */,
 				728BAEBE1BAEEF9D00BD4DB4 /* lostChallenge.mp3 in Resources */,
+				723CF2C11C5D593400916C8A /* leadersBadge1.png in Resources */,
 				728BAE991BAD8BDA00BD4DB4 /* iTunesArtwork@2x.png in Resources */,
 				728BAEDB1BB0C53400BD4DB4 /* 54008__domingus__yeah-2.wav in Resources */,
 				72E8E7841B7B70720011FE47 /* Images.xcassets in Resources */,
@@ -572,6 +644,7 @@
 				728BAEBC1BAEEF9D00BD4DB4 /* timeUp.mp3 in Resources */,
 				728BAED51BAF036B00BD4DB4 /* fanfare3.wav in Resources */,
 				728BAED71BB0C52900BD4DB4 /* sigh.wav in Resources */,
+				723CF2C81C5D593400916C8A /* sportsBadge1.png in Resources */,
 				728BAED41BAF036B00BD4DB4 /* fanfare2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -600,18 +673,21 @@
 				728BAE771BAA2CC700BD4DB4 /* ResultsScrollView.swift in Sources */,
 				728BAEA01BAE4C2300BD4DB4 /* Colors.swift in Sources */,
 				72E8E7B31B8170FC0011FE47 /* DropZoneView.swift in Sources */,
+				72FD127E1C5711CC0055F713 /* ResultButton.swift in Sources */,
 				72E8E79E1B7B73470011FE47 /* CheckItemView.swift in Sources */,
 				72D192921B9327BE0035CE11 /* RangeSliderThumbLayer.swift in Sources */,
 				725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */,
 				72C789881B9CA76D002A2BBA /* ChallengeViewController.swift in Sources */,
 				727444D01C07897D00E16F6C /* UserFilterScrollView.swift in Sources */,
 				72E8E7A91B7B7A050011FE47 /* GameStats.swift in Sources */,
+				72FD127B1C56CD8B0055F713 /* BadgeView.swift in Sources */,
 				727444CA1C03A57700E16F6C /* ReportErrorHandler.swift in Sources */,
 				72D1928A1B8FF9F70035CE11 /* InfoHelperView.swift in Sources */,
 				728BAE9D1BAE4B5100BD4DB4 /* HolderView.swift in Sources */,
 				72E8E7A01B7B73520011FE47 /* CheckScrollview.swift in Sources */,
 				72D192951B9728980035CE11 /* ClockView.swift in Sources */,
 				721D8A971C028E6300D488D8 /* MenuButton.swift in Sources */,
+				72FD12791C56CD820055F713 /* BadgeCollectionView.swift in Sources */,
 				72E8E7A51B7B75FF0011FE47 /* HistoricEvent.swift in Sources */,
 				72E8E77A1B7B70720011FE47 /* AppDelegate.swift in Sources */,
 				725249DE1BA654D2002FE589 /* ChallengeScrollView.swift in Sources */,
