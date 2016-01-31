@@ -15,6 +15,7 @@ class ResultsScrollView: UIView , UIScrollViewDelegate, UserFilterViewProtocol{
     var scrollView:UIScrollView!
     var totalResultLabel:UILabel!
     var userFilterScrollView:UserFilterScrollView!
+    var opponentsScoreLabel:ResultTitleLabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -37,7 +38,7 @@ class ResultsScrollView: UIView , UIScrollViewDelegate, UserFilterViewProtocol{
         self.addSubview(myScoreLabel)
         
         
-        let opponentsScoreLabel = ResultTitleLabel(frame: CGRectMake(myScoreLabel.frame.maxX , margin, topLevelTitleWidth, titleElementHeight))
+        opponentsScoreLabel = ResultTitleLabel(frame: CGRectMake(myScoreLabel.frame.maxX , margin, topLevelTitleWidth, titleElementHeight))
         opponentsScoreLabel.textAlignment = NSTextAlignment.Center
         opponentsScoreLabel.text = "    Opponent  +👆"
         opponentsScoreLabel.userInteractionEnabled = true
@@ -117,6 +118,12 @@ class ResultsScrollView: UIView , UIScrollViewDelegate, UserFilterViewProtocol{
         
         self.addSubview(scrollView)
         
+    }
+    
+    func disableOpponentFilter()
+    {
+        opponentsScoreLabel.text = "    Opponent    "
+        opponentsScoreLabel.userInteractionEnabled = false
     }
 
     
