@@ -50,11 +50,10 @@ class BadgeCollectionView: UIView, BadgeChallengeProtocol {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        
-        //let badgesOnOneRow:CGFloat = 4
-        let badgesOnColumn:CGFloat = 3
-        let marginBetweenBadges:CGFloat = 5
+    }
+    
+    func loadBadges()
+    {
         let marginTopBottom:CGFloat = 6
         let marginRightLeft:CGFloat = 6
         
@@ -67,112 +66,150 @@ class BadgeCollectionView: UIView, BadgeChallengeProtocol {
         //let badgeWidth = (self.bounds.width * 0.22) - (marginBetweenBadges * (badgesOnOneRow - 1)) - (marginTopBottom * 2)
         
         
-
+        
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: "mapAction:")
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.enabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         
         let onTopMargin:CGFloat = badgeWidth * 0.6
-
-
-        
-        //TEST
-        let challengeQuestionBlocksIds = datactrl.fetchQuestionsForBadgeChallenge(1,numCardsInBlock: 3,filter: ["sport"],fromLevel: 1,toLevel: 3)
-        
         
         sportBadge1 = BadgeView(frame: CGRectMake(marginRightLeft, marginTopBottom, badgeWidth, badgeHeight), title: "Sports first class", image: "sportsBadge1.png")
-        sportBadge1.delegate = self
-        sportBadge1.setQuestions(challengeQuestionBlocksIds)
+        if !sportBadge1!.complete
+        {
+            sportBadge1.delegate = self
+            let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 3,filter: ["sport"],fromLevel: 1,toLevel: 3)
+            sportBadge1.setQuestions(blocksIds)
+        }
         self.addSubview(sportBadge1)
         var lastXPos = sportBadge1.frame.maxX
         
         if let badge = sportBadge1 where badge.complete
         {
-            sportBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight), title: "Sports second class", image: "sportsBadge2.png")
-            sportBadge2!.delegate = self
-            sportBadge2!.setQuestions(challengeQuestionBlocksIds)
+            sportBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight), title: "Sports second class", image: "sportsBadge2.png",hints:3)
+            if !sportBadge2!.complete
+            {
+                sportBadge2!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 4,filter: ["sport"],fromLevel: 1,toLevel: 3)
+                sportBadge2!.setQuestions(blocksIds)
+            }
             self.addSubview(sportBadge2!)
             lastXPos = sportBadge2!.frame.maxX
         }
         
         if let badge = sportBadge2 where badge.complete
         {
-            sportBadge3 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight), title: "Sports third class", image: "sportsBadge3.png",hints:3)
-            sportBadge3!.delegate = self
-            sportBadge3!.setQuestions(challengeQuestionBlocksIds)
+            sportBadge3 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight), title: "Sports third class", image: "sportsBadge3.png",hints:4)
+            if !sportBadge3!.complete
+            {
+                sportBadge3!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 5,filter: ["sport"],fromLevel: 1,toLevel: 3)
+                sportBadge3!.setQuestions(blocksIds)
+            }
             self.addSubview(sportBadge3!)
             lastXPos = sportBadge3!.frame.maxX
         }
         
         
         scienceBadge1 = BadgeView(frame: CGRectMake(lastXPos + marginTopBottom, marginTopBottom, badgeWidth, badgeHeight),title: "Science first class", image: "scienceBadge1.png")
-        scienceBadge1!.delegate = self
-        scienceBadge1!.setQuestions(challengeQuestionBlocksIds)
+        if !scienceBadge1!.complete
+        {
+            scienceBadge1!.delegate = self
+            let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 3,filter: ["science","discovery","invention"],fromLevel: 1,toLevel: 3)
+            scienceBadge1!.setQuestions(blocksIds)
+        }
         self.addSubview(scienceBadge1!)
         lastXPos = scienceBadge1!.frame.maxX
-
+        
         if let badge = scienceBadge1 where badge.complete
         {
-            scienceBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science second class", image: "scienceBadge2.png")
-            scienceBadge2!.delegate = self
-            scienceBadge2!.setQuestions(challengeQuestionBlocksIds)
+            scienceBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science second class", image: "scienceBadge2.png",hints:3)
+            if !scienceBadge2!.complete
+            {
+                scienceBadge2!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 4,filter: ["science","discovery","invention"],fromLevel: 1,toLevel: 3)
+                scienceBadge2!.setQuestions(blocksIds)
+            }
             self.addSubview(scienceBadge2!)
             lastXPos = scienceBadge2!.frame.maxX
         }
         
-
+        
         if let badge = scienceBadge2 where badge.complete
         {
-            scienceBadge3 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science third class", image: "scienceBadge3.png")
-            scienceBadge3!.delegate = self
-            scienceBadge3!.setQuestions(challengeQuestionBlocksIds)
+            scienceBadge3 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science third class", image: "scienceBadge3.png",hints:4)
+            if !scienceBadge3!.complete
+            {
+                scienceBadge3!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 5,filter: ["science","discovery","invention"],fromLevel: 1,toLevel: 3)
+                scienceBadge3!.setQuestions(blocksIds)
+            }
             self.addSubview(scienceBadge3!)
             lastXPos = scienceBadge3!.frame.maxX
         }
         
         if let badge = scienceBadge3 where badge.complete
         {
-            scienceBadge4 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science fourth class", image: "scienceBadge4.png")
-            scienceBadge4!.delegate = self
-            scienceBadge4!.setQuestions(challengeQuestionBlocksIds)
+            scienceBadge4 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Science fourth class", image: "scienceBadge4.png",hints:6)
+            if !scienceBadge4!.complete
+            {
+                scienceBadge4!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 6,filter: ["science","discovery","invention"],fromLevel: 1,toLevel: 3)
+                scienceBadge4!.setQuestions(blocksIds)
+            }
             self.addSubview(scienceBadge4!)
             lastXPos = scienceBadge4!.frame.maxX
         }
         
-
+        
         if let badge1 = scienceBadge1, badge2 = sportBadge1 where badge1.complete && badge2.complete
         {
             headOfState1 = BadgeView(frame: CGRectMake(lastXPos + marginTopBottom, marginTopBottom, badgeWidth, badgeHeight),title: "Head of state first class", image: "leadersBadge1.png")
-            headOfState1!.delegate = self
-            headOfState1!.setQuestions(challengeQuestionBlocksIds)
+            if !headOfState1!.complete
+            {
+                headOfState1!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 3,filter: ["headOfState"],fromLevel: 1,toLevel: 3)
+                headOfState1!.setQuestions(blocksIds)
+            }
             self.addSubview(headOfState1!)
             lastXPos = headOfState1!.frame.maxX
         }
-
+        
         if let badge = headOfState1 where badge.complete
         {
-            headOfState2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Head of state second class", image: "leadersBadge2.png")
-            headOfState2!.delegate = self
-            headOfState2!.setQuestions(challengeQuestionBlocksIds)
+            headOfState2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Head of state second class", image: "leadersBadge2.png",hints:3)
+            if !headOfState2!.complete
+            {
+                headOfState2!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 4,filter: ["headOfState"],fromLevel: 1,toLevel: 3)
+                headOfState2!.setQuestions(blocksIds)
+            }
             self.addSubview(headOfState2!)
             lastXPos = headOfState2!.frame.maxX
         }
         
         if let badge1 = headOfState1, badge2 = scienceBadge2 where badge1.complete && badge2.complete
         {
-            warBadge1 = BadgeView(frame: CGRectMake(lastXPos + marginTopBottom, marginTopBottom, badgeWidth, badgeHeight),title: "Wars first class", image: "warBadge1.png")
-            warBadge1!.delegate = self
-            warBadge1!.setQuestions(challengeQuestionBlocksIds)
+            warBadge1 = BadgeView(frame: CGRectMake(lastXPos + marginTopBottom, marginTopBottom, badgeWidth, badgeHeight),title: "Wars first class", image: "warBadge1.png",hints:3)
+            if !warBadge1!.complete
+            {
+                warBadge1!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 3,filter: ["war"],fromLevel: 1,toLevel: 3)
+                warBadge1!.setQuestions(blocksIds)
+            }
             self.addSubview(warBadge1!)
             lastXPos = warBadge1!.frame.maxX
         }
-
+        
         if let badge = warBadge1 where badge.complete
         {
-            warBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Wars second class", image: "warBadge2.png")
-            warBadge2!.delegate = self
-            warBadge2!.setQuestions(challengeQuestionBlocksIds)
+            warBadge2 = BadgeView(frame: CGRectMake(lastXPos - onTopMargin, marginTopBottom, badgeWidth, badgeHeight),title: "Wars second class", image: "warBadge2.png",hints:4)
+            if !warBadge2!.complete
+            {
+                warBadge2!.delegate = self
+                let blocksIds = datactrl.fetchQuestionsForBadgeChallenge(5,numCardsInBlock: 4,filter: ["war"],fromLevel: 1,toLevel: 3)
+                warBadge2!.setQuestions(blocksIds)
+            }
             self.addSubview(warBadge2!)
         }
     }

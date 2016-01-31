@@ -55,6 +55,10 @@ class BadgeView: UIView, UIAlertViewDelegate {
             overlapImageView.image = UIImage(named: "overmapBadge.png")
             overlapImageView.alpha = 0.65
             self.addSubview(overlapImageView)
+            
+            let overlapImageViewBlueRim = UIImageView(frame: self.bounds)
+            overlapImageViewBlueRim.image = UIImage(named: "overmapBadgeSelect2.png")
+            self.addSubview(overlapImageViewBlueRim)
         }
         
         let firsttry = NSUserDefaults.standardUserDefaults().boolForKey("\(title)firsttry")

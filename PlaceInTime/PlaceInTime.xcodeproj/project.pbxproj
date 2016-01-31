@@ -23,6 +23,8 @@
 		723CF2CC1C5D593400916C8A /* warBadge2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2BF1C5D593400916C8A /* warBadge2.png */; };
 		723CF2CD1C5D593400916C8A /* warBadge3.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2C01C5D593400916C8A /* warBadge3.png */; };
 		723CF2CF1C5D606F00916C8A /* overmapBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2CE1C5D606F00916C8A /* overmapBadge.png */; };
+		723CF2D21C5E4B2600916C8A /* overmapBadgeSelect.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2D01C5E4B2600916C8A /* overmapBadgeSelect.png */; };
+		723CF2D31C5E4B2600916C8A /* overmapBadgeSelect2.png in Resources */ = {isa = PBXBuildFile; fileRef = 723CF2D11C5E4B2600916C8A /* overmapBadgeSelect2.png */; };
 		725249D01B9F0D53002FE589 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249CF1B9F0D53002FE589 /* FinishedViewController.swift */; };
 		725249D21BA0FCE9002FE589 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */; };
 		725249DC1BA63315002FE589 /* UserScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725249DB1BA63315002FE589 /* UserScrollView.swift */; };
@@ -135,6 +137,8 @@
 		723CF2BF1C5D593400916C8A /* warBadge2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warBadge2.png; sourceTree = "<group>"; };
 		723CF2C01C5D593400916C8A /* warBadge3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warBadge3.png; sourceTree = "<group>"; };
 		723CF2CE1C5D606F00916C8A /* overmapBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overmapBadge.png; sourceTree = "<group>"; };
+		723CF2D01C5E4B2600916C8A /* overmapBadgeSelect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overmapBadgeSelect.png; sourceTree = "<group>"; };
+		723CF2D11C5E4B2600916C8A /* overmapBadgeSelect2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overmapBadgeSelect2.png; sourceTree = "<group>"; };
 		725249CF1B9F0D53002FE589 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		725249D11BA0FCE9002FE589 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		725249D31BA0FD5B002FE589 /* PlaceInTime-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlaceInTime-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -485,6 +489,8 @@
 		72FD127C1C56D1A60055F713 /* Badges */ = {
 			isa = PBXGroup;
 			children = (
+				723CF2D01C5E4B2600916C8A /* overmapBadgeSelect.png */,
+				723CF2D11C5E4B2600916C8A /* overmapBadgeSelect2.png */,
 				723CF2CE1C5D606F00916C8A /* overmapBadge.png */,
 				723CF2B41C5D593400916C8A /* leadersBadge1.png */,
 				723CF2B51C5D593400916C8A /* leadersBadge2.png */,
@@ -599,6 +605,7 @@
 			files = (
 				723CF2CD1C5D593400916C8A /* warBadge3.png in Resources */,
 				728BAEDC1BB0C53400BD4DB4 /* 189068__donnieozone__yeah1.wav in Resources */,
+				723CF2D21C5E4B2600916C8A /* overmapBadgeSelect.png in Resources */,
 				723CF2CC1C5D593400916C8A /* warBadge2.png in Resources */,
 				728BAEB81BAEEF9D00BD4DB4 /* clockNorm.mp3 in Resources */,
 				728BAE951BAD8BDA00BD4DB4 /* Icon-120.png in Resources */,
@@ -645,6 +652,7 @@
 				728BAED51BAF036B00BD4DB4 /* fanfare3.wav in Resources */,
 				728BAED71BB0C52900BD4DB4 /* sigh.wav in Resources */,
 				723CF2C81C5D593400916C8A /* sportsBadge1.png in Resources */,
+				723CF2D31C5E4B2600916C8A /* overmapBadgeSelect2.png in Resources */,
 				728BAED41BAF036B00BD4DB4 /* fanfare2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

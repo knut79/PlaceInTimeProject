@@ -833,11 +833,7 @@ class DataHandler
             }
         }
         */
-        //_? checking top and bottom usage
-        for var i = 0 ; i < historicEventItems.count ; i++
-        {
-            print("usage for index \(i): \(historicEventItems[i].used)")
-        }
+
         repeat{
             historicEventsWithPrecision = []
             for var i = 0 ; i < numEvents ; i++

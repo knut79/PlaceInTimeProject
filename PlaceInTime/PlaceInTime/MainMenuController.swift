@@ -62,7 +62,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     var backButton:UIButton!
     
-    var bannerView:ADBannerView?
+    //var bannerView:ADBannerView?
     
     let marginButtons:CGFloat = 10
     
@@ -100,7 +100,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         
         
         let badgeViewHeight:CGFloat = practiceButton.frame.height * 1.5
-        badgeCollectionView = BadgeCollectionView(frame: CGRectMake(0, practiceButton.frame.maxY, UIScreen.mainScreen().bounds.width, badgeViewHeight))
+        badgeCollectionView = BadgeCollectionView(frame: CGRectMake(0, practiceButton.frame.maxY + marginButtons, UIScreen.mainScreen().bounds.width, badgeViewHeight))
         badgeCollectionView.delegate = self
         self.view.addSubview(badgeCollectionView)
         orgBadgeCollectionViewCenter = badgeCollectionView.center
@@ -125,16 +125,14 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         if !adFree
         {
             practiceButton.setDisabled()
+            
             /*
-            adFreeButton = BuyAdFreeButton(frame:CGRectMake(marginButtons, practiceButton.frame.minY,GlobalConstants.smallButtonSide * 1.5 , GlobalConstants.smallButtonSide * 1.5))
-            adFreeButton!.addTarget(self, action: "requestBuyAdFree", forControlEvents: UIControlEvents.TouchUpInside)
-            */
             self.canDisplayBannerAds = true
-            //bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             bannerView = ADBannerView(frame: CGRectMake(0, 0, view.bounds.width, view.bounds.height))
             self.view.addSubview(bannerView!)
             self.bannerView?.delegate = self
             self.bannerView?.hidden = false
+            */
         }
         
         
@@ -256,6 +254,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.badgeCollectionView.alpha = 1
             self.resultsButton.alpha = 1
             requestProductData()
+            self.badgeCollectionView.loadBadges()
             //setupAfterPopulateData()
         }
         
@@ -304,11 +303,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
                 
             })
         }
+        /*
         if let banner = bannerView
         {
             banner.frame = CGRectMake(0, 0, view.bounds.width, view.bounds.height)
             banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
         }
+        */
         
     }
 
@@ -325,11 +326,12 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     override func viewDidLayoutSubviews() {
         
         loadingDataView?.frame =  CGRectMake(50, 50, 200, 50)
+        /*
         if let banner = bannerView
         {
             banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
         }
-
+        */
     }
     
     func enterForground()
@@ -548,11 +550,13 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         datactrl.saveGameData()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "adFree")
         NSUserDefaults.standardUserDefaults().synchronize()
-        self.bannerView?.hidden = true
-        self.bannerView?.frame.offsetInPlace(dx: 0, dy: self.bannerView!.frame.height)
-        
-        //adFreeButton?.userInteractionEnabled = false
-        //adFreeButton?.alpha = 0
+        /*
+        if let banner = self.bannerView
+        {
+            banner.hidden = true
+            banner.frame.offsetInPlace(dx: 0, dy: banner.frame.height)
+        }
+        */
     }
     
     func loadScreenFinished() {
@@ -574,15 +578,18 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
             self.badgeCollectionView.transform = CGAffineTransformIdentity
             self.resultsButton.transform = CGAffineTransformIdentity
             }, completion: { (value: Bool) in
+                /*
                 if let banner = self.bannerView
                 {
                     banner.center = CGPoint(x: banner.center.x, y: self.view.bounds.size.height - banner.frame.size.height / 2)
                 }
+                */
         })
         
         requestProductData()
         populateDataIfNeeded()
         
+        self.badgeCollectionView.loadBadges()
         /*
         datactrl = (UIApplication.sharedApplication().delegate as! AppDelegate).datactrl
         datactrl.addRecordToGameResults("2,22,Elizabethhhh,1,1000,1-3 from Elizabethhhh,,4321")
@@ -894,7 +901,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         }
     }
     
-    
+    /*
     func bannerViewDidLoadAd(banner: ADBannerView!) {
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         self.bannerView?.hidden = adFree
@@ -908,6 +915,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         let adFree = NSUserDefaults.standardUserDefaults().boolForKey("adFree")
         self.bannerView?.hidden = adFree
     }
+    */
     
     //MARK: TagCheckViewProtocol
     var listClosed = true
@@ -917,11 +925,11 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         {
             return
         }
-        
-        if self.tags.count < 3
+        let minAllowedSelectedTags:Int = 2
+        if self.tags.count < minAllowedSelectedTags
         {
-            let numberPrompt = UIAlertController(title: "Pick 3",
-                message: "Select at least 3 tags",
+            let numberPrompt = UIAlertController(title: "Pick \(minAllowedSelectedTags)",
+                message: "Select at least \(minAllowedSelectedTags) tags",
                 preferredStyle: .Alert)
 
             
@@ -962,7 +970,8 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func setupCheckboxView()
     {
-        let bannerViewHeight = bannerView != nil ? bannerView!.frame.height : 0
+        //let bannerViewHeight = bannerView != nil ? bannerView!.frame.height : 0
+        let bannerViewHeight:CGFloat = 0
         tagsScrollViewEnableBackground = UIView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - bannerViewHeight))
         tagsScrollViewEnableBackground.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         tagsScrollViewEnableBackground.alpha = 0
