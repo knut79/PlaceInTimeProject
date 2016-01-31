@@ -73,7 +73,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         super.viewDidLoad()
         
         //_? remove for release
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey:"adFree")
+        //NSUserDefaults.standardUserDefaults().setBool(true, forKey:"adFree")
         //let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         //UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
@@ -973,7 +973,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
         //let bannerViewHeight = bannerView != nil ? bannerView!.frame.height : 0
         let bannerViewHeight:CGFloat = 0
         tagsScrollViewEnableBackground = UIView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - bannerViewHeight))
-        tagsScrollViewEnableBackground.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        tagsScrollViewEnableBackground.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.7)
         tagsScrollViewEnableBackground.alpha = 0
         var scrollViewWidth = UIScreen.mainScreen().bounds.size.width * 0.6
         let orientation = UIDevice.currentDevice().orientation

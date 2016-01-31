@@ -180,7 +180,6 @@ class ResultsScrollView: UIView , UIScrollViewDelegate, UserFilterViewProtocol{
     func tapForOpponentFilter(gesture:UITapGestureRecognizer)
     {
 
-        
         let rightLocation = userFilterScrollView.center
         userFilterScrollView.transform = CGAffineTransformScale(userFilterScrollView.transform, 0.1, 0.1)
         self.userFilterScrollView.alpha = 1
