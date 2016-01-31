@@ -44,8 +44,9 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         closeButton = UIButton(frame: CGRectMake(frame.width - 40, 0, 40, 40))
         closeButton.setTitle("❌", forState: UIControlState.Normal)
         closeButton.addTarget(self, action: "closeAction", forControlEvents: UIControlEvents.TouchUpInside)
-        closeButton.layer.borderColor = UIColor.blackColor().CGColor
-        closeButton.layer.borderWidth = 2.0
+        closeButton.backgroundColor = UIColor.blueColor()
+        //closeButton.layer.borderColor = UIColor.blackColor().CGColor
+        //closeButton.layer.borderWidth = 2.0
         
         
         scrollView = UIScrollView(frame: CGRectMake(0, closeButton.frame.height, frame.width, frame.height - closeButton.frame.height))
@@ -54,8 +55,12 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         self.addSubview(scrollView)
         
         self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
+        
+        self.layer.borderColor = UIColor.blueColor().CGColor
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 5.0
+        
         /*
         for item in initialValues
         {
@@ -75,6 +80,8 @@ class CheckScrollView: UIView , UIScrollViewDelegate, CheckItemProtocol{
         
         selectedInfoLabel = UILabel(frame: CGRectMake(0, 0, self.frame.width - closeButton.frame.width, itemheight))
         selectedInfoLabel.textAlignment = NSTextAlignment.Center
+        selectedInfoLabel.backgroundColor = UIColor.blueColor()
+        selectedInfoLabel.textColor = UIColor.whiteColor()
         
 
         
