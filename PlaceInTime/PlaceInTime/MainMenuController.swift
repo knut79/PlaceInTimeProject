@@ -418,7 +418,7 @@ class MainMenuViewController: UIViewController, CheckViewProtocol , ADBannerView
     
     func requestBuyAdFree()
     {
-        let adFreePrompt = UIAlertController(title: "Remove ads",
+        let adFreePrompt = UIAlertController(title: "Practice mode\n&\nRemove ads",
             message: "",
             preferredStyle: .Alert)
         

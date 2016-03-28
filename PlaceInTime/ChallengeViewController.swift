@@ -243,6 +243,7 @@ class ChallengeViewController:UIViewController,FBSDKLoginButtonDelegate, UserVie
         titleLabel = UILabel(frame: CGRectMake((UIScreen.mainScreen().bounds.size.width / 2) - (elementWidth / 2), margin, elementWidth, elementHeight))
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.font = UIFont.boldSystemFontOfSize(24)
+        titleLabel.adjustsFontSizeToFitWidth = true
         
         
         self.playButton = UIButton(frame:CGRectMake(titleLabel.frame.minX, UIScreen.mainScreen().bounds.size.height - margin - elementHeight, elementWidth , elementHeight))
